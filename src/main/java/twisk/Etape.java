@@ -2,12 +2,14 @@ package twisk;
 
 import java.util.Iterator;
 
+
 public abstract class Etape implements Iterable<Etape> {
 
     private String nom;
 
     public Etape(String nom) {
         assert(nom != null) : "Le nom de l'etape ne doit pas etre nulle";
+
         this.nom = nom;
     }
 

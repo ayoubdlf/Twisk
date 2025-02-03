@@ -1,11 +1,14 @@
 package twisk;
 
+import twisk.outils.FabriqueNumero;
+
 import java.util.Iterator;
 
 
 public abstract class Etape implements Iterable<Etape> {
 
     private String nom;
+    private int idEtape;
     private GestionnaireEtapes successeurs;
 
 
@@ -14,6 +17,7 @@ public abstract class Etape implements Iterable<Etape> {
 
         this.nom         = nom;
         this.successeurs = new GestionnaireEtapes();
+        this.idEtape     = FabriqueNumero.getInstance().getNumeroEtape();
     }
 
     public void ajouterSuccesseur(Etape... etapes) {

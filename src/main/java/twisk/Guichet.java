@@ -1,9 +1,11 @@
 package twisk;
 
+import twisk.outils.FabriqueNumero;
+
 public class Guichet extends Etape {
 
     private int nbJetons;
-    private int cptSemaphore;
+    private int idSemaphore;
 
     public Guichet(String nom) {
         this(nom, 1);
@@ -14,7 +16,8 @@ public class Guichet extends Etape {
 
         assert (nbJetons > 0) : "Le nombre de jetons doit etre superieur ou egale à 1";
 
-        this.nbJetons = nbJetons;
+        this.nbJetons    = nbJetons;
+        this.idSemaphore = FabriqueNumero.getInstance().getNumeroSemaphore();
     }
 
     @Override
@@ -28,7 +31,7 @@ public class Guichet extends Etape {
     }
 
     public int getNumeroSemaphore() {
-        return cptSemaphore;
+        return this.idSemaphore;
     }
 
 }

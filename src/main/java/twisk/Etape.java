@@ -8,7 +8,7 @@ public abstract class Etape implements Iterable<Etape> {
     private String nom;
 
     public Etape(String nom) {
-        assert(nom != null) : "Le nom de l'etape ne doit pas etre nulle";
+        assert(nom != null && !nom.isEmpty()): "Le nom de l'etape ne doit pas etre nul ou vide" ;
 
         this.nom = nom;
     }

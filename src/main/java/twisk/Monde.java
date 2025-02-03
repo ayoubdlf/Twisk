@@ -15,24 +15,55 @@ public class Monde implements Iterable<Etape> {
         this.sortie = new SasSortie();
     }
 
-    public void aCommeEntree(Etape... etapes) {}
+    public void aCommeEntree(Etape... etapes) {
+        this.entree.ajouterSuccesseur(etapes);
+    }
 
-    public void aCommeSortie(Etape... etapes) {}
+    public void aCommeSortie(Etape... etapes) {
+        assert (etapes != null) : "Les etapes ne doivent pas etre nulles";
+
+        for(Etape etape : etapes) {
+            assert (etape != null) : "L'etape ne doit pas etre nulle";
+            etape.ajouterSuccesseur(this.sortie);
+        }
+    }
 
     public void ajouter(Etape... etapes) {
         this.etapes.ajouter(etapes);
     }
 
     public int nbEtapes() {
-        return 0;
+        return this.etapes.nbEtapes();
+    }
+
+    public int nbActivites() {
+        return this.etapes.nbActivites();
     }
 
     public int nbGuichets() {
-        return 0;
+        return this.etapes.nbGuichets();
     }
 
     public Iterator<Etape> iterator() {
-        return null;
+        return this.etapes.iterator();
+    }
+
+    public String toString() {
+        StringBuilder str = new StringBuilder();
+
+
+        // ENTREE
+        str.append(this.entree.toString()).append("\n");
+
+        // SORTIE
+        str.append(this.sortie.toString()).append("\n");
+
+        // ETAPES
+        for (Etape etape : this.etapes) {
+            str.append(etape.toString()).append("\n");;
+        }
+
+        return str.toString();
     }
 
 }

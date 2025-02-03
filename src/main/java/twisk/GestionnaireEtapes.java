@@ -25,6 +25,14 @@ public class GestionnaireEtapes implements Iterable<Etape> {
         return this.etapes.size();
     }
 
+    public int nbActivites() {
+        return (int) this.etapes.stream().filter(Etape::estUneActivite).count();
+    }
+
+    public int nbGuichets() {
+        return (int) this.etapes.stream().filter(Etape::estUnGuichet).count();
+    }
+
     public Iterator<Etape> iterator() {
         return this.etapes.iterator();
     }

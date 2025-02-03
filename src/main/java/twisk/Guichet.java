@@ -1,6 +1,6 @@
 package twisk;
 
-public abstract class Guichet extends Etape {
+public class Guichet extends Etape {
 
     private int nbJetons;
     private int cptSemaphore;

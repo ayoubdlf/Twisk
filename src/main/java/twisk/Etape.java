@@ -13,11 +13,11 @@ public abstract class Etape implements Iterable<Etape> {
         this.nom = nom;
     }
 
-   public void ajouterSuccesseur(Etape etape) {
+    public void ajouterSuccesseur(Etape etape) {
         assert(etape != null) : "L'etape ne doit pas etre nulle";
    }
 
-   public abstract boolean estUneActivite();
+    public abstract boolean estUneActivite();
 
     public abstract boolean estUnGuichet();
 

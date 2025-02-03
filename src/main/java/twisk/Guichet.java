@@ -3,6 +3,7 @@ package twisk;
 public abstract class Guichet extends Etape {
 
     private int nbJetons;
+    private int cptSemaphore;
 
     public Guichet(String nom) {
         this(nom, 1);
@@ -24,6 +25,10 @@ public abstract class Guichet extends Etape {
     @Override
     public boolean estUnGuichet() {
         return true;
+    }
+
+    public int getNumeroSemaphore() {
+        return cptSemaphore;
     }
 
 }

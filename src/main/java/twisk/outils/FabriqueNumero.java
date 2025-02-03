@@ -15,6 +15,7 @@ public class FabriqueNumero {
         if(instance == null) {
             instance = new FabriqueNumero();
         }
+
         return instance;
     }
 
@@ -27,10 +28,14 @@ public class FabriqueNumero {
     }
 
     public int getNumeroEtape() {
+        this.incrementNbEtape();
+
         return cptEtape;
     }
 
     public int getNumeroSemaphore() {
+        this.incrementNbSemaphore();
+
         return cptSemaphore;
     }
 

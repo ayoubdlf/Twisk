@@ -1,6 +1,7 @@
-package twisk;
+package twisk.monde;
 
 import twisk.outils.FabriqueNumero;
+
 
 public class Guichet extends Etape {
 

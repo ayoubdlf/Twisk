@@ -1,4 +1,4 @@
-package twisk;
+package twisk.monde;
 
 import java.util.*;
 
@@ -50,7 +50,6 @@ public class Monde implements Iterable<Etape> {
 
     public String toString() {
         StringBuilder str = new StringBuilder();
-
 
         // ENTREE
         str.append(this.entree.toString()).append("\n");

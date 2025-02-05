@@ -12,6 +12,9 @@ public class GestionnaireEtapes implements Iterable<Etape> {
         this.etapes = new ArrayList<>();
     }
 
+
+    /* —————————— SETTERS —————————— */
+
     public void ajouter(Etape... etapes) {
         assert (etapes != null) : "Les etapes ne doivent pas etre nulles";
 
@@ -20,6 +23,8 @@ public class GestionnaireEtapes implements Iterable<Etape> {
             this.etapes.add(etape);
         }
     }
+
+    /* —————————— GETTERS —————————— */
 
     public int nbEtapes() {
         return this.etapes.size();

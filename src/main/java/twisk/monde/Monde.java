@@ -9,11 +9,14 @@ public class Monde implements Iterable<Etape> {
     private SasEntree entree;
     private SasSortie sortie;
 
+
     public Monde() {
         this.etapes = new GestionnaireEtapes();
         this.entree = new SasEntree();
         this.sortie = new SasSortie();
     }
+
+    /* —————————— SETTERS —————————— */
 
     public void aCommeEntree(Etape... etapes) {
         this.entree.ajouterSuccesseur(etapes);
@@ -31,6 +34,9 @@ public class Monde implements Iterable<Etape> {
     public void ajouter(Etape... etapes) {
         this.etapes.ajouter(etapes);
     }
+
+
+    /* —————————— GETTERS —————————— */
 
     public int nbEtapes() {
         return this.etapes.nbEtapes();

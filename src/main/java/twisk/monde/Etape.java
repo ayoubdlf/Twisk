@@ -19,17 +19,30 @@ public abstract class Etape implements Iterable<Etape> {
         this.idEtape     = FabriqueNumero.getInstance().getNumeroEtape();
     }
 
+    /* —————————— SETTERS —————————— */
+
     public void ajouterSuccesseur(Etape... etapes) {
         this.successeurs.ajouter(etapes);
-   }
+    }
+
+
+    /* —————————— GETTERS —————————— */
+
+    public abstract boolean estUneActivite();
+
+    public abstract boolean estUnGuichet();
 
     public String getNom() {
         return this.nom;
     }
 
-    public abstract boolean estUneActivite();
+    public int getIdEtape() {
+        return this.idEtape;
+    }
 
-    public abstract boolean estUnGuichet();
+    public GestionnaireEtapes getSuccesseurs() {
+        return this.successeurs;
+    }
 
     public Iterator<Etape> iterator() {
         return this.successeurs.iterator();

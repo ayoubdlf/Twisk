@@ -13,19 +13,33 @@ public class Activite extends Etape {
     public Activite(String nom , int temps, int ecartTemps) {
         super(nom);
 
-        assert(temps > 0)      : "Le temps ne dois pas etre inferieur a 0";
-        assert(ecartTemps > 0) : "L'ecartTemps ne dois pas etre inferieur a 0";
-
-        assert(temps > ecartTemps):"le temps doit etre superieur à l'ecart temps";
+        assert(temps > 0)          : "Le temps doit etre superieur à 0";
+        assert(ecartTemps > 0)     : "L'ecart temps doit etre superieur à 0";
+        assert(temps > ecartTemps) : "Le temps doit etre superieur à l'ecart temps";
 
         this.temps      = temps;
         this.ecartTemps = ecartTemps;
     }
+
+    /* —————————— SETTERS —————————— */
+
+
+    /* —————————— GETTERS —————————— */
+
+    public int getTemps() {
+        return this.temps;
+    }
+
+    public int getEcartTemps() {
+        return this.ecartTemps;
+    }
+
     @Override
     public boolean estUneActivite() {
         return true;
     }
 
+    @Override
     public boolean estUnGuichet() {
         return false;
     }

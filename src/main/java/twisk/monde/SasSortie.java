@@ -6,4 +6,8 @@ public class SasSortie extends Activite {
         super("sortie");
     }
 
+    /* —————————— SETTERS —————————— */
+
+    /* —————————— GETTERS —————————— */
+
 }

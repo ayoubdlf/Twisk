@@ -6,4 +6,8 @@ public class SasEntree extends Activite {
         super("entree");
     }
 
+    /* —————————— SETTERS —————————— */
+
+    /* —————————— GETTERS —————————— */
+
 }

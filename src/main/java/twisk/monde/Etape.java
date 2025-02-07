@@ -40,6 +40,8 @@ public abstract class Etape implements Iterable<Etape> {
 
     public abstract boolean estUneActivite();
 
+    public abstract boolean estUneActiviteRestreinte();
+
     public abstract boolean estUnGuichet();
 
     public String getNom() {

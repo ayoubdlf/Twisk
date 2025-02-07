@@ -32,12 +32,21 @@ public class Guichet extends Etape {
     }
 
     @Override
+    public boolean estUneActiviteRestreinte() {
+        return false;
+    }
+
+    @Override
     public boolean estUnGuichet() {
         return true;
     }
 
     public int getNumeroSemaphore() {
         return this.idSemaphore;
+    }
+
+    public int getNbJetons() {
+        return this.nbJetons;
     }
 
 }

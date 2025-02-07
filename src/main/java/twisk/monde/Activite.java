@@ -26,6 +26,7 @@ public class Activite extends Etape {
 
     /* —————————— GETTERS —————————— */
 
+
     public int getTemps() {
         return this.temps;
     }
@@ -37,6 +38,11 @@ public class Activite extends Etape {
     @Override
     public boolean estUneActivite() {
         return true;
+    }
+
+    @Override
+    public boolean estUneActiviteRestreinte() {
+        return false;
     }
 
     @Override

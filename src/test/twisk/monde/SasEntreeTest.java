@@ -1,0 +1,107 @@
+package twisk.monde;
+
+import org.junit.jupiter.api.Test;
+import twisk.outils.FabriqueNumero;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class SasEntreeTest {
+
+    @Test
+    void testConstructeur1Parametre() {
+        FabriqueNumero.getInstance().reset();
+
+        SasEntree[] sasEntree = {
+                new SasEntree(),
+                new SasEntree(),
+                new SasEntree(),
+                new SasEntree(),
+                new SasEntree(),
+        };
+
+        for (int i = 0; i < sasEntree.length; i++) {
+            SasEntree etape = sasEntree[i];
+
+            assertEquals("entree", etape.getNom());
+            assertEquals(2, etape.getTemps());
+            assertEquals(1, etape.getEcartTemps());
+            assertEquals(i, etape.getIdEtape());
+        }
+    }
+
+
+
+    @Test
+    void testGetNom() {
+        SasEntree[] sasEntree = {
+                new SasEntree(),
+                new SasEntree(),
+                new SasEntree(),
+                new SasEntree(),
+                new SasEntree(),
+        };
+
+        for (int i = 0; i < sasEntree.length; i++) {
+            SasEntree etape = sasEntree[i];
+
+            assertEquals("entree", etape.getNom());
+        }
+    }
+
+    @Test
+    void testGetIdEtape() {
+        FabriqueNumero.getInstance().reset();
+
+        SasEntree[] sasEntree = {
+                new SasEntree(),
+                new SasEntree(),
+                new SasEntree(),
+                new SasEntree(),
+                new SasEntree(),
+        };
+
+        for (int i = 0; i < sasEntree.length; i++) {
+            SasEntree etape = sasEntree[i];
+
+            assertEquals(i, etape.getIdEtape());
+        }
+    }
+
+    @Test
+    void testEstUneActivite() {
+        SasEntree etape = new SasEntree();
+
+        assertTrue(etape.estUneActivite());
+    }
+
+    @Test
+    void testEstUneActiviteRestreinte() {
+        SasEntree etape = new SasEntree();
+
+        assertFalse(etape.estUneActiviteRestreinte());
+    }
+
+    @Test
+    void testEstUnGuichet() {
+        SasEntree etape = new SasEntree();
+
+        assertFalse(etape.estUnGuichet());
+    }
+
+    @Test
+    void testAjouterSuccesseur() {
+        assertThrows(AssertionError.class, () -> {
+
+            SasEntree etape = new SasEntree();
+            etape.ajouterSuccesseur(null);
+        });
+
+
+        SasEntree etape = new SasEntree();
+
+        etape.ajouterSuccesseur(new Activite("activite"));
+
+        // TODO: meilleurs tests
+    }
+
+}

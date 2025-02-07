@@ -13,5 +13,9 @@ public class ActiviteRestreinte extends Activite {
     /* —————————— SETTERS —————————— */
 
     /* —————————— GETTERS —————————— */
+    @Override
+    public boolean estUneActiviteRestreinte() {
+        return true;
+    }
 
 }

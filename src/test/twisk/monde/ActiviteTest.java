@@ -11,16 +11,16 @@ class ActiviteTest {
     void testConstructeur1Parametre() {
         FabriqueNumero.getInstance().reset();
 
-        Activite[][] activites = {
-                { new Activite("Activite 1") },
-                { new Activite("Activite 2") },
-                { new Activite("Activite 3") },
-                { new Activite("Activite 4") },
-                { new Activite("Activite 5") },
+        Activite[] activites = {
+                 new Activite("Activite 1"),
+                 new Activite("Activite 2"),
+                 new Activite("Activite 3"),
+                 new Activite("Activite 4"),
+                 new Activite("Activite 5"),
         };
 
         for (int i = 0; i < activites.length; i++) {
-            Activite activite = activites[i][0];
+            Activite activite = activites[i];
 
             assertEquals(String.format("Activite %d", i+1), activite.getNom());
             assertEquals(2, activite.getTemps());
@@ -41,16 +41,16 @@ class ActiviteTest {
                 { 7 , 6 }
         };
 
-        Activite[][] activites = {
-                { new Activite("Activite 1", parametres[0][0], parametres[0][1]) },
-                { new Activite("Activite 2", parametres[1][0], parametres[1][1]) },
-                { new Activite("Activite 3", parametres[2][0], parametres[2][1]) },
-                { new Activite("Activite 4", parametres[3][0], parametres[3][1]) },
-                { new Activite("Activite 5", parametres[4][0], parametres[4][1]) },
+        Activite[] activites = {
+                new Activite("Activite 1", parametres[0][0], parametres[0][1]),
+                new Activite("Activite 2", parametres[1][0], parametres[1][1]),
+                new Activite("Activite 3", parametres[2][0], parametres[2][1]),
+                new Activite("Activite 4", parametres[3][0], parametres[3][1]),
+                new Activite("Activite 5", parametres[4][0], parametres[4][1]),
         };
 
         for (int i = 0; i < activites.length; i++) {
-            Activite activite = activites[i][0];
+            Activite activite = activites[i];
             int temps      = parametres[i][0];
             int ecartTemps = parametres[i][1];
 
@@ -93,16 +93,16 @@ class ActiviteTest {
                 { 7 , 6 }
         };
 
-        Activite[][] activites = {
-                { new Activite("Activite 1", parametres[0][0], parametres[0][1]) },
-                { new Activite("Activite 2", parametres[1][0], parametres[1][1]) },
-                { new Activite("Activite 3", parametres[2][0], parametres[2][1]) },
-                { new Activite("Activite 4", parametres[3][0], parametres[3][1]) },
-                { new Activite("Activite 5", parametres[4][0], parametres[4][1]) },
+        Activite[] activites = {
+                new Activite("Activite 1", parametres[0][0], parametres[0][1]),
+                new Activite("Activite 2", parametres[1][0], parametres[1][1]),
+                new Activite("Activite 3", parametres[2][0], parametres[2][1]),
+                new Activite("Activite 4", parametres[3][0], parametres[3][1]),
+                new Activite("Activite 5", parametres[4][0], parametres[4][1]),
         };
 
         for (int i = 0; i < activites.length; i++) {
-            Activite activite = activites[i][0];
+            Activite activite = activites[i];
 
             assertEquals(String.format("Activite %d", i+1), activite.getNom());
         }
@@ -118,16 +118,16 @@ class ActiviteTest {
                 { 7 , 6 }
         };
 
-        Activite[][] activites = {
-                { new Activite("Activite 1", parametres[0][0], parametres[0][1]) },
-                { new Activite("Activite 2", parametres[1][0], parametres[1][1]) },
-                { new Activite("Activite 3", parametres[2][0], parametres[2][1]) },
-                { new Activite("Activite 4", parametres[3][0], parametres[3][1]) },
-                { new Activite("Activite 5", parametres[4][0], parametres[4][1]) },
+        Activite[] activites = {
+                new Activite("Activite 1", parametres[0][0], parametres[0][1]),
+                new Activite("Activite 2", parametres[1][0], parametres[1][1]),
+                new Activite("Activite 3", parametres[2][0], parametres[2][1]),
+                new Activite("Activite 4", parametres[3][0], parametres[3][1]),
+                new Activite("Activite 5", parametres[4][0], parametres[4][1]),
         };
 
         for (int i = 0; i < activites.length; i++) {
-            Activite activite = activites[i][0];
+            Activite activite = activites[i];
             int temps      = parametres[i][0];
 
             assertEquals(temps, activite.getTemps());
@@ -146,16 +146,16 @@ class ActiviteTest {
                 { 7 , 6 }
         };
 
-        Activite[][] activites = {
-                { new Activite("Activite 1", parametres[0][0], parametres[0][1]) },
-                { new Activite("Activite 2", parametres[1][0], parametres[1][1]) },
-                { new Activite("Activite 3", parametres[2][0], parametres[2][1]) },
-                { new Activite("Activite 4", parametres[3][0], parametres[3][1]) },
-                { new Activite("Activite 5", parametres[4][0], parametres[4][1]) },
+        Activite[] activites = {
+                new Activite("Activite 1", parametres[0][0], parametres[0][1]),
+                new Activite("Activite 2", parametres[1][0], parametres[1][1]),
+                new Activite("Activite 3", parametres[2][0], parametres[2][1]),
+                new Activite("Activite 4", parametres[3][0], parametres[3][1]),
+                new Activite("Activite 5", parametres[4][0], parametres[4][1]),
         };
 
         for (int i = 0; i < activites.length; i++) {
-            Activite activite = activites[i][0];
+            Activite activite = activites[i];
             int ecartTemps = parametres[i][1];
 
             assertEquals(ecartTemps, activite.getEcartTemps());
@@ -174,16 +174,16 @@ class ActiviteTest {
                 { 7 , 6 }
         };
 
-        Activite[][] activites = {
-                { new Activite("Activite 1", parametres[0][0], parametres[0][1]) },
-                { new Activite("Activite 2", parametres[1][0], parametres[1][1]) },
-                { new Activite("Activite 3", parametres[2][0], parametres[2][1]) },
-                { new Activite("Activite 4", parametres[3][0], parametres[3][1]) },
-                { new Activite("Activite 5", parametres[4][0], parametres[4][1]) },
+        Activite[] activites = {
+                new Activite("Activite 1", parametres[0][0], parametres[0][1]),
+                new Activite("Activite 2", parametres[1][0], parametres[1][1]),
+                new Activite("Activite 3", parametres[2][0], parametres[2][1]),
+                new Activite("Activite 4", parametres[3][0], parametres[3][1]),
+                new Activite("Activite 5", parametres[4][0], parametres[4][1]),
         };
 
         for (int i = 0; i < activites.length; i++) {
-            Activite activite = activites[i][0];
+            Activite activite = activites[i];
 
             assertEquals(i, activite.getIdEtape());
         }
@@ -194,6 +194,13 @@ class ActiviteTest {
         Activite etape = new Activite("Etape Test");
 
         assertTrue(etape.estUneActivite());
+    }
+
+    @Test
+    void testEstUneActiviteRestreinte() {
+        Activite etape = new Activite("Etape Test");
+
+        assertFalse(etape.estUneActiviteRestreinte());
     }
 
     @Test

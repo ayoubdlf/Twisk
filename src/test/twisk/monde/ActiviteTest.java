@@ -2,6 +2,9 @@ package twisk.monde;
 
 import org.junit.jupiter.api.Test;
 import twisk.outils.FabriqueNumero;
+
+import java.util.Iterator;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -218,12 +221,55 @@ class ActiviteTest {
             activite.ajouterSuccesseur(null);
         });
 
+        assertThrows(AssertionError.class, () -> {
+            Activite activite = new Activite("Activite");
 
-        Activite activite = new Activite("Activite 1");
+            activite.ajouterSuccesseur(new ActiviteRestreinte("ActiviteRestreinte"));
+        });
 
-        activite.ajouterSuccesseur(new Activite("Activite 2"));
+        Etape[] etapes = {
+                new Activite("Activite"),
+                new Guichet("Guichet"),
+                new Activite("Activite"),
+                new Guichet("Guichet"),
+                new Activite("Activite")
+        };
 
-        // TODO: meilleurs tests
+        Activite activite = new Activite("Activite");
+
+        activite.ajouterSuccesseur(etapes);
+
+        for(Etape etape : etapes) {
+            assertTrue(activite.getSuccesseurs().contains(etape));
+        }
+
+        assertEquals(5, activite.getSuccesseurs().nbEtapes());
+        assertEquals(3, activite.getSuccesseurs().nbActivites());
+        assertEquals(2, activite.getSuccesseurs().nbGuichets());
+    }
+
+    @Test
+    void testIterator() {
+        Activite activite = new Activite("Activite");
+
+        Etape[] etapes = {
+                new Activite("Activite"),
+                new Activite("Activite"),
+                new Guichet("Guichet"),
+                new Activite("Activite"),
+                new Guichet("Guichet")
+        };
+
+        activite.ajouterSuccesseur(etapes);
+
+        Iterator<Etape> iterator = activite.iterator();
+
+        for (Etape etape : activite.getSuccesseurs()) {
+            assertTrue(iterator.hasNext());
+            assertEquals(etape, iterator.next());
+        }
+
+        assertFalse(iterator.hasNext());
     }
 
 }

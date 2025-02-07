@@ -18,7 +18,7 @@ public class ClientTwisk {
 
         Etape zoo      = new Activite("balade au zoo", 6, 3);
         Etape guichet  = new Guichet("acces au toboggan", 1);
-        Etape toboggan = new Activite("toboggan", 4, 2);
+        Etape toboggan = new ActiviteRestreinte("toboggan", 4, 2);
 
         zoo.ajouterSuccesseur(guichet);
         guichet.ajouterSuccesseur(toboggan);

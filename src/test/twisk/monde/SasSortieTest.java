@@ -3,6 +3,8 @@ package twisk.monde;
 import org.junit.jupiter.api.Test;
 import twisk.outils.FabriqueNumero;
 
+import java.util.Iterator;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class SasSortieTest {
@@ -102,6 +104,30 @@ class SasSortieTest {
         etape.ajouterSuccesseur(new Activite("activite"));
 
         // TODO: meilleurs tests
+    }
+
+    @Test
+    void testIterator() {
+        SasSortie sortie = new SasSortie();
+
+        Etape[] etapes = {
+                new Activite("Activite"),
+                new Activite("Activite"),
+                new Guichet("Guichet"),
+                new Activite("Activite"),
+                new Guichet("Guichet")
+        };
+
+        sortie.ajouterSuccesseur(etapes);
+
+        Iterator<Etape> iterator = sortie.iterator();
+
+        for (Etape etape : sortie.getSuccesseurs()) {
+            assertTrue(iterator.hasNext());
+            assertEquals(etape, iterator.next());
+        }
+
+        assertFalse(iterator.hasNext());
     }
 
 }

@@ -3,6 +3,8 @@ package twisk.monde;
 import org.junit.jupiter.api.Test;
 import twisk.outils.FabriqueNumero;
 
+import java.util.Iterator;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -165,24 +167,93 @@ class GuichetTest {
     }
 
     @Test
-    void testAjouterSuccesseur() {
-        assertThrows(AssertionError.class, () -> {
-            Guichet activite = new Guichet("Guichet");
-
-            activite.ajouterSuccesseur(null);
-        });
-
+    void testAjouterSuccesseurIncorrect() {
+        // test ajout null
         assertThrows(AssertionError.class, () -> {
             Guichet guichet = new Guichet("Guichet");
 
-            guichet.ajouterSuccesseur(new Guichet("Guichet Test"));
+            guichet.ajouterSuccesseur(null);
+        });
+
+        // test ajout d'un guichet comme successeur
+        assertThrows(AssertionError.class, () -> {
+            Guichet guichet = new Guichet("Guichet");
+
+            guichet.ajouterSuccesseur(new Guichet("Guichet"));
         });
 
 
-        Guichet activite = new Guichet("Guichet 1");
 
-        activite.ajouterSuccesseur(new ActiviteRestreinte("ActiviteRestreinte"));
+        Etape[] etapesIncorrectes1 = {
+                new Activite("Activite"),
+                new Guichet("Guichet"),
+                new Activite("Activite"),
+                new Guichet("Guichet"),
+                new Activite("Activite")
+        };
 
-        // TODO: meilleurs tests
+        Etape[] etapesIncorrectes2 = {
+                new ActiviteRestreinte("ActiviteRestreinte 1"),
+                new ActiviteRestreinte("ActiviteRestreinte 2"),
+                new ActiviteRestreinte("ActiviteRestreinte 3"),
+                new ActiviteRestreinte("ActiviteRestreinte 4"),
+                new ActiviteRestreinte("ActiviteRestreinte 5")
+        };
+
+
+        Guichet guichet = new Guichet("Guichet");
+
+
+        // test ajout de activites/guichets
+        for(Etape etape : etapesIncorrectes1) {
+            assertThrows(AssertionError.class, () -> { guichet.ajouterSuccesseur(etape); });
+        }
+
+        // test ajout de plusiers activites restreintes d'un seul coup
+        assertThrows(AssertionError.class, () -> { guichet.ajouterSuccesseur(etapesIncorrectes2); });
+
+        assertEquals(0, guichet.getSuccesseurs().nbEtapes());
+        assertEquals(0, guichet.getSuccesseurs().nbActivites());
+        assertEquals(0, guichet.getSuccesseurs().nbGuichets());
+
+
+        ActiviteRestreinte activite = new ActiviteRestreinte("ActiviteRestreinte 1");
+        guichet.ajouterSuccesseur(activite);
+
+        assertEquals(1, guichet.getSuccesseurs().nbEtapes());
+        assertEquals(1, guichet.getSuccesseurs().nbActivites());
+        assertEquals(0, guichet.getSuccesseurs().nbGuichets());
+
+        // test ajout d'une deuxieme activite restreinte
+        assertThrows(AssertionError.class, () -> { guichet.ajouterSuccesseur(new ActiviteRestreinte("ActiviteRestreinte 2")); });
+    }
+
+    @Test
+    void testAjouterSuccesseurCorrect() {
+        Guichet guichet             = new Guichet("Guichet");
+        ActiviteRestreinte activite = new ActiviteRestreinte("ActiviteRestreinte 1");
+
+        guichet.ajouterSuccesseur(activite);
+
+        assertTrue(guichet.getSuccesseurs().contains(activite));
+        assertEquals(1, guichet.getSuccesseurs().nbEtapes());
+        assertEquals(1, guichet.getSuccesseurs().nbActivites());
+        assertEquals(0, guichet.getSuccesseurs().nbGuichets());
+    }
+
+    @Test
+    void testIterator() {
+        Guichet guichet = new Guichet("Guichet");
+
+        guichet.ajouterSuccesseur(new ActiviteRestreinte("ActiviteRestreinte"));
+
+        Iterator<Etape> iterator = guichet.iterator();
+
+        for (Etape etape : guichet.getSuccesseurs()) {
+            assertTrue(iterator.hasNext());
+            assertEquals(etape, iterator.next());
+        }
+
+        assertFalse(iterator.hasNext());
     }
 }

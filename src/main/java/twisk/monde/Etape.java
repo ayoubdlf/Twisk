@@ -22,17 +22,28 @@ public abstract class Etape implements Iterable<Etape> {
     /* —————————— SETTERS —————————— */
 
     public void ajouterSuccesseur(Etape... etapes) {
+        assert (etapes != null)    : "Les etapes ne doivent pas etre nulles";
+        assert (etapes.length > 0) : "Les etapes ne doivent pas etre vides";
+
         if(this.estUnGuichet()) {
-            assert (etapes != null)                        : "Les etapes ne doivent pas etre nulles";
-            assert (etapes.length > 0)                     : "Il doit y avoir au moins une etape";
+            assert (etapes.length == 1)                    : "Le guichet ne peut pas avoir plusieurs successeurs";
             assert (etapes[0] != null)                     : "Les etapes ne doivent pas etre nulles";
-            assert (etapes[0].estUneActivite())            : "Le guichet ne peut avoir qu'une activite comme successeur";
+            assert (etapes[0].estUneActiviteRestreinte())  : "Le guichet ne peut avoir qu'une activite restreinte comme successeur";
             assert (this.getSuccesseurs().nbEtapes() == 0) : "Le guichet ne peut pas avoir plusiers successeurs";
 
             this.successeurs.ajouter(etapes[0]);
         } else {
+            /*
+            * REGLE
+            *      - Une activite restreinte ne peut etre que le successeur d'un guichet (donc pas d'une autre activite)
+            */
+            for (Etape etape : etapes) {
+                assert (!etape.estUneActiviteRestreinte()) : "Une activite restreinte ne peut etre que le successeur d'un guichet";
+            }
+
             this.successeurs.ajouter(etapes);
         }
+
     }
 
 

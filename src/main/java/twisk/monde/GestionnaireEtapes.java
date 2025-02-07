@@ -37,6 +37,10 @@ public class GestionnaireEtapes implements Iterable<Etape> {
     public int nbGuichets() {
         return (int) this.etapes.stream().filter(Etape::estUnGuichet).count();
     }
+    
+    public boolean contains(Etape etape) {
+        return this.etapes.contains(etape);
+    }
 
     public Iterator<Etape> iterator() {
         return this.etapes.iterator();

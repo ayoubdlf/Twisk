@@ -3,6 +3,8 @@ package twisk.monde;
 import org.junit.jupiter.api.Test;
 import twisk.outils.FabriqueNumero;
 
+import java.util.Iterator;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ActiviteRestreinteTest {
@@ -212,12 +214,56 @@ class ActiviteRestreinteTest {
             activite.ajouterSuccesseur(null);
         });
 
+        assertThrows(AssertionError.class, () -> {
+            ActiviteRestreinte activite = new ActiviteRestreinte("ActiviteRestreinte");
 
-        ActiviteRestreinte activite = new ActiviteRestreinte("ActiviteRestreinte 1");
+            activite.ajouterSuccesseur(new ActiviteRestreinte("ActiviteRestreinte"));
+        });
 
-        activite.ajouterSuccesseur(new ActiviteRestreinte("ActiviteRestreinte 2"));
+        Etape[] etapes = {
+                new Activite("Activite"),
+                new Guichet("Guichet"),
+                new Activite("Activite"),
+                new Guichet("Guichet"),
+                new Activite("Activite")
+        };
 
-        // TODO: meilleurs tests
+        ActiviteRestreinte activite = new ActiviteRestreinte("ActiviteRestreinte");
+
+        activite.ajouterSuccesseur(etapes);
+
+        for(Etape etape : etapes) {
+            assertTrue(activite.getSuccesseurs().contains(etape));
+        }
+
+        assertEquals(5, activite.getSuccesseurs().nbEtapes());
+        assertEquals(3, activite.getSuccesseurs().nbActivites());
+        assertEquals(2, activite.getSuccesseurs().nbGuichets());
+    }
+
+    @Test
+    void testIterator() {
+        ActiviteRestreinte activiteRestreinte = new ActiviteRestreinte("Activite");
+
+        Etape[] etapes = {
+                new Activite("Activite"),
+                new Activite("Activite"),
+                new Guichet("Guichet"),
+                new Activite("Activite"),
+                new Guichet("Guichet")
+        };
+
+        activiteRestreinte.ajouterSuccesseur(etapes);
+
+
+        Iterator<Etape> iterator = activiteRestreinte.iterator();
+
+        for (Etape etape : activiteRestreinte.getSuccesseurs()) {
+            assertTrue(iterator.hasNext());
+            assertEquals(etape, iterator.next());
+        }
+
+        assertFalse(iterator.hasNext());
     }
 
 }

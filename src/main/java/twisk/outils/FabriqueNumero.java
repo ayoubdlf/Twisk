@@ -14,11 +14,11 @@ public class FabriqueNumero {
 
     /* —————————— SETTERS —————————— */
 
-    public void incrementNbSemaphore() {
+    private void incrementNbSemaphore() {
         cptSemaphore++;
     }
 
-    public void incrementNbEtape() {
+    private void incrementNbEtape() {
         cptEtape++;
     }
 

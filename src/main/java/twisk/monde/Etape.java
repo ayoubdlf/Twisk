@@ -9,14 +9,16 @@ public abstract class Etape implements Iterable<Etape> {
     private String nom;
     private int idEtape;
     private GestionnaireEtapes successeurs;
+    private GestionnaireEtapes predecesseurs;
 
 
     public Etape(String nom) {
         assert(nom != null && !nom.isEmpty()): "Le nom de l'etape ne doit pas etre nul ou vide" ;
 
-        this.nom         = nom;
-        this.successeurs = new GestionnaireEtapes();
-        this.idEtape     = FabriqueNumero.getInstance().getNumeroEtape();
+        this.nom           = nom;
+        this.successeurs   = new GestionnaireEtapes();
+        this.predecesseurs = new GestionnaireEtapes();
+        this.idEtape       = FabriqueNumero.getInstance().getNumeroEtape();
     }
 
     /* —————————— SETTERS —————————— */
@@ -26,12 +28,15 @@ public abstract class Etape implements Iterable<Etape> {
         assert (etapes.length > 0) : "Les etapes ne doivent pas etre vides";
 
         if(this.estUnGuichet()) {
-            assert (etapes.length == 1)                    : "Le guichet ne peut pas avoir plusieurs successeurs";
-            assert (etapes[0] != null)                     : "Les etapes ne doivent pas etre nulles";
-            assert (etapes[0].estUneActiviteRestreinte())  : "Le guichet ne peut avoir qu'une activite restreinte comme successeur";
-            assert (this.getSuccesseurs().nbEtapes() == 0) : "Le guichet ne peut pas avoir plusiers successeurs";
+            assert (etapes.length == 1)                           : "Le guichet ne peut pas avoir plusieurs successeurs";
+            assert (etapes[0] != null)                            : "Les etapes ne doivent pas etre nulles";
+            assert (etapes[0].estUneActiviteRestreinte())         : "Le guichet ne peut avoir qu'une activite restreinte comme successeur";
+            assert (etapes[0].getPredecesseurs().nbEtapes() == 0) : "Une activite restreinte ne peut avoir qu'un seul predecesseur";
+            assert (this.getSuccesseurs().nbEtapes() == 0)        : "Le guichet ne peut pas avoir plusiers successeurs";
 
-            this.successeurs.ajouter(etapes[0]);
+            this.successeurs.ajouter(etapes[0]);          // on ajoute le succeseur
+            etapes[0].ajouterPredecesseur(this); // on notifie le succeseur sur son predecesseur
+
         } else {
             /*
             * REGLE
@@ -41,9 +46,20 @@ public abstract class Etape implements Iterable<Etape> {
                 assert (!etape.estUneActiviteRestreinte()) : "Une activite restreinte ne peut etre que le successeur d'un guichet";
             }
 
-            this.successeurs.ajouter(etapes);
+            this.successeurs.ajouter(etapes); // on ajoute le succeseur
+
+            for(Etape etape : etapes) {
+                etape.ajouterPredecesseur(this);  // on notifie le succeseur sur son predecesseur
+            }
         }
 
+    }
+
+    private void ajouterPredecesseur(Etape... etapes) {
+        assert (etapes != null)    : "Les etapes ne doivent pas etre nulles";
+        assert (etapes.length > 0) : "Les etapes ne doivent pas etre vides";
+
+        this.predecesseurs.ajouter(etapes);
     }
 
 
@@ -65,6 +81,10 @@ public abstract class Etape implements Iterable<Etape> {
 
     public GestionnaireEtapes getSuccesseurs() {
         return this.successeurs;
+    }
+
+    public GestionnaireEtapes getPredecesseurs() {
+        return this.predecesseurs;
     }
 
     public Iterator<Etape> iterator() {

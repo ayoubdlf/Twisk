@@ -2,9 +2,7 @@ package twisk.monde;
 
 import org.junit.jupiter.api.Test;
 import twisk.outils.FabriqueNumero;
-
 import java.util.Iterator;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -219,6 +217,12 @@ class ActiviteTest {
             Activite activite = new Activite("Activite");
 
             activite.ajouterSuccesseur(null);
+        });
+
+        assertThrows(AssertionError.class, () -> {
+            Activite activite = new Activite("Activite");
+
+            activite.ajouterSuccesseur();
         });
 
         assertThrows(AssertionError.class, () -> {

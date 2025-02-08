@@ -19,11 +19,15 @@ public class Monde implements Iterable<Etape> {
     /* —————————— SETTERS —————————— */
 
     public void aCommeEntree(Etape... etapes) {
+        assert (etapes != null)    : "Les etapes ne doivent pas etre nulles";
+        assert (etapes.length > 0) : "Les etapes ne doivent pas etre vides";
+
         this.entree.ajouterSuccesseur(etapes);
     }
 
     public void aCommeSortie(Etape... etapes) {
-        assert (etapes != null) : "Les etapes ne doivent pas etre nulles";
+        assert (etapes != null)    : "Les etapes ne doivent pas etre nulles";
+        assert (etapes.length > 0) : "Les etapes ne doivent pas etre vides";
 
         for(Etape etape : etapes) {
             assert (etape != null) : "L'etape ne doit pas etre nulle";
@@ -48,6 +52,18 @@ public class Monde implements Iterable<Etape> {
 
     public int nbGuichets() {
         return this.etapes.nbGuichets();
+    }
+
+    public SasEntree getEntree() {
+        return this.entree;
+    }
+
+    public SasSortie getSortie() {
+        return this.sortie;
+    }
+
+    public GestionnaireEtapes getEtapes() {
+        return this.etapes;
     }
 
     public Iterator<Etape> iterator() {

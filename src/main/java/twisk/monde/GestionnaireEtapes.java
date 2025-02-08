@@ -16,7 +16,8 @@ public class GestionnaireEtapes implements Iterable<Etape> {
     /* —————————— SETTERS —————————— */
 
     public void ajouter(Etape... etapes) {
-        assert (etapes != null) : "Les etapes ne doivent pas etre nulles";
+        assert (etapes != null)    : "Les etapes ne doivent pas etre nulles";
+        assert (etapes.length > 0) : "Les etapes ne doivent pas etre vides";
 
         for(Etape etape : etapes) {
             assert (etape != null) : "L'etape ne doit pas etre nulle";
@@ -37,7 +38,7 @@ public class GestionnaireEtapes implements Iterable<Etape> {
     public int nbGuichets() {
         return (int) this.etapes.stream().filter(Etape::estUnGuichet).count();
     }
-    
+
     public boolean contains(Etape etape) {
         return this.etapes.contains(etape);
     }

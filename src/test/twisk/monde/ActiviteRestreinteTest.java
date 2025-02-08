@@ -2,10 +2,9 @@ package twisk.monde;
 
 import org.junit.jupiter.api.Test;
 import twisk.outils.FabriqueNumero;
-
 import java.util.Iterator;
-
 import static org.junit.jupiter.api.Assertions.*;
+
 
 class ActiviteRestreinteTest {
 
@@ -198,7 +197,6 @@ class ActiviteRestreinteTest {
         assertTrue(etape.estUneActiviteRestreinte());
     }
 
-
     @Test
     void testEstUnGuichet() {
         ActiviteRestreinte etape = new ActiviteRestreinte("Etape Test");
@@ -212,6 +210,12 @@ class ActiviteRestreinteTest {
             ActiviteRestreinte activite = new ActiviteRestreinte("ActiviteRestreinte");
 
             activite.ajouterSuccesseur(null);
+        });
+
+        assertThrows(AssertionError.class, () -> {
+            ActiviteRestreinte activite = new ActiviteRestreinte("ActiviteRestreinte");
+
+            activite.ajouterSuccesseur();
         });
 
         assertThrows(AssertionError.class, () -> {
@@ -239,6 +243,19 @@ class ActiviteRestreinteTest {
         assertEquals(5, activite.getSuccesseurs().nbEtapes());
         assertEquals(3, activite.getSuccesseurs().nbActivites());
         assertEquals(2, activite.getSuccesseurs().nbGuichets());
+    }
+
+    @Test
+    void testAjouterPredecesseur() {
+        Guichet guichet1 = new Guichet("Guichet 1");
+        Guichet guichet2 = new Guichet("Guichet 2");
+
+        ActiviteRestreinte activite1 = new ActiviteRestreinte("ActiviteRestreinte");
+
+        guichet1.ajouterSuccesseur(activite1);
+
+        assertThrows(AssertionError.class, () -> { guichet2.ajouterSuccesseur(activite1); });
+
     }
 
     @Test

@@ -9,6 +9,19 @@ class GestionnaireEtapesTest {
 
     @Test
     void testAjouter() {
+
+        assertThrows(AssertionError.class, () -> {
+            GestionnaireEtapes gestionnaireEtapes = new GestionnaireEtapes();
+
+            gestionnaireEtapes.ajouter(null);
+        });
+
+        assertThrows(AssertionError.class, () -> {
+            GestionnaireEtapes gestionnaireEtapes = new GestionnaireEtapes();
+
+            gestionnaireEtapes.ajouter();
+        });
+
         GestionnaireEtapes gestionnaireEtapes = new GestionnaireEtapes();
 
         Etape[] etapes = {

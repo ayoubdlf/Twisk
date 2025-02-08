@@ -2,10 +2,9 @@ package twisk.monde;
 
 import org.junit.jupiter.api.Test;
 import twisk.outils.FabriqueNumero;
-
 import java.util.Iterator;
-
 import static org.junit.jupiter.api.Assertions.*;
+
 
 class SasEntreeTest {
 
@@ -96,6 +95,12 @@ class SasEntreeTest {
 
             SasEntree etape = new SasEntree();
             etape.ajouterSuccesseur(null);
+        });
+
+        assertThrows(AssertionError.class, () -> {
+
+            SasEntree etape = new SasEntree();
+            etape.ajouterSuccesseur();
         });
 
 

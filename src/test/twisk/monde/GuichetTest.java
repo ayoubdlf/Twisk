@@ -2,9 +2,7 @@ package twisk.monde;
 
 import org.junit.jupiter.api.Test;
 import twisk.outils.FabriqueNumero;
-
 import java.util.Iterator;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -173,6 +171,12 @@ class GuichetTest {
             Guichet guichet = new Guichet("Guichet");
 
             guichet.ajouterSuccesseur(null);
+        });
+
+        assertThrows(AssertionError.class, () -> {
+            Guichet guichet = new Guichet("Guichet");
+
+            guichet.ajouterSuccesseur();
         });
 
         // test ajout d'un guichet comme successeur

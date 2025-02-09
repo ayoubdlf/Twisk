@@ -22,7 +22,12 @@ public class Monde implements Iterable<Etape> {
         assert (etapes != null)    : "Les etapes ne doivent pas etre nulles";
         assert (etapes.length > 0) : "Les etapes ne doivent pas etre vides";
 
-        this.entree.ajouterSuccesseur(etapes);
+        for(Etape etape : etapes) {
+            assert (etape != null)                     : "Les etapes ne doivent pas etre nulles";
+            assert (!etape.estUneActiviteRestreinte()) : "Une activite restreinte ne peut pas etre une entree";
+
+            this.entree.ajouterSuccesseur(etape);
+        }
     }
 
     public void aCommeSortie(Etape... etapes) {
@@ -30,7 +35,9 @@ public class Monde implements Iterable<Etape> {
         assert (etapes.length > 0) : "Les etapes ne doivent pas etre vides";
 
         for(Etape etape : etapes) {
-            assert (etape != null) : "L'etape ne doit pas etre nulle";
+            assert (etape != null)         : "L'etape ne doit pas etre nulle";
+            assert (!etape.estUnGuichet()) : "Un guichet ne peut pas etre une sortie";
+
             etape.ajouterSuccesseur(this.sortie);
         }
     }
@@ -81,7 +88,7 @@ public class Monde implements Iterable<Etape> {
 
         // ETAPES
         for (Etape etape : this.etapes) {
-            str.append(etape.toString()).append("\n");;
+            str.append(etape.toString()).append("\n");
         }
 
         return str.toString();

@@ -12,13 +12,27 @@ class MondeTest {
         assertThrows(AssertionError.class, () -> {
             Monde monde = new Monde();
 
-            monde.aCommeEntree(null);
+            monde.aCommeEntree((Etape[]) null);
         });
 
         assertThrows(AssertionError.class, () -> {
             Monde monde = new Monde();
 
             monde.aCommeEntree();
+        });
+
+        // Une activite restreinte ne peut pas etre une entree
+        assertThrows(AssertionError.class, () -> {
+            Monde monde = new Monde();
+
+            monde.aCommeEntree(new ActiviteRestreinte("ActiviteRestreinte"));
+        });
+
+        // Un guichet ne peut pas etre une sortie
+        assertThrows(AssertionError.class, () -> {
+            Monde monde = new Monde();
+
+            monde.aCommeSortie(new Guichet("Guichet"));
         });
 
         Monde monde    = new Monde();
@@ -53,7 +67,7 @@ class MondeTest {
         assertThrows(AssertionError.class, () -> {
             Monde monde = new Monde();
 
-            monde.aCommeEntree(null);
+            monde.aCommeEntree((Etape[]) null);
         });
 
         assertThrows(AssertionError.class, () -> {
@@ -94,7 +108,7 @@ class MondeTest {
         assertThrows(AssertionError.class, () -> {
             Monde monde = new Monde();
 
-            monde.aCommeEntree(null);
+            monde.aCommeEntree((Etape[]) null);
         });
 
         assertThrows(AssertionError.class, () -> {

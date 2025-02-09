@@ -43,6 +43,7 @@ public abstract class Etape implements Iterable<Etape> {
             *      - Une activite restreinte ne peut etre que le successeur d'un guichet (donc pas d'une autre activite)
             */
             for (Etape etape : etapes) {
+                assert (etape != null)                     : "Les etapes ne doivent pas etre nulles";
                 assert (!etape.estUneActiviteRestreinte()) : "Une activite restreinte ne peut etre que le successeur d'un guichet";
             }
 

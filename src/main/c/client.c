@@ -10,16 +10,16 @@
 #define activite 3
 
 
-void simulation (int ids){
+void simulation (int ids) {
 
     entrer(sasEntree);
-    delai(6,3);
-    transfert(sasEntree , guichet);
+    delai(2, 1);
+    transfert(sasEntree, guichet);
 
-    P(ids , num_sem_guichet);
-        transfert(guichet , activite);
-        delai(8,2);
-    V(ids , num_sem_guichet);
+    P(ids, num_sem_guichet);
+        transfert(guichet, activite);
+        delai(2, 1);
+    V(ids, num_sem_guichet);
 
-    transfert(activite , sasSortie);
+    transfert(activite, sasSortie);
 }

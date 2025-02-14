@@ -1,7 +1,8 @@
 CC     = gcc
 CFLAGS = -Wall -Wextra -Werror -fPIC
 
-all: client.o libTwisk.so
+all: main
+
 
 client.o: ../../c/client.c
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -9,8 +10,13 @@ client.o: ../../c/client.c
 libTwisk.so: client.o programmeC.o
 	$(CC) -shared -o $@ $^
 
-
-main: all
+main: client.o libTwisk.so
 	export LD_LIBRARY_PATH=$$LD_LIBRARY_PATH:.; \
-	# $(CC) -Wall -L. ../../c/main.c -o main -lTwisk
 	$(CC) -L. ../../c/main.c -o main -lTwisk
+
+clean:
+	rm -f libTwisk.so client.o main
+
+
+run: clean all
+	./main

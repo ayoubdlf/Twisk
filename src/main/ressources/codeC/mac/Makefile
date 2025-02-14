@@ -2,7 +2,8 @@ CC     = gcc
 CFLAGS = -Wall -Wextra -Werror
 PATH_C = ../../../c
 
-all: client.o libTwisk.dylib
+all: main
+
 
 client.o: ../../../c/client.c
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -10,7 +11,13 @@ client.o: ../../../c/client.c
 libTwisk.dylib: client.o programmeC.o
 	$(CC) -dynamiclib -o $@ $^
 
-main: all
+main: client.o libTwisk.dylib
 	export DYLD_LIBRARY_PATH=$$DYLD_LIBRARY_PATH:.; \
-	# $(CC) -Wall -L. ../../../c/main.c -o main -lTwisk
 	$(CC) -L. ../../../c/main.c -o main -lTwisk
+
+clean:
+	rm -f libTwisk.dylib client.o main
+
+
+run: clean all
+	clear && ./main

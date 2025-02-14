@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <time.h>
 
-#include "def.h"
+#include "../ressources/codeC/def.h"
 
 #define sasEntree 0
 #define sasSortie 1

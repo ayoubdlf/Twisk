@@ -3,7 +3,7 @@ CFLAGS = -Wall -Wextra -Werror
 
 all: client.o libTwisk.dylib
 
-client.o: ../client.c
+client.o: ../../../c/client.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 libTwisk.dylib: client.o programmeC.o

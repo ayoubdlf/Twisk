@@ -12,5 +12,5 @@ libTwisk.so: client.o programmeC.o
 
 main: all
 	export LD_LIBRARY_PATH=$$LD_LIBRARY_PATH:.; \
-	# $(CC) -Wall -L. ../../../c/main.c -o main -lTwisk
-	$(CC) -L. ../../../c/main.c -o main -lTwisk
+	# $(CC) -Wall -L. ../../c/main.c -o main -lTwisk
+	$(CC) -L. ../../c/main.c -o main -lTwisk

@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
-
 #include "../ressources/codeC/def.h"
 
 #define sasEntree 0

@@ -9,4 +9,5 @@ void simulation (int ids){
      *void entrer(int etape)
      *void transfert(int source, int destination)
     */
+
 }

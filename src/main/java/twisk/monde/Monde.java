@@ -14,6 +14,8 @@ public class Monde implements Iterable<Etape> {
         this.etapes = new GestionnaireEtapes();
         this.entree = new SasEntree();
         this.sortie = new SasSortie();
+
+        this.etapes.ajouter(this.entree, this.sortie);
     }
 
     /* —————————— SETTERS —————————— */
@@ -81,10 +83,10 @@ public class Monde implements Iterable<Etape> {
         StringBuilder str = new StringBuilder();
 
         // ENTREE
-        str.append(this.entree.toString()).append("\n");
+        // str.append(this.entree.toString()).append("\n");
 
         // SORTIE
-        str.append(this.sortie.toString()).append("\n");
+        // str.append(this.sortie.toString()).append("\n");
 
         // ETAPES
         for (Etape etape : this.etapes) {

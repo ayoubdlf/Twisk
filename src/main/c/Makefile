@@ -5,7 +5,7 @@ all: run
 
 
 output/client.o: client.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -fPIC -c $< -o $@
 
 output/libTwisk.so: output/client.o ../ressources/codeC/programmeC.o
 	$(CC) -shared -o $@ $^

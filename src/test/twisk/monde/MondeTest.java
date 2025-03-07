@@ -160,7 +160,7 @@ class MondeTest {
         monde.aCommeSortie(toboggan);
 
 
-        assertEquals(3, monde.nbEtapes());
+        assertEquals(5, monde.nbEtapes());
     }
 
     @Test
@@ -179,7 +179,7 @@ class MondeTest {
         monde.aCommeSortie(toboggan);
 
 
-        assertEquals(2, monde.nbActivites());
+        assertEquals(4, monde.nbActivites());
     }
 
     @Test

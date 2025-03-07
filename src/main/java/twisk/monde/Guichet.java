@@ -54,10 +54,10 @@ public class Guichet extends Etape {
         StringBuilder sb = new StringBuilder();
 
         for (Etape successeur : this) {
-            sb.append("\tP(ids, ").append(this.getNom()).append(");\n"); // On simule un passage par le guichet
-            sb.append("\ttransfert(").append(this.getNom()).append(", ").append(successeur.getNom()).append(");\n");
+            sb.append("\tP(ids, SEM_").append(this.getNomC()).append(");\n"); // On simule un passage par le guichet
+            sb.append("\ttransfert(").append(this.getNomC()).append(", ").append(successeur.getNomC()).append(");\n");
 
-            sb.append(((Activite)successeur).toCSem(this.getNumeroSemaphore()));
+            sb.append(((Activite)successeur).toCSem(this.getNomC()));
         }
 
 

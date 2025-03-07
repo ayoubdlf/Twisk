@@ -100,6 +100,15 @@
         public String toC() {
             StringBuilder sb = new StringBuilder();
 
+            for(Etape etape : this) {
+                sb.append(String.format("#define %s %s\n", etape.getNomC(), etape.getIdEtape())); // sb.append("#define ").append(etapes.getNomC()).append(" ").append(etapes.getIdEtape()).append("\n");
+
+                if(etape.estUnGuichet()) {
+                    sb.append(String.format("#define SEM_%s %s\n", etape.getNomC(), ((Guichet)etape).getNumeroSemaphore()));
+                }
+
+            }
+
             sb.append("#include \"def.h\"\n\n"); // Inclusion du fichier d’en-tête
             sb.append("void simulation(int ids) {\n\n");
                 sb.append(this.entree.toC()); // generer le parcours du client

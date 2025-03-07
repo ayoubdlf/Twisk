@@ -88,6 +88,11 @@ public abstract class Etape implements Iterable<Etape> {
         return this.predecesseurs;
     }
 
+    public String getNomC() {
+        // Remplace les espaces par des underscores (utilile lors de la creation des define dans le toC())
+        return this.getNom().toUpperCase().replace(" ", "_");
+    }
+
     public Iterator<Etape> iterator() {
         return this.successeurs.iterator();
     }

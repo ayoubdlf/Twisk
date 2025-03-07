@@ -110,4 +110,6 @@ public abstract class Etape implements Iterable<Etape> {
 
         return str.toString();
     }
+
+    public abstract String toC();
 }

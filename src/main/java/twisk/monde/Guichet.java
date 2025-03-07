@@ -49,4 +49,19 @@ public class Guichet extends Etape {
         return this.nbJetons;
     }
 
+    @Override
+    public String toC() {
+        StringBuilder sb = new StringBuilder();
+
+        for (Etape successeur : this) {
+            sb.append("\tP(ids, ").append(this.getNom()).append(");\n"); // On simule un passage par le guichet
+            sb.append("\ttransfert(").append(this.getNom()).append(", ").append(successeur.getNom()).append(");\n");
+
+            sb.append(((Activite)successeur).toCSem(this.getNumeroSemaphore()));
+        }
+
+
+        return sb.toString();
+    }
+
 }

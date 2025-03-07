@@ -48,6 +48,35 @@ public class Activite extends Etape {
     @Override
     public boolean estUnGuichet() {
         return false;
+
     }
+    @Override
+    public String toC() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("\tdelai(").append(this.getTemps()).append(", ").append(this.getEcartTemps()).append(");\n");
+
+        for (Etape successeur : this) {
+            sb.append("\ttransfert(").append(this.getNom()).append(", ").append(successeur.getNom()).append(");\n\n");
+            sb.append(successeur.toC());
+        }
+
+        return sb.toString();
+    }
+
+    public String toCSem(int nbSemaphores) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("\tdelai(").append(this.getTemps()).append(", ").append(this.getEcartTemps()).append(");\n");
+        sb.append("\tV(ids, ").append(nbSemaphores).append(");\n\n"); // Libération du guichet
+
+        for (Etape successeur : this) {
+            sb.append("\ttransfert(").append(this.getNom()).append(", ").append(successeur.getNom()).append(");\n\n");
+            sb.append(successeur.toC());
+        }
+
+        return sb.toString();
+    }
+
 
 }

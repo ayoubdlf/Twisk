@@ -8,6 +8,9 @@ public class Simulation {
 
     public void simuler(Monde monde) {
         System.out.println(monde);
+        String codeC = monde.toC();
+        System.out.println("Code C généré :\n" + codeC);
     }
+
 
 }

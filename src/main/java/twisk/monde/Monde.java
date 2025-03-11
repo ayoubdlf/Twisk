@@ -96,10 +96,10 @@
             return str.toString();
         }
 
-
         public String toC() {
             StringBuilder sb = new StringBuilder();
 
+            // Affichage des headers
             for(Etape etape : this) {
                 sb.append(String.format("#define %s %s\n", etape.getNomC(), etape.getIdEtape())); // sb.append("#define ").append(etapes.getNomC()).append(" ").append(etapes.getIdEtape()).append("\n");
 
@@ -109,9 +109,9 @@
 
             }
 
-            sb.append("#include \"def.h\"\n\n"); // Inclusion du fichier d’en-tête
+            sb.append("#include \"def.h\"\n\n\n"); // Inclusion du fichier d’en-tête
             sb.append("void simulation(int ids) {\n\n");
-                sb.append(this.entree.toC()); // generer le parcours du client
+                sb.append(this.entree.toC()); // generer le parcours des client
             sb.append("}\n");
 
             return sb.toString();

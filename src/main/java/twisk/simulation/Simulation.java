@@ -17,7 +17,6 @@ public class Simulation {
     public void simuler(Monde monde) {
         this.monde = monde;
         System.out.println(monde);
-        System.out.println(monde.toC());
 
         this.kitC.creerFichier(this.monde.toC());
         this.kitC.compiler();

@@ -50,33 +50,19 @@ public class Activite extends Etape {
         return false;
 
     }
+
     @Override
     public String toC() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("\tdelai(").append(this.getTemps()).append(", ").append(this.getEcartTemps()).append(");\n");
+        sb.append(String.format("\tdelai(%d, %d);\n", this.getTemps(), this.getEcartTemps())); // sb.append("\tdelai(").append(this.getTemps()).append(", ").append(this.getEcartTemps()).append(");\n");
 
         for (Etape successeur : this) {
-            sb.append("\ttransfert(").append(this.getNomC()).append(", ").append(successeur.getNomC()).append(");\n\n");
+            sb.append(String.format("\ttransfert(%s, %s);\n\n", this.getNomC(), successeur.getNomC())); // sb.append("\ttransfert(").append(this.getNomC()).append(", ").append(successeur.getNomC()).append(");\n\n");
             sb.append(successeur.toC());
         }
 
         return sb.toString();
     }
-
-    public String toCSem(String nomGuichet) {
-        StringBuilder sb = new StringBuilder();
-
-        sb.append("\tdelai(").append(this.getTemps()).append(", ").append(this.getEcartTemps()).append(");\n");
-        sb.append("\tV(ids, SEM_").append(nomGuichet).append(");\n\n"); // Libération du guichet
-
-        for (Etape successeur : this) {
-            sb.append("\ttransfert(").append(this.getNomC()).append(", ").append(successeur.getNomC()).append(");\n\n");
-            sb.append(successeur.toC());
-        }
-
-        return sb.toString();
-    }
-
 
 }

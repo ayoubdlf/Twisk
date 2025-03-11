@@ -6,14 +6,16 @@ public class SasEntree extends Activite {
         super("entree");
     }
 
+    /* —————————— GETTERS —————————— */
+
     public String toC() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("\tentrer(").append(this.getNomC()).append(");\n");
-        sb.append("\tdelai(").append(this.getTemps()).append(", ").append(this.getEcartTemps()).append(");\n");
+        sb.append(String.format("\tentrer(%s);\n", this.getNomC()));
+        sb.append(String.format("\tdelai(%s, %s);\n", this.getTemps(), this.getEcartTemps()));
 
         for (Etape successeur : this) {
-            sb.append("\ttransfert(").append(this.getNomC()).append(", ").append(successeur.getNomC()).append(");\n\n");
+            sb.append(String.format("\ttransfert(%s, %s);\n\n", this.getNomC(), successeur.getNomC()));
             sb.append(successeur.toC());
         }
 
@@ -21,7 +23,5 @@ public class SasEntree extends Activite {
     }
 
     /* —————————— SETTERS —————————— */
-
-    /* —————————— GETTERS —————————— */
 
 }

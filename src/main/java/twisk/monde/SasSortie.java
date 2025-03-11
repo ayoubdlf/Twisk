@@ -6,11 +6,10 @@ public class SasSortie extends Activite {
         super("sortie");
     }
 
+    /* —————————— SETTERS —————————— */
     public String toC() {
         return "";
     }
-
-    /* —————————— SETTERS —————————— */
 
     /* —————————— GETTERS —————————— */
 

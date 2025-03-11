@@ -1,6 +1,8 @@
 package twisk.monde;
 
 import twisk.outils.FabriqueNumero;
+
+import java.text.Normalizer;
 import java.util.Iterator;
 
 
@@ -89,8 +91,35 @@ public abstract class Etape implements Iterable<Etape> {
     }
 
     public String getNomC() {
-        // Remplace les espaces par des underscores (utilile lors de la creation des define dans le toC())
-        return this.getNom().toUpperCase().replace(" ", "_");
+        String nom = this.getNom().toUpperCase();
+        nom = nom.replace(" ", "_"); // Remplace les espaces par des underscores (utilile lors de la creation des define dans le toC())
+        nom = nom.replace("-", "_"); // Remplace les tirets par des underscores
+
+        nom = Normalizer.normalize(nom, Normalizer.Form.NFD).replaceAll("\\p{M}", ""); // Enleve les accents
+        // nom = this.estUnGuichet() ? "GUICHET_" + nom : nom;
+
+        StringBuilder nomCorrect = new StringBuilder();
+
+        for (char c : nom.toCharArray()) {
+            // ne rien faire si le character est 'anglais' ou si c'est un chiffre ou si c'est un underscore
+            if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || (c == '_')) {
+                nomCorrect.append(c);
+            } else {
+                /*
+                * Convertir en unicode si letter n'est pas a-z ou A-Z
+                * On convertir le caractere en unicode et on enlevant les backslash
+                * Exemple:
+                *   TEST               = u0054u0045u0053u0054
+                *   🇱🇧                 = ud83cuddf1ud83cudde7
+                *   お前はもう死んでいる。 = ud83cuddf1ud83cudde7
+                * */
+
+                nomCorrect.append("u").append(String.format("%04X", (int) c));
+            }
+        }
+
+
+        return nomCorrect.toString();
     }
 
     public Iterator<Etape> iterator() {

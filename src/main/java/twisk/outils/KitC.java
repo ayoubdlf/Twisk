@@ -27,7 +27,9 @@ public class KitC {
                     src = getClass().getResourceAsStream("/codeC/mac/" + nom);
                 }
 
-                Files.copy(src, dest, StandardCopyOption.REPLACE_EXISTING);
+                if(src != null) {
+                    Files.copy(src, dest, StandardCopyOption.REPLACE_EXISTING);
+                }
             }
 
         } catch (IOException e) {
@@ -58,7 +60,9 @@ public class KitC {
 
         try {
             pb.inheritIO().start().waitFor();
-        } catch (Exception ignored) {}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void construireLaBibliotheque() {
@@ -74,7 +78,9 @@ public class KitC {
 
         try {
             pb.inheritIO().start().waitFor();
-        } catch (Exception ignored) {}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void supprimerDossier() {
@@ -84,10 +90,13 @@ public class KitC {
 
         try {
             pb.inheritIO().start().waitFor();
-        } catch (Exception ignored) {}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private boolean isMac() {
+        // Check si l'utilisateur est riche ou pas
         String os = System.getProperty("os.name").toLowerCase();
 
         return os.contains("mac") || os.contains("darwin");

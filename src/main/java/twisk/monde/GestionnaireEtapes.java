@@ -47,4 +47,11 @@ public class GestionnaireEtapes implements Iterable<Etape> {
         return this.etapes.iterator();
     }
 
+    public Iterator<Etape> iteratorGuichets() {
+        return this.etapes.stream()
+                .filter(Etape::estUnGuichet)
+                .iterator();
+    }
+
+
 }

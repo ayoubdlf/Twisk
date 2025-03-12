@@ -23,7 +23,7 @@ public class KitC {
                 InputStream src = getClass().getResourceAsStream("/codeC/" + nom);
                 Path dest       = directory.resolve(nom);
 
-                if(this.isMac() && (nom.equals("programmeC.o") || nom.equals("codeNatif.o"))) {
+                if(this.isMac() && ((nom.equals("programmeC.o") || nom.equals("codeNatif.o")))) {
                     src = getClass().getResourceAsStream("/codeC/mac/" + nom);
                 }
 

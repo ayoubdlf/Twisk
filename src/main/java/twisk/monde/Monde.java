@@ -1,5 +1,6 @@
     package twisk.monde;
 
+    import java.lang.reflect.Array;
     import java.util.*;
 
 
@@ -79,6 +80,10 @@
             return this.etapes.iterator();
         }
 
+        public Iterator<Etape> iteratorGuichets() {
+            return this.etapes.iteratorGuichets();
+        }
+
         public String toString() {
             StringBuilder str = new StringBuilder();
 
@@ -117,4 +122,14 @@
             return sb.toString();
         }
 
+
+        public String getNomEtape(int nbEtape) {
+            for(Etape etape : this.etapes) {
+                if(etape.getIdEtape() == nbEtape) {
+                    return etape.getNom();
+                }
+            }
+
+            return null;
+        }
     }

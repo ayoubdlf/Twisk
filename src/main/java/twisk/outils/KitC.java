@@ -17,13 +17,13 @@ public class KitC {
             Files.createDirectories(directory); // création du répertoire twisk sous /tmp.
 
             // copie des fichiers programmeC.o et def.h sous /tmp/twisk
-            String[] liste = { "programmeC.o", "def.h" };
+            String[] liste = { "programmeC.o", "def.h", "codeNatif.o" };
 
             for (String nom : liste) {
                 InputStream src = getClass().getResourceAsStream("/codeC/" + nom);
                 Path dest       = directory.resolve(nom);
 
-                if(this.isMac() && nom.equals("programmeC.o")) {
+                if(this.isMac() && (nom.equals("programmeC.o") || nom.equals("codeNatif.o"))) {
                     src = getClass().getResourceAsStream("/codeC/mac/" + nom);
                 }
 
@@ -69,9 +69,9 @@ public class KitC {
         String commande;
 
         if(this.isMac()) {
-            commande = "gcc -dynamiclib /tmp/twisk/programmeC.o /tmp/twisk/client.o -o /tmp/twisk/libTwisk.so";
+            commande = "gcc -dynamiclib /tmp/twisk/programmeC.o /tmp/twisk/codeNatif.o /tmp/twisk/client.o -o /tmp/twisk/libTwisk.so";
         } else {
-            commande = "gcc -shared /tmp/twisk/programmeC.o /tmp/twisk/client.o -o /tmp/twisk/libTwisk.so";
+            commande = "gcc -shared /tmp/twisk/programmeC.o /tmp/twisk/codeNatif.o /tmp/twisk/client.o -o /tmp/twisk/libTwisk.so";
         }
 
         ProcessBuilder pb = new ProcessBuilder(commande.split(" "));

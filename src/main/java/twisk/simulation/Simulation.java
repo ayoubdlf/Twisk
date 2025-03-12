@@ -24,8 +24,8 @@ public class Simulation {
     }
 
     // Ajout des fonctions natives
-     public native void start_simulation(int nbEtapes, int nbGuichet, int nbClients, int[] tabJetonsGuichets);
-     public native void ou_sont_les_clients(int nbEtapes, int nbClients);
+     public native int[] start_simulation(int nbEtapes, int nbGuichet, int nbClients, int[] tabJetonsGuichets);
+     public native int[] ou_sont_les_clients(int nbEtapes, int nbClients);
      public native void nettoyage();
 
 

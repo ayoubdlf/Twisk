@@ -21,6 +21,9 @@ public class Simulation {
         this.kitC.creerFichier(this.monde.toC());
         this.kitC.compiler();
         this.kitC.construireLaBibliotheque();
+
+        System.load("/tmp/twisk/libTwisk.so");
+
     }
 
     // Ajout des fonctions natives

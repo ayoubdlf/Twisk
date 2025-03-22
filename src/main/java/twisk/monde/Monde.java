@@ -107,7 +107,10 @@
         public String toC() {
             StringBuilder sb = new StringBuilder();
 
-            // Affichage des headers
+            // headers
+            sb.append("#include <time.h>\n");
+            sb.append("#include \"def.h\"\n\n");
+
             for(Etape etape : this) {
                 sb.append(String.format("#define %s %s\n", etape.getNomC(), etape.getIdEtape())); // sb.append("#define ").append(etapes.getNomC()).append(" ").append(etapes.getIdEtape()).append("\n");
 
@@ -116,10 +119,12 @@
                 }
 
             }
+            sb.append("\n");
 
-            sb.append("#include \"def.h\"\n\n\n"); // Inclusion du fichier d’en-tête
-            sb.append("void simulation(int ids) {\n\n");
-                sb.append(this.entree.toC()); // generer le parcours des client
+            // body
+            sb.append("\nvoid simulation(int ids) {\n");
+                sb.append("\tsrand(time(NULL) + ids);\n\n");
+                sb.append(this.entree.toC(1)); // generer le parcours des client
             sb.append("}\n");
 
             return sb.toString();

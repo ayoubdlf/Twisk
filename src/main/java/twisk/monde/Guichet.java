@@ -27,6 +27,16 @@ public class Guichet extends Etape {
     /* —————————— GETTERS —————————— */
 
     @Override
+    public boolean estUneEntree() {
+        return false;
+    }
+
+    @Override
+    public boolean estUneSortie() {
+        return false;
+    }
+    
+    @Override
     public boolean estUneActivite() {
         return false;
     }
@@ -51,17 +61,21 @@ public class Guichet extends Etape {
 
     @Override
     public String toC() {
+        return this.toC(1);
+    }
+
+    public String toC(int tab) {
         StringBuilder sb = new StringBuilder();
 
-        for (Etape successeur : this) {
-            sb.append(String.format("\tP(ids, SEM_%s);\n", this.getNomC())); // On simule un passage par le guichet
-            sb.append(String.format("\t\ttransfert(%s, %s);\n", this.getNomC(), successeur.getNomC()));
+        Etape successeur = this.getSuccesseur(0);
 
-            if(successeur.estUneActiviteRestreinte()) {
-                sb.append(((ActiviteRestreinte)successeur).toC(this.getNomC()));
-            } else {
-                sb.append(successeur.toC());
-            }
+        sb.append("\t".repeat(tab)).append(String.format("P(ids, SEM_%s);\n", this.getNomC())); // On simule un passage par le guichet
+        sb.append("\t".repeat(tab+1)).append(String.format("transfert(%s, %s);\n", this.getNomC(), successeur.getNomC()));
+
+        if(successeur.estUneActiviteRestreinte()) {
+            sb.append(((ActiviteRestreinte)successeur).toC(tab, this.getNomC()));
+        } else {
+            sb.append(successeur.toC(tab));
         }
 
 

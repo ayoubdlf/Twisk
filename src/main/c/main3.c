@@ -3,8 +3,8 @@
 #include <unistd.h>
 #include "../ressources/codeC/def.h"
 
-#define NB_ETAPES   5
-#define NB_GUICHETS 1
+#define NB_ETAPES   7
+#define NB_GUICHETS 2
 #define NB_CLIENTS  5
 
 
@@ -13,9 +13,11 @@ char* getNomEtape(int etape) {
     switch(etape) {
         case 0 : return "entree";
         case 1 : return "sortie";
-        case 2 : return "balade au zoo";
-        case 3 : return "acces au toboggan";
-        case 4 : return "toboggan";
+        case 2 : return "etape1";
+        case 3 : return "etape2";
+        case 4 : return "etape3";
+        case 5 : return "etape4";
+        case 6 : return "etape5";
 
         default: return "";
     }
@@ -68,7 +70,7 @@ void afficherPositionClients() {
 
 
 int main(int argc, char** argv) {
-    int tabJetonsGuichet[] = { 1 };
+    int tabJetonsGuichet[] = { 1, 1 };
     int* simulation        = start_simulation(NB_ETAPES, NB_GUICHETS, NB_CLIENTS, tabJetonsGuichet);
 
     afficherListeClients();

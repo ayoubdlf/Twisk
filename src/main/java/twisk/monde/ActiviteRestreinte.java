@@ -19,14 +19,18 @@ public class ActiviteRestreinte extends Activite {
     }
 
     public String toC(String nomGuichet) {
+        return this.toC(1, nomGuichet);
+    }
+
+    public String toC(int tab, String nomGuichet) {
         StringBuilder sb = new StringBuilder();
 
-        sb.append(String.format("\t\tdelai(%d, %d);\n", this.getTemps(), this.getEcartTemps()));
-        sb.append(String.format("\tV(ids, SEM_%s);\n\n", nomGuichet)); // Libération du guichet
+        sb.append("\t".repeat(tab+1)).append(String.format("delai(%d, %d);\n", this.getTemps(), this.getEcartTemps()));
+        sb.append("\t".repeat(tab)).append(String.format("V(ids, SEM_%s);\n\n", nomGuichet)); // Libération du guichet
 
         for (Etape successeur : this) {
-            sb.append(String.format("\ttransfert(%s, %s);\n\n", this.getNomC(), successeur.getNomC()));
-            sb.append(successeur.toC());
+            sb.append("\t".repeat(tab)).append(String.format("transfert(%s, %s);\n\n", this.getNomC(), successeur.getNomC()));
+            sb.append(successeur.toC(tab));
         }
 
         return sb.toString();

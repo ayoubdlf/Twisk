@@ -68,6 +68,10 @@ public abstract class Etape implements Iterable<Etape> {
 
     /* —————————— GETTERS —————————— */
 
+    public abstract boolean estUneEntree();
+
+    public abstract boolean estUneSortie();
+
     public abstract boolean estUneActivite();
 
     public abstract boolean estUneActiviteRestreinte();
@@ -84,6 +88,14 @@ public abstract class Etape implements Iterable<Etape> {
 
     public GestionnaireEtapes getSuccesseurs() {
         return this.successeurs;
+    }
+
+    public int getNbSuccesseurs() {
+        return this.successeurs.nbEtapes();
+    }
+
+    public Etape getSuccesseur(int i) {
+        return this.successeurs.getEtape(i);
     }
 
     public GestionnaireEtapes getPredecesseurs() {
@@ -146,5 +158,7 @@ public abstract class Etape implements Iterable<Etape> {
     }
 
     public abstract String toC();
+
+    public abstract String toC(int tab);
 
 }

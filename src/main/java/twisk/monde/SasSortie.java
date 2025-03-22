@@ -6,11 +6,15 @@ public class SasSortie extends Activite {
         super("sortie");
     }
 
-    /* —————————— SETTERS —————————— */
-    public String toC() {
+    /* —————————— GETTERS —————————— */
+
+    public String toC(int tab) {
         return "";
     }
 
-    /* —————————— GETTERS —————————— */
+    @Override
+    public boolean estUneSortie() {
+        return true;
+    }
 
 }

@@ -12,6 +12,7 @@ public class ClientTwisk {
         Monde monde           = mondeZoo();
         Simulation simulation = new Simulation();
 
+        simulation.setNbClients(5);
         simulation.simuler(monde);
     }
 

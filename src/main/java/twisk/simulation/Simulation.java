@@ -9,13 +9,28 @@ import java.util.Iterator;
 public class Simulation {
 
     private Monde monde;
-    private KitC kitC;
+    private KitC  kitC;
+    private int   nbClients;
 
     public Simulation() {
-        this.kitC = new KitC();
+        this.kitC      = new KitC();
+        this.nbClients = 0;
 
         kitC.creerEnvironnement();
     }
+
+    /* —————————— GETTERS —————————— */
+    public int getNbClients() {
+        return this.nbClients;
+    }
+    /* —————————— SETTERS —————————— */
+    public void setNbClients(int nbClients) {
+        assert (nbClients > 0) : "Le nombre de clients doit etre superieur à 0";
+
+        this.nbClients = nbClients;
+    }
+
+    /* —————————— METHODES —————————— */
 
     public void simuler(Monde monde) {
         this.monde = monde;
@@ -28,21 +43,18 @@ public class Simulation {
         this.startSimulation();
     }
 
-
     private void startSimulation() {
 
         System.out.println(this.monde);
 
         int[] tabJetonsGuichet = this.getTabJetonsGuichets();
+        int nbEtapes           = this.monde.nbEtapes();
+        int nbGuichets         = this.monde.nbGuichets();
 
-        int nbEtapes = this.monde.nbEtapes();
-        int nbGuichets = this.monde.nbGuichets();
-        int nbClient = 5;
+        int[] simulation       = start_simulation(nbEtapes, nbGuichets, this.getNbClients(), tabJetonsGuichet);
 
-        int[] simulation = start_simulation(nbEtapes, nbGuichets, nbClient, tabJetonsGuichet);
-
-        this.afficherListeClients(nbEtapes, nbClient);
-        this.afficherPositionsClients(nbEtapes, nbClient);
+        this.afficherListeClients(nbEtapes, this.getNbClients());
+        this.afficherPositionsClients(nbEtapes, this.getNbClients());
 
         nettoyage();
     }
@@ -54,37 +66,37 @@ public class Simulation {
         return nbClientsSortie == NB_CLIENTS;
     }
 
-     private int[] getTabJetonsGuichets() {
-         ArrayList<Integer> tabJetonsGuichets = new ArrayList<>();
+    private int[] getTabJetonsGuichets() {
+        ArrayList<Integer> tabJetonsGuichets = new ArrayList<>();
 
-         for (Iterator<Etape> it = this.monde.iteratorGuichets(); it.hasNext(); ) {
-             Guichet guichet = (Guichet) it.next();
-             tabJetonsGuichets.add(guichet.getNbJetons());
-         }
+        for (Iterator<Etape> it = this.monde.iteratorGuichets(); it.hasNext(); ) {
+            Guichet guichet = (Guichet) it.next();
+            tabJetonsGuichets.add(guichet.getNbJetons());
+        }
 
-         return tabJetonsGuichets.stream().mapToInt(Integer::intValue).toArray();
-     }
+        return tabJetonsGuichets.stream().mapToInt(Integer::intValue).toArray();
+    }
 
-     private void afficherListeClients(int NB_ETAPES, int NB_CLIENTS) {
-         int[] positions = ou_sont_les_clients(NB_ETAPES , NB_CLIENTS);
+    private void afficherListeClients(int NB_ETAPES, int NB_CLIENTS) {
+        int[] positions = ou_sont_les_clients(NB_ETAPES , NB_CLIENTS);
 
-         System.out.print("pids des clients : ");
+        System.out.print("pids des clients : ");
 
-         for (int i = 0; i < NB_CLIENTS; i++) {
-             System.out.printf("%d%s", positions[i+1], (i < NB_CLIENTS - 1) ? ", " : ""); // Si on est dans le dernier client, n'affiche pas la virgule
-         }
+        for (int i = 0; i < NB_CLIENTS; i++) {
+            System.out.printf("%d%s", positions[i+1], (i < NB_CLIENTS - 1) ? ", " : ""); // Si on est dans le dernier client, n'affiche pas la virgule
+        }
 
-         System.out.print("\n\n");
-     }
+        System.out.print("\n\n");
+    }
 
-     private void afficherEtape(int nbEtape, int NB_CLIENTS) {
-         System.out.format(
-                 "etape %-2d %-20s %d clients ",
-                 this.monde.getEtape(nbEtape).getIdEtape(),
-                 "(" + this.monde.getEtape(nbEtape).getNom() + ")",
-                 NB_CLIENTS
-         );
-     }
+    private void afficherEtape(int nbEtape, int NB_CLIENTS) {
+        System.out.format(
+            "etape %-2d %-20s %d clients ",
+            this.monde.getEtape(nbEtape).getIdEtape(),
+            "(" + this.monde.getEtape(nbEtape).getNom() + ")",
+            NB_CLIENTS
+        );
+    }
 
     private void afficherPositionsClients(int NB_ETAPES, int NB_CLIENTS) {
         int[] positions;
@@ -119,7 +131,6 @@ public class Simulation {
 
         System.out.println("\nsimulation terminee.");
     }
-
 
     // Ajout des fonctions natives
     public native int[] start_simulation(int nbEtapes, int nbGuichet, int nbClients, int[] tabJetonsGuichets);

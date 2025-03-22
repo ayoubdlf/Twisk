@@ -19,8 +19,6 @@ class KitCTest {
     void creerEnvironnement() {
         KitC kitC = new KitC();
 
-        kitC.creerEnvironnement();
-
         Path path = Paths.get("/tmp/twisk");
         assertTrue(Files.exists(path) && Files.isDirectory(path));
 

@@ -30,6 +30,9 @@ public class Simulation {
 
 
     private void startSimulation() {
+
+        System.out.println(this.monde);
+
         int[] tabJetonsGuichet = this.getTabJetonsGuichets();
 
         int nbEtapes = this.monde.nbEtapes();
@@ -65,7 +68,7 @@ public class Simulation {
      private void afficherListeClients(int NB_ETAPES, int NB_CLIENTS) {
          int[] positions = ou_sont_les_clients(NB_ETAPES , NB_CLIENTS);
 
-         System.out.print("\nles clients : ");
+         System.out.print("pids des clients : ");
 
          for (int i = 0; i < NB_CLIENTS; i++) {
              System.out.printf("%d%s", positions[i+1], (i < NB_CLIENTS - 1) ? ", " : ""); // Si on est dans le dernier client, n'affiche pas la virgule
@@ -106,13 +109,15 @@ public class Simulation {
 
                 if(estTouteEtapeDansSortie(NB_ETAPES, NB_CLIENTS)) { break; }
 
-                System.out.print("————————————————————————————————————————————————————————————————————————————\n");
+                System.out.println(); // nouvelle ligne entre chaque seconde
 
                 Thread.sleep(1000); // 1000ms
 
             } catch (InterruptedException ignored) {
             }
         }
+
+        System.out.println("\nsimulation terminee.");
     }
 
 

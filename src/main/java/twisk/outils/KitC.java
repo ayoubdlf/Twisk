@@ -83,7 +83,7 @@ public class KitC {
         }
     }
 
-    private void supprimerDossier() {
+    public void supprimerDossier() {
         String commande   = "rm -rf /tmp/twisk";
 
         ProcessBuilder pb = new ProcessBuilder(commande.split(" "));

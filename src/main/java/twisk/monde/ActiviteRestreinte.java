@@ -2,10 +2,22 @@ package twisk.monde;
 
 public class ActiviteRestreinte extends Activite {
 
+    /**
+     * Constructeur de l'activité restreinte avec un nom.
+     * 
+     * @param nom le nom de l'activité
+     */
     public ActiviteRestreinte(String nom) {
         super(nom);
     }
 
+    /**
+     * Constructeur de l'activité restreinte avec un nom, un temps et un écart de temps.
+     * 
+     * @param nom le nom de l'activité
+     * @param temps le temps associé à l'activité
+     * @param ecartTemps l'écart de temps associé à l'activité
+     */
     public ActiviteRestreinte(String nom, int temps, int ecartTemps) {
         super(nom, temps, ecartTemps);
     }
@@ -13,6 +25,7 @@ public class ActiviteRestreinte extends Activite {
     /* —————————— SETTERS —————————— */
 
     /* —————————— GETTERS —————————— */
+
     @Override
     public boolean estUneActiviteRestreinte() {
         return true;

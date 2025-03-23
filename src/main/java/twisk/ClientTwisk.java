@@ -4,6 +4,9 @@ import twisk.monde.*;
 import twisk.simulation.Simulation;
 
 
+/**
+ * Classe principale pour exécuter l'application ClientTwisk.
+ */
 public class ClientTwisk {
 
     public static void main(String[] args) {
@@ -16,6 +19,10 @@ public class ClientTwisk {
       //  simulation.simuler(monde);
     }
 
+    /**
+     * Crée un monde de simulation avec un zoo et un toboggan.
+     * @return Un Monde représentant le zoo.
+     */
     private static Monde mondeZoo() {
         Monde monde    = new Monde();
 

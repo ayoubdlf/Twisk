@@ -6,8 +6,14 @@ import java.nio.file.*;
 
 public class KitC {
 
+    /**
+     * Constructeur de la classe KitC.
+     */
     public KitC() {}
 
+    /**
+     * Crée l'environnement nécessaire pour la simulation.
+     */
     public void creerEnvironnement() {
         try {
             this.supprimerDossier(); // supprimer le dossier `/tmp/twisk` s'il existe
@@ -38,6 +44,11 @@ public class KitC {
 
     }
 
+    /**
+     * Crée un fichier avec le code C fourni.
+     * 
+     * @param codeC Le code C à écrire dans le fichier.
+     */
     public void creerFichier(String codeC) {
         try {
             Path fichier = Paths.get("/tmp/twisk/client.c");
@@ -47,6 +58,9 @@ public class KitC {
         }
     }
 
+    /**
+     * Compile le fichier client.c en générant un fichier objet client.o.
+     */
     public void compiler() {
         String commande;
 
@@ -65,6 +79,9 @@ public class KitC {
         }
     }
 
+    /**
+     * Construit la bibliothèque partagée à partir des fichiers objets.
+     */
     public void construireLaBibliotheque() {
         String commande;
 
@@ -83,6 +100,9 @@ public class KitC {
         }
     }
 
+    /**
+     * Supprime le dossier temporaire utilisé pour l'environnement.
+     */
     public void supprimerDossier() {
         String commande   = "rm -rf /tmp/twisk";
 

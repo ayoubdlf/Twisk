@@ -9,10 +9,21 @@ public class Guichet extends Etape {
     private int idSemaphore;
 
 
+    /**
+     * Crée un guichet avec un nom et un nombre de jetons par défaut de 1.
+     *
+     * @param nom Le nom du guichet.
+     */
     public Guichet(String nom) {
         this(nom, 1);
     }
 
+    /**
+     * Crée un guichet avec un nom et un nombre de jetons spécifié.
+     *
+     * @param nom Le nom du guichet.
+     * @param nbJetons Le nombre de jetons du guichet, doit être supérieur à 0.
+     */
     public Guichet(String nom, int nbJetons) {
         super(nom);
 
@@ -51,10 +62,20 @@ public class Guichet extends Etape {
         return true;
     }
 
+    /**
+     * Retourne le numéro de sémaphore associé à ce guichet.
+     *
+     * @return Le numéro de sémaphore.
+     */
     public int getNumeroSemaphore() {
         return this.idSemaphore;
     }
 
+    /**
+     * Retourne le nombre de jetons disponibles dans ce guichet.
+     *
+     * @return Le nombre de jetons.
+     */
     public int getNbJetons() {
         return this.nbJetons;
     }

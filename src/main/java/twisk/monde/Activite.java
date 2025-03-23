@@ -6,10 +6,22 @@ public class Activite extends Etape {
     private int ecartTemps;
 
 
+    /**
+     * Constructeur de la classe Activite.
+     * 
+     * @param nom Le nom de l'activité.
+     */
     public Activite(String nom) {
         this(nom, 2, 1);
     }
 
+    /**
+     * Constructeur de la classe Activite avec des paramètres spécifiques.
+     * 
+     * @param nom Le nom de l'activité.
+     * @param temps Le temps de l'activité.
+     * @param ecartTemps L'écart de temps de l'activité.
+     */
     public Activite(String nom , int temps, int ecartTemps) {
         super(nom);
 
@@ -27,10 +39,20 @@ public class Activite extends Etape {
     /* —————————— GETTERS —————————— */
 
 
+    /**
+     * Retourne le temps de l'activité.
+     * 
+     * @return Le temps de l'activité.
+     */
     public int getTemps() {
         return this.temps;
     }
 
+    /**
+     * Retourne l'écart de temps de l'activité.
+     * 
+     * @return L'écart de temps de l'activité.
+     */
     public int getEcartTemps() {
         return this.ecartTemps;
     }

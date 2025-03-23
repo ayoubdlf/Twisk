@@ -25,6 +25,12 @@ public abstract class Etape implements Iterable<Etape> {
 
     /* —————————— SETTERS —————————— */
 
+    /**
+     * Ajoute un ou plusieurs successeurs à l'étape.
+     * 
+     * @param etapes un ou plusieurs objets de type Etape à ajouter comme successeurs.
+     * @throws AssertionError si les étapes sont nulles ou vides, ou si les règles de successeurs ne sont pas respectées.
+     */
     public void ajouterSuccesseur(Etape... etapes) {
         assert (etapes != null)    : "Les etapes ne doivent pas etre nulles";
         assert (etapes.length > 0) : "Les etapes ne doivent pas etre vides";
@@ -68,40 +74,101 @@ public abstract class Etape implements Iterable<Etape> {
 
     /* —————————— GETTERS —————————— */
 
+    /**
+     * Vérifie si l'étape est une entrée.
+     * 
+     * @return true si l'étape est une entrée, false sinon.
+     */
     public abstract boolean estUneEntree();
 
+    /**
+     * Vérifie si l'étape est une sortie.
+     * 
+     * @return true si l'étape est une sortie, false sinon.
+     */
     public abstract boolean estUneSortie();
 
+    /**
+     * Vérifie si l'étape est une activité.
+     * 
+     * @return true si l'étape est une activité, false sinon.
+     */
     public abstract boolean estUneActivite();
 
+    /**
+     * Vérifie si l'étape est une activité restreinte.
+     * 
+     * @return true si l'étape est une activité restreinte, false sinon.
+     */
     public abstract boolean estUneActiviteRestreinte();
 
+    /**
+     * Vérifie si l'étape est un guichet.
+     * 
+     * @return true si l'étape est un guichet, false sinon.
+     */
     public abstract boolean estUnGuichet();
 
+    /**
+     * Retourne le nom de l'étape.
+     * 
+     * @return le nom de l'étape.
+     */
     public String getNom() {
         return this.nom;
     }
 
+    /**
+     * Retourne l'identifiant de l'étape.
+     * 
+     * @return l'identifiant de l'étape.
+     */
     public int getIdEtape() {
         return this.idEtape;
     }
 
+    /**
+     * Retourne le gestionnaire des successeurs de l'étape.
+     * 
+     * @return le gestionnaire des successeurs.
+     */
     public GestionnaireEtapes getSuccesseurs() {
         return this.successeurs;
     }
 
+    /**
+     * Retourne le nombre de successeurs de l'étape.
+     * 
+     * @return le nombre de successeurs.
+     */
     public int getNbSuccesseurs() {
         return this.successeurs.nbEtapes();
     }
 
+    /**
+     * Retourne le successeur à l'index spécifié.
+     * 
+     * @param i l'index du successeur.
+     * @return le successeur à l'index spécifié.
+     */
     public Etape getSuccesseur(int i) {
         return this.successeurs.getEtape(i);
     }
 
+    /**
+     * Retourne le gestionnaire des prédécesseurs de l'étape.
+     * 
+     * @return le gestionnaire des prédécesseurs.
+     */
     public GestionnaireEtapes getPredecesseurs() {
         return this.predecesseurs;
     }
 
+    /**
+     * Retourne le nom de l'étape au format C.
+     * 
+     * @return le nom de l'étape formaté pour C.
+     */
     public String getNomC() {
         String nom = this.getNom().toUpperCase();
         nom = nom.replace(" ", "_"); // Remplace les espaces par des underscores (utilile lors de la creation des define dans le toC())
@@ -138,6 +205,11 @@ public abstract class Etape implements Iterable<Etape> {
         return this.successeurs.iterator();
     }
 
+    /**
+     * Retourne une représentation sous forme de chaîne de caractères de l'étape.
+     * 
+     * @return une chaîne représentant l'étape.
+     */
     public String toString() {
         StringBuilder str = new StringBuilder();
 
@@ -157,8 +229,19 @@ public abstract class Etape implements Iterable<Etape> {
         return str.toString();
     }
 
+    /**
+     * Convertit l'étape en code C.
+     * 
+     * @return le code C représentant l'étape.
+     */
     public abstract String toC();
 
+    /**
+     * Convertit l'étape en code C avec un niveau d'indentation spécifié.
+     * 
+     * @param tab le niveau d'indentation.
+     * @return le code C représentant l'étape avec indentation.
+     */
     public abstract String toC(int tab);
 
 }

@@ -2,10 +2,11 @@ package twisk.simulation;
 
 import twisk.monde.*;
 import twisk.outils.KitC;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.*;
 
-
+/**
+ * Classe Simulation pour la simulation de l'application Twisk.
+ */
 public class Simulation {
 
     private Monde monde;
@@ -20,10 +21,22 @@ public class Simulation {
     }
 
     /* —————————— GETTERS —————————— */
+    /**
+     * Récupère le nombre de clients.
+     * 
+     * @return Le nombre de clients actuellement dans la simulation.
+     */
     public int getNbClients() {
         return this.nbClients;
     }
+
     /* —————————— SETTERS —————————— */
+    /**
+     * Définit le nombre de clients pour la simulation.
+     * 
+     * @param nbClients Le nombre de clients à définir. Doit être supérieur à 0.
+     * @throws AssertionError Si nbClients est inférieur ou égal à 0.
+     */
     public void setNbClients(int nbClients) {
         assert (nbClients > 0) : "Le nombre de clients doit etre superieur à 0";
 
@@ -32,6 +45,11 @@ public class Simulation {
 
     /* —————————— METHODES —————————— */
 
+    /**
+     * Simule le processus de simulation en utilisant le monde spécifié.
+     * 
+     * @param monde Le monde à simuler.
+     */
     public void simuler(Monde monde) {
         this.monde = monde;
 
@@ -132,8 +150,29 @@ public class Simulation {
         System.out.println("\nsimulation terminee.");
     }
 
-    // Ajout des fonctions natives
+    /* —————————— FONCTIONS NATIVES —————————— */
+    /**
+     * Fonction native qui démarre la simulation.
+     * 
+     * @param nbEtapes Le nombre d'étapes dans la simulation.
+     * @param nbGuichet Le nombre de guichets dans la simulation.
+     * @param nbClients Le nombre de clients à simuler.
+     * @param tabJetonsGuichets Le tableau des jetons des guichets.
+     * @return Un tableau d'entiers représentant les résultats de la simulation.
+     */
     public native int[] start_simulation(int nbEtapes, int nbGuichet, int nbClients, int[] tabJetonsGuichets);
+   
+    /**
+     * Fonction native qui détermine où se trouvent les clients.
+     * 
+     * @param nbEtapes Le nombre d'étapes dans la simulation.
+     * @param nbClients Le nombre de clients dans la simulation.
+     * @return Un tableau d'entiers représentant les positions des clients.
+     */
     public native int[] ou_sont_les_clients(int nbEtapes, int nbClients);
+    
+    /**
+     * Fonction native qui effectue le nettoyage, en libérant la mémoire, après la simulation.
+     */
     public native void nettoyage();
 }

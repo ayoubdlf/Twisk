@@ -1,0 +1,501 @@
+@font-face {
+    font-family: 'Geist Regular';
+    src: url('geist/Geist-Regular.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'Geist Bold';
+    src: url('geist/Geist-Bold.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'Geist Medium';
+    src: url('geist/Geist-Medium.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'Geist SemiBold';
+    src: url('geist/Geist-SemiBold.otf') format('opentype');
+}
+
+
+
+.root {
+    green-500: #00c950;
+    gray-100: #f3f4f6;
+    gray-200: #e5e7eb;
+    gray-300: #d1d5db;
+
+    red-50: #fef2f2;
+    red-100: #ffe2e2;
+    red-200: #ffc9c9;
+    red-300: #ffa2a2;
+    red-400: #ff6467;
+    red-500: #fb2c36;
+    red-600: #e7000b;
+    red-700: #c10007;
+    red-800: #9f0712;
+    red-900: #82181a;
+    red-950: #460809;
+
+    indigo-50: #eef2ff;
+    indigo-100: #e0e7ff;
+    indigo-200: #c6d2ff;
+    indigo-300: #a3b3ff;
+    indigo-400: #7c86ff;
+    indigo-500: #615fff;
+    indigo-600: #4f39f6;
+    indigo-700: #432dd7;
+    indigo-800: #372aac;
+    indigo-900: #312c85;
+    indigo-950: #1e1a4d;
+
+    emerald-50 : #ecfdf5;
+    emerald-100: #d0fae5;
+    emerald-200: #a4f4cf;
+    emerald-300: #5ee9b5;
+    emerald-400: #00d492;
+    emerald-500: #00bc7d;
+    emerald-600: #009966;
+    emerald-700: #007a55;
+    emerald-800: #006045;
+    emerald-900: #004f3b;
+    emerald-950: #002c22;
+
+    black-50: #fafafa;
+    black-100: #f5f5f5;
+    black-200: #e5e5e5;
+    black-300: #d4d4d4;
+    black-400: #a1a1a1;
+    black-500: #737373;
+    black-600: #525252;
+    black-700: #404040;
+    black-800: #262626;
+    black-900: #171717;
+    black-950: #0a0a0a;
+}
+
+* {
+    -fx-font-family: 'Geist Regular';
+}
+
+/* SVG */
+.svg-entree {
+    -fx-fill: green-500;
+}
+
+.svg-activite {
+    -fx-fill: indigo-500;
+}
+
+.svg-guichet {
+    -fx-fill: emerald-500;
+}
+
+.svg-sortie {
+    -fx-fill: red-500;
+}
+
+
+/* ACTIVITE */
+
+.button-activite {
+    -fx-font-size: 14;
+    -fx-text-fill: indigo-500;
+
+    -fx-alignment: center;
+    -fx-padding: 6 12;
+
+    -fx-background-color: indigo-100;
+    -fx-border-color: indigo-300;
+    -fx-border-width: 1px;
+
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+
+    -fx-cursor: hand;
+}
+
+.button-activite:hover {
+    -fx-background-color: indigo-200;
+}
+
+.button-activite > .text {
+    -fx-font-family: 'Geist Medium';
+}
+
+
+/* GUICHET */
+
+.button-guichet {
+    -fx-font-size: 14;
+    -fx-text-fill: emerald-500;
+
+    -fx-alignment: center;
+    -fx-padding: 6 12;
+
+    -fx-background-color: emerald-100;
+    -fx-border-color: emerald-300;
+    -fx-border-width: 1px;
+
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+
+    -fx-cursor: hand;
+}
+
+.button-guichet:hover {
+    -fx-background-color: emerald-200;
+}
+
+.button-guichet > .text {
+    -fx-font-family: 'Geist SemiBold';
+}
+
+/* VUE-OUTILS */
+.vue-outils {
+    -fx-hgap: 10;
+    -fx-padding: 6;
+    -fx-alignment: center;
+}
+
+/* VUE-ETAPE */
+.vue-etape {
+    -fx-background-color: white;
+    -fx-spacing: 10;
+    -fx-padding: 10 12;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 0);
+}
+
+/* VUE-ACTIVITE */
+.vue-activite {}
+
+.vue-activite-header {
+    -fx-background-color: white;
+    -fx-spacing: 2;
+    -fx-alignment: center;
+}
+
+.vue-activite-header > .label {
+    -fx-font-family: 'Geist Medium';
+    -fx-font-size: 15;
+}
+
+.vue-activite-body {
+    fx-background-color: white;
+    -fx-padding: 4 12;
+    -fx-border-color: gray-200;
+    -fx-border-width: 1;
+    -fx-border-style: dashed;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}
+
+.vue-activite-temps {
+    -fx-background-color: gray-100;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-padding: 4 12;
+}
+
+.vue-activite-clicked {
+    -fx-border-color: indigo-500;
+    -fx-border-insets: -1;
+    -fx-effect: dropshadow(gaussian, indigo-200, 10, 0, 0, 0);
+}
+
+/* VUE-POINT-DE-CONTROLE */
+
+.vue-point-de-controle-activite {
+    -fx-cursor: pointer;
+    -fx-fill: white;
+    -fx-stroke: gray-200;
+    -fx-stroke-width: 0.5;
+}
+
+.vue-point-de-controle-activite:hover {
+    -fx-cursor: hand;
+    -fx-fill: radial-gradient(center 50% 50%, radius 50%, indigo-500 69.9%, white 70%, white 100%);
+    -fx-stroke: indigo-500;
+    -fx-stroke-width: 0.5;
+}
+
+.vue-point-de-controle-activite-clicked {
+    -fx-fill: radial-gradient(center 50% 50%, radius 50%, indigo-500 69.9%, white 70%, white 100%);
+    -fx-stroke: indigo-500;
+    -fx-stroke-width: 0.5;
+}
+
+.vue-point-de-controle-guichet {
+    -fx-cursor: pointer;
+    -fx-fill: white;
+    -fx-stroke: gray-200;
+    -fx-stroke-width: 0.5;
+}
+
+.vue-point-de-controle-guichet:hover {
+    -fx-cursor: hand;
+    -fx-fill: radial-gradient(center 50% 50%, radius 50%, emerald-500 69.9%, white 70%, white 100%);
+    -fx-stroke: emerald-500;
+    -fx-stroke-width: 0.5;
+}
+
+.vue-point-de-controle-guichet-clicked {
+    -fx-fill: radial-gradient(center 50% 50%, radius 50%, emerald-500 69.9%, white 70%, white 100%);
+    -fx-stroke: emerald-500;
+    -fx-stroke-width: 0.5;
+}
+
+
+/* VUE-ARC */
+.vue-arc-line {
+    -fx-stroke: black;
+    -fx-stroke-width: 1.2;
+}
+
+.vue-arc-line-clicked {
+    -fx-stroke: red;
+    -fx-stroke-dash-array: 5 5
+}
+
+.vue-arc-line-animation {
+    -fx-stroke-dash-array: 5 5;
+}
+
+.vue-arc-courbe {
+    -fx-stroke: black;
+    -fx-stroke-width: 1.2;
+    -fx-fill: transparent;
+}
+
+.vue-arc-courbe-clicked {
+    -fx-stroke: red;
+    -fx-fill: transparent;
+    -fx-stroke-dash-array: 5 5
+}
+
+.vue-arc-courbe-animation {
+    -fx-stroke: black;
+    -fx-stroke-width: 1.2;
+    -fx-fill: transparent;
+    -fx-stroke-dash-array: 5 5;
+}
+
+.vue-arc-polyline {
+    -fx-stroke: black;
+    -fx-fill: black;
+    -fx-stroke-width: 1;
+}
+
+.vue-arc-polyline-clicked {
+    -fx-fill: red;
+    -fx-stroke: transparent;
+    -fx-stroke-width: 1;
+    -fx-stroke-dash-array: 5 5
+}
+
+
+/* VUE-MENU */
+.menu-bar {
+    -fx-background-color: gray-100;
+    -fx-border-color: transparent transparent gray-200 transparent;
+    -fx-padding: 0 0;
+    -fx-border-width: 0 0 1 0;
+}
+
+.menu-bar > .container > .menu-button {
+    -fx-padding: 4 8;
+}
+
+.menu-bar > .container > .menu-button > .label {
+    -fx-text-fill: black;
+}
+
+.menu-bar > .container > .menu-button:hover, .menu-bar > .container > .menu-button:focused, .menu-bar > .container > .menu-button:showing {
+    -fx-background-color: gray-200;
+}
+
+.menu-item {
+    -fx-padding: 4 8;
+}
+
+.menu-item:focused {
+    -fx-background-color: gray-200;
+}
+
+.menu-item:focused > .label {
+    -fx-text-fill: black;
+}
+
+/* VUE-ALERT */
+
+.alert-error {
+    -fx-spacing: 10;
+    -fx-padding: 4 8;
+}
+
+.alert-error-titre {
+    -fx-font-family: 'Geist Medium';
+    -fx-font-size: 16;
+    -fx-text-fill: red-600;
+}
+
+.alert-error-message {
+    -fx-font-family: 'Geist Regular';
+    -fx-font-size: 14;
+    /*-fx-text-fill: red-500;*/
+    -fx-padding: 10 0 0 0;
+}
+
+.alert-error {
+    -fx-background-color: white;
+}
+
+.alert-error .button {
+    -fx-font-family: 'Geist Bold';
+    -fx-font-size: 14;
+    -fx-text-fill: black;
+
+    -fx-alignment: center;
+    -fx-padding: 4 8;
+
+    -fx-background-color: white;
+    -fx-border-color: gray-200;
+    -fx-border-width: 1px;
+
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+
+    -fx-cursor: hand;
+}
+
+.alert-error .button:hover {
+    -fx-background-color: gray-100;
+}
+
+
+/* DIALOGUES */
+
+.dialog {
+    -fx-background-color: white;
+}
+
+.dialog-pane .header-panel {
+    -fx-background-color: white;
+    -fx-border-color: transparent transparent gray-200 transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+.dialog-pane .content {
+    -fx-background-color: white;
+    -fx-spacing: 24;
+    -fx-padding: 18 24;
+}
+
+.dialog-pane .header-panel .label {
+    -fx-font-family: 'Geist SemiBold';
+    -fx-font-size: 18;
+    -fx-text-fill: black;
+    -fx-alignment: center;
+}
+
+.dialog-description {
+    -fx-font-family: 'Geist Regular';
+    -fx-font-size: 14;
+}
+
+.dialog-nom-etape {
+    -fx-font-family: 'Geist Regular';
+    -fx-font-size: 12;
+}
+
+.dialog-input {
+    -fx-background-color: white;
+    -fx-font-family: 'Geist Regular';
+    -fx-font-size: 14;
+    -fx-border-color: gray-100;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-padding: 6 12;
+}
+
+.dialog-button-annuler {
+    -fx-font-size: 14;
+    -fx-text-fill: black-900;
+
+    -fx-alignment: center;
+    -fx-padding: 6 12;
+
+    -fx-background-color: white;
+    -fx-border-color: gray-200;
+    -fx-border-width: 1px;
+
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+
+    -fx-cursor: hand;
+}
+
+.dialog-button-annuler:hover {
+    -fx-background-color: gray-100;
+}
+
+.dialog-button-valider {
+    -fx-font-size: 14;
+    -fx-text-fill: white;
+
+    -fx-alignment: center;
+    -fx-padding: 6 12;
+
+    -fx-background-color: black-900;
+    -fx-border-color: black-900;
+    -fx-border-width: 1px;
+
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+
+    -fx-cursor: hand;
+}
+
+.dialog-button-valider:hover {
+    -fx-background-color: black-600;
+    -fx-border-color: black-600;
+}
+
+.dialog-button-annuler > .text, .dialog-button-valider > .text {
+    -fx-font-family: 'Geist Medium';
+}
+
+
+.dialog-temps, .dialog-ecart-temps {
+    -fx-font-family: 'Geist Regular';
+    -fx-font-size: 14;
+}
+
+/* SLIDERS */
+
+.slider > .thumb {
+    -fx-pref-width: 16;
+    -fx-pref-height: 16;
+    -fx-background-color: white;
+    -fx-border-color: black-500;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+}
+
+.slider > .track {
+    -fx-pref-height: 6;
+    -fx-background-color: gray-100;
+    -fx-border-color: gray-100;
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
+}
+
+.slider > .axis {
+    -fx-tick-label-fill: black-800;
+    -fx-tick-length: 5;
+    -fx-minor-tick-length: 3;
+}

@@ -16,8 +16,8 @@ public class ClientTwisk {
         Monde monde3 = mondeCustom2();
 
         simuler(monde1, 2);
-        simuler(monde2, 2);
-        simuler(monde3, 2);
+        // simuler(monde2, 2);
+        // simuler(monde3, 2);
 
         // Simulation simulation = new Simulation();
         // simulation.setNbClients(5);
@@ -44,6 +44,7 @@ public class ClientTwisk {
 
             System.gc();
         } catch (Exception e) {
+            // TODO: exceptions
             e.printStackTrace();
         }
     }

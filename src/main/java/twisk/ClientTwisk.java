@@ -12,11 +12,11 @@ public class ClientTwisk {
     public static void main(String[] args) {
         // Monde monde           = mondeCustom1();
         // Monde monde           = mondeCustom2();
-        // Monde monde           = mondeZoo();
-        //Simulation simulation = new Simulation();
+        Monde monde           = mondeZoo();
+        Simulation simulation = new Simulation();
 
-        // simulation.setNbClients(5);
-        // simulation.simuler(monde);
+        simulation.setNbClients(5);
+        simulation.simuler(monde);
     }
 
     /**

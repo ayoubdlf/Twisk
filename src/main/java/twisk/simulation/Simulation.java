@@ -12,10 +12,13 @@ public class Simulation {
     private Monde monde;
     private KitC  kitC;
     private int   nbClients;
+    private GestionnaireClients gestionnaireClients;
+
 
     public Simulation() {
-        this.kitC      = new KitC();
-        this.nbClients = 0;
+        this.kitC                = new KitC();
+        this.nbClients           = 0;
+        this.gestionnaireClients = new GestionnaireClients();
 
         kitC.creerEnvironnement();
     }
@@ -96,12 +99,15 @@ public class Simulation {
     }
 
     private void afficherListeClients(int NB_ETAPES, int NB_CLIENTS) {
-        int[] positions = ou_sont_les_clients(NB_ETAPES , NB_CLIENTS);
+        int[] positions  = ou_sont_les_clients(NB_ETAPES , NB_CLIENTS);
+
+        int[] tabClients = new int[NB_CLIENTS]; // tableau contenant uniquement le pid des clients (utilse pour gestionnaireClients)
+        System.arraycopy(positions, 1, tabClients, 0, NB_CLIENTS);
+        this.gestionnaireClients.setClients(tabClients);
 
         System.out.print("pids des clients : ");
-
         for (int i = 0; i < NB_CLIENTS; i++) {
-            System.out.printf("%d%s", positions[i+1], (i < NB_CLIENTS - 1) ? ", " : ""); // Si on est dans le dernier client, n'affiche pas la virgule
+            System.out.printf("%d%s", tabClients[i], (i < NB_CLIENTS - 1) ? ", " : ""); // Si on est dans le dernier client, n'affiche pas la virgule
         }
 
         System.out.print("\n\n");
@@ -131,6 +137,8 @@ public class Simulation {
                     for (int j = 0; j < nbClients; j++) {
                         int client = positions[this.monde.getEtape(i).getIdEtape() * (NB_CLIENTS + 1) + (j + 1)];
                         System.out.printf("%d%s", client, ((j+1) < nbClients) ? ", " : "");
+
+                        this.gestionnaireClients.allerA(client, this.monde.getEtape(i), j);
                     }
 
                     System.out.print("\n");

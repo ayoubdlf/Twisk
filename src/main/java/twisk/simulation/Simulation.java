@@ -77,7 +77,7 @@ public class Simulation {
         this.afficherListeClients(nbEtapes, this.getNbClients());
         this.afficherPositionsClients(nbEtapes, this.getNbClients());
 
-        nettoyage();
+        this.nettoyage();
     }
 
     private boolean estTouteEtapeDansSortie(int NB_ETAPES, int NB_CLIENTS) {
@@ -128,6 +128,7 @@ public class Simulation {
         while(true) {
             try {
                 positions = ou_sont_les_clients(NB_ETAPES, NB_CLIENTS);
+                // System.out.println(Arrays.toString(positions));
 
                 for (int i = 0; i < NB_ETAPES; i++) {
                     int nbClients = positions[this.monde.getEtape(i).getIdEtape() * (NB_CLIENTS + 1)];

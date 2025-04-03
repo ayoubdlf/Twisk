@@ -1,5 +1,7 @@
 package twisk.monde;
 
+import twisk.outils.FabriqueNumero;
+
 import java.util.*;
 
 
@@ -11,6 +13,7 @@ public class Monde implements Iterable<Etape> {
 
 
     public Monde() {
+        FabriqueNumero.getInstance().reset(); // TODO: est ce c'est correct ? (le cas ou on a plusiers mondes, chaque etape initiale du monde commencera pas 0)
         this.etapes = new GestionnaireEtapes();
         this.entree = new SasEntree();
         this.sortie = new SasSortie();

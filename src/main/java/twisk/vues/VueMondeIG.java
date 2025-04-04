@@ -104,10 +104,14 @@ public class VueMondeIG extends Pane implements Observateur {
      */
     private void drawEtapes() {
         for(EtapeIG etape : this.monde) {
-            // TODO: check quelle etape à ajouter, (Activite, Guichet)
-            VueActiviteIG activite = new VueActiviteIG(this.monde, etape);
-            this.getChildren().add(activite);
-            activite.draw();
+            VueEtapeIG vueEtape = null;
+            
+            if(etape.estUneActivite()) { vueEtape = new VueActiviteIG(this.monde, etape); }
+            if(etape.estUnGuichet())   { vueEtape = new VueGuichetIG(this.monde, etape); }
+
+            assert (vueEtape != null) : "L'etape ne doit pas etre nulle";
+            this.getChildren().add(vueEtape);
+            vueEtape.draw();
 
             // Afficher les points de controle
             this.drawPointsDeControle(etape);

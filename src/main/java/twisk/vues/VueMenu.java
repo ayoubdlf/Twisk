@@ -116,11 +116,16 @@ public class VueMenu extends MenuBar implements Observateur {
     private void menuParametres() {
         this.parametres = new Menu("Parametres");
         parametres.setAccelerator(KeyCombination.keyCombination("Ctrl+P"));
-        MenuItem delaiEtEcartTemps = new MenuItem("Modifier les temps");
 
+        // activite - temps et ecartTemps
+        MenuItem delaiEtEcartTemps = new MenuItem("Modifier les temps");
         delaiEtEcartTemps.setOnAction(event -> this.afficherFenetreParametresTemps());
 
-        this.parametres.getItems().addAll(delaiEtEcartTemps);
+        // guichet - jetons
+        MenuItem jetons = new MenuItem("Modifier le nombre de jetons");
+        jetons.setOnAction(event -> this.afficherFenetreParametresJetons());
+
+        this.parametres.getItems().addAll(delaiEtEcartTemps, jetons);
     }
 
     /**
@@ -140,6 +145,8 @@ public class VueMenu extends MenuBar implements Observateur {
     }
 
     private void afficherFenetreRenommer() {
+        EtapeIG etape = this.mondeIG.iteratorEtapesSelectionnees().next();
+
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Twisk");
         dialog.setHeaderText("Renommer l'étape");
@@ -166,7 +173,7 @@ public class VueMenu extends MenuBar implements Observateur {
         // input
         TextField textField = new TextField();
         textField.setPromptText("Entrez le nouveau nom");
-        textField.setText(this.mondeIG.getEtapeSelectionnee().getNom());
+        textField.setText(etape.getNom());
         textField.getStyleClass().add("dialog-input");
         group.getChildren().addAll(nomEtape, textField);
 
@@ -189,7 +196,9 @@ public class VueMenu extends MenuBar implements Observateur {
                 String nom = textField.getText();
 
                 if (!nom.isEmpty()) {
-                    this.mondeIG.renommerSelection(nom);
+                    etape.setNom(nom);
+                    this.mondeIG.deselectionnerSelection();
+                    this.mondeIG.notifierObservateurs();
                 }
             }
         });
@@ -271,6 +280,72 @@ public class VueMenu extends MenuBar implements Observateur {
 
             this.mondeIG.deselectionnerSelection();
             this.mondeIG.notifierObservateurs();
+        });
+    }
+
+    private void afficherFenetreParametresJetons() {
+        if(this.mondeIG.getNbEtapesSelectionnees() != 1) { return; }
+        EtapeIG etape = this.mondeIG.iteratorEtapesSelectionnees().next();
+        if(!etape.estUnGuichet()) { return; }
+
+        GuichetIG guichet = (GuichetIG) etape;
+
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Twisk");
+        dialog.setHeaderText("Parametres jetons");
+
+
+        // Boutons annuler et valider
+        dialog.getDialogPane().getButtonTypes().clear();
+        ButtonType buttonAnnulerType = new ButtonType("Annuler", ButtonBar.ButtonData.CANCEL_CLOSE);
+        ButtonType buttonValiderType = new ButtonType("Valider", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(buttonAnnulerType, buttonValiderType);
+
+        VBox content = new VBox(16);
+
+        // description
+        Label description = new Label("Veuillez entrer le nouveau nombre de jetons");
+        description.getStyleClass().add("dialog-description");
+        content.getChildren().add(description);
+
+        VBox group = new VBox();
+        group.setSpacing(6);
+        // nombre de jetons
+        Label jetons = new Label("Nombre de jetons");
+        jetons.getStyleClass().add("dialog-jetons-etape");
+
+        // input
+        TextField textField = new TextField();
+        textField.setPromptText("Entrez le nouveau nombre de jetons");
+        textField.setText(Integer.toString(guichet.getJetons()));
+        textField.getStyleClass().add("dialog-input");
+        group.getChildren().addAll(jetons, textField);
+
+        content.getChildren().add(group);
+
+        // Style the buttons
+        Button buttonAnnuler = (Button) dialog.getDialogPane().lookupButton(buttonAnnulerType);
+        Button buttonValider = (Button) dialog.getDialogPane().lookupButton(buttonValiderType);
+
+        buttonAnnuler.getStyleClass().add("dialog-button-annuler");
+        buttonValider.getStyleClass().add("dialog-button-valider");
+
+        DialogPane dialogPane = dialog.getDialogPane();
+        dialogPane.setContent(content);
+        dialogPane.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles.css")).toExternalForm());
+        dialogPane.getStyleClass().add("dialog");
+
+        dialog.showAndWait().ifPresent(response -> {
+            if (response == buttonValiderType) {
+                String nbJetons = textField.getText();
+
+                if (!nbJetons.isEmpty()) {
+                    guichet.setJetons(Integer.parseInt(nbJetons));
+
+                    this.mondeIG.deselectionnerSelection();
+                    this.mondeIG.notifierObservateurs();
+                }
+            }
         });
     }
 }

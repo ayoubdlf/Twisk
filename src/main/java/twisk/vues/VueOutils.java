@@ -12,7 +12,6 @@ import java.util.function.Supplier;
 public class VueOutils extends TilePane implements Observateur {
 
     private MondeIG monde;
-    private Button guichet;
 
 
     /**
@@ -43,11 +42,12 @@ public class VueOutils extends TilePane implements Observateur {
     private void initialiser() {
         this.getStyleClass().add("vue-outils");
         this.ajouterBoutonActivite();
-        // this.ajouterBoutonGuichet();
+        this.ajouterBoutonGuichet();
     }
 
     private void ajouterBoutonActivite() {
         Button activite = new Button("Activite");
+        activite.setId("Activite");
         activite.setGraphic(((Supplier<SVGPath>) () -> {
             SVGPath svg = new SVGPath();
             svg.setContent("M14.615 1.595a.75.75 0 0 1 .359.852L12.982 9.75h7.268a.75.75 0 0 1 .548 1.262l-10.5 11.25a.75.75 0 0 1-1.272-.71l1.992-7.302H3.75a.75.75 0 0 1-.548-1.262l10.5-11.25a.75.75 0 0 1 .913-.143Z");
@@ -70,7 +70,8 @@ public class VueOutils extends TilePane implements Observateur {
     }
 
     private void ajouterBoutonGuichet() {
-        this.guichet = new Button("Guichet");
+        Button guichet = new Button("Guichet");
+        guichet.setId("Guichet");
         guichet.setGraphic(((Supplier<SVGPath>) () -> {
             SVGPath svg = new SVGPath();
             svg.setContent("M14.615 1.595a.75.75 0 0 1 .359.852L12.982 9.75h7.268a.75.75 0 0 1 .548 1.262l-10.5 11.25a.75.75 0 0 1-1.272-.71l1.992-7.302H3.75a.75.75 0 0 1-.548-1.262l10.5-11.25a.75.75 0 0 1 .913-.143Z");
@@ -84,7 +85,7 @@ public class VueOutils extends TilePane implements Observateur {
             return svg;
         }).get());
         guichet.getStyleClass().add("button-guichet");
-        guichet.setOnAction(new EcouteurBouton(this.monde, this.guichet));
+        guichet.setOnAction(new EcouteurBouton(this.monde, guichet));
 
         Tooltip tooltip = new Tooltip("Ajouter un guichet");
         Tooltip.install(guichet, tooltip);

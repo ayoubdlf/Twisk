@@ -206,6 +206,45 @@
     -fx-effect: dropshadow(gaussian, indigo-200, 10, 0, 0, 0);
 }
 
+
+/* VUE-GUICHET */
+.vue-guichet {}
+
+.vue-guichet-header {
+    -fx-background-color: white;
+    -fx-spacing: 2;
+    -fx-alignment: center;
+}
+
+.vue-guichet-header > .label {
+    -fx-font-family: 'Geist Medium';
+    -fx-font-size: 15;
+}
+
+.vue-guichet-body {
+    fx-background-color: white;
+    -fx-padding: 4 12;
+    -fx-border-color: gray-200;
+    -fx-border-width: 1;
+    -fx-border-style: dashed;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}
+
+.vue-guichet-jetons {
+    -fx-background-color: gray-100;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-padding: 4 12;
+}
+
+.vue-guichet-clicked {
+    -fx-border-color: emerald-500;
+    -fx-border-insets: -1;
+    -fx-effect: dropshadow(gaussian, emerald-200, 10, 0, 0, 0);
+}
+
+
 /* VUE-POINT-DE-CONTROLE */
 
 .vue-point-de-controle-activite {
@@ -406,7 +445,7 @@
     -fx-font-size: 14;
 }
 
-.dialog-nom-etape {
+.dialog-nom-etape, .dialog-jetons-etape {
     -fx-font-family: 'Geist Regular';
     -fx-font-size: 12;
 }

@@ -32,7 +32,7 @@ public class EcouteurBouton implements EventHandler<ActionEvent> {
      */
     @Override
     public void handle(ActionEvent actionEvent) {
-        this.monde.ajouter(this.button.getText());
+        this.monde.ajouter(this.button.getId());
     }
 
 }

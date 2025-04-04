@@ -5,14 +5,9 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import twisk.mondeIG.MondeIG;
-import twisk.vues.VueMenu;
-import twisk.vues.VueMondeIG;
-import twisk.vues.VueOutils;
-
+import twisk.vues.*;
 import java.util.Objects;
-
-import static twisk.outils.TailleComposants.TWISK_HAUTEUR;
-import static twisk.outils.TailleComposants.TWISK_LARGEUR;
+import static twisk.outils.TailleComposants.*;
 
 
 public class Main extends Application {

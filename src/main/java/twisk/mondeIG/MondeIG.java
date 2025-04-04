@@ -361,8 +361,8 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
                 etape.setNom(String.format("Activite %s", etape.getIdentifiant().split("-")[1]));
                 return etape;
             case "Guichet":
-                // etape = new GuichetIG("", ETAPE_LARGEUR, ETAPE_HAUTEUR);
-                // etape.setNom(String.format("Guichet %s", etape.getIdentifiant().split("-")[1]));
+                etape = new GuichetIG("Guichet", ETAPE_LARGEUR, ETAPE_HAUTEUR);
+                etape.setNom(String.format("Guichet %s", etape.getIdentifiant().split("-")[1]));
                 return etape;
         }
 

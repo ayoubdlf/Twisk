@@ -55,14 +55,17 @@ public class VuePointDeControleIG extends Circle {
         this.addEventHandler(MouseEvent.ANY, new EcouteurPointDeControle(this.monde, this.pdc, this));
 
 
-        this.getStyleClass().add("vue-point-de-controle-activite");
+        if(this.pdc.getEtape().estUneActivite()) { this.getStyleClass().add("vue-point-de-controle-activite"); }
+        if(this.pdc.getEtape().estUnGuichet()) { this.getStyleClass().add("vue-point-de-controle-guichet"); }
     }
 
     public void draw() {
         if(this.pdc.estUtilise() || this.pdc.estUtiliseParArcTemporaire()) {
             if(this.pdc.getEtape().estUneActivite()) { this.getStyleClass().add("vue-point-de-controle-activite-clicked"); }
+            if(this.pdc.getEtape().estUnGuichet()) { this.getStyleClass().add("vue-point-de-controle-guichet-clicked"); }
         } else {
             if(this.pdc.getEtape().estUneActivite()) { this.getStyleClass().add("vue-point-de-controle-activite"); }
+            if(this.pdc.getEtape().estUnGuichet())   { this.getStyleClass().add("vue-point-de-controle-guichet"); }
         }
     }
 }

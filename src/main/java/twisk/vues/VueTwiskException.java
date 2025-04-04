@@ -21,7 +21,7 @@ public class VueTwiskException {
         alert.setTitle("Twisk");
 
         DialogPane dialogPane = alert.getDialogPane();
-        dialogPane.getStylesheets().add(Objects.requireNonNull(VueTwiskException.class.getResource("/styles.css")).toExternalForm());
+        dialogPane.getStylesheets().add(Objects.requireNonNull(VueTwiskException.class.getResource("/css/styles.css")).toExternalForm());
         dialogPane.getStyleClass().add("alert-error");
 
         HBox content = new HBox();

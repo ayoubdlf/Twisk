@@ -30,7 +30,7 @@ public class Main extends Application {
 
         Scene scene = new Scene(root, TWISK_LARGEUR, TWISK_HAUTEUR);
         stage.setTitle("Twisk");
-        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles.css")).toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/styles.css")).toExternalForm());
         stage.setScene(scene);
         stage.show();
     }

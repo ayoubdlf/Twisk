@@ -188,7 +188,7 @@ public class VueMenu extends MenuBar implements Observateur {
 
         DialogPane dialogPane = dialog.getDialogPane();
         dialogPane.setContent(content);
-        dialogPane.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles.css")).toExternalForm());
+        dialogPane.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/styles.css")).toExternalForm());
         dialogPane.getStyleClass().add("dialog");
 
         dialog.showAndWait().ifPresent(response -> {
@@ -261,7 +261,7 @@ public class VueMenu extends MenuBar implements Observateur {
 
         DialogPane dialogPane = dialog.getDialogPane();
         dialogPane.setContent(content);
-        dialogPane.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles.css")).toExternalForm());
+        dialogPane.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/styles.css")).toExternalForm());
         dialogPane.getStyleClass().add("dialog");
 
 
@@ -332,7 +332,7 @@ public class VueMenu extends MenuBar implements Observateur {
 
         DialogPane dialogPane = dialog.getDialogPane();
         dialogPane.setContent(content);
-        dialogPane.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles.css")).toExternalForm());
+        dialogPane.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/styles.css")).toExternalForm());
         dialogPane.getStyleClass().add("dialog");
 
         dialog.showAndWait().ifPresent(response -> {

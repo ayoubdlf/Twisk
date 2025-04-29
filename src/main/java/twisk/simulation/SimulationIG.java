@@ -2,9 +2,12 @@ package twisk.simulation;
 
 import twisk.exceptions.MondeException;
 import twisk.monde.Monde;
+import twisk.mondeIG.EtapeIG;
 import twisk.mondeIG.MondeIG;
 import twisk.mondeIG.SujetObserve;
 import twisk.vues.Observateur;
+
+import java.util.Iterator;
 
 
 public class SimulationIG implements Observateur {
@@ -31,11 +34,63 @@ public class SimulationIG implements Observateur {
         // Creation du monde
         this.monde = this.creerMonde();
 
-
     }
 
     private void verifierMondeIG() throws MondeException {
-        // tester si le MondeIG est totalement correct
+        // 1. Il y'a au moins une entree
+        if(!this.auMoinsUneEntree()) {
+            throw new MondeException("Le monde doit avoir au moins une entree");
+        }
+
+        // 2. Il y'a au moins une sortie
+        if(!this.auMoinsUneSortie()) {
+            throw new MondeException("Le monde doit avoir au moins une sortie");
+        }
+
+        // 3. Toute activite est accessible depuis une entree
+        for (EtapeIG etape : this.mondeIG) {
+            if(!this.possedeEntree(etape)) {
+                throw new MondeException("Une etape du monde ne possede pas d'entree");
+            }
+        }
+
+        // 4. Toute activite mene à une sortie
+        for (EtapeIG etape : this.mondeIG) {
+            if(!this.possedeSortie(etape)) {
+                throw new MondeException("Une etape du monde ne possede pas de sortie");
+            }
+        }
+
+        for (EtapeIG etape : this.mondeIG) {
+            if(etape.estUnGuichet()) {
+                // 5. Un guichet ne peut pas etre une sortie
+                if(etape.estUneSortie()) {
+                    throw new MondeException("Un guichet ne peut pas etre une sortie");
+                }
+
+                // 6. Apres un guichet une seule etape
+                if(etape.getSuccesseurs().size() > 1) {
+                    throw new MondeException("Un guichet ne peut posseder qu'une seule activite restreinte comme successeur");
+                }
+
+                // 7. Apres un guichet une unique activite restreinte
+                if(!etape.getSuccesseurs().getFirst().estUneActivite()) {
+                    throw new MondeException("Un guichet ne peut posseder qu'une seule activite restreinte comme successeur");
+                }
+
+                // 8. Une activite restreinte connait qu'une seule etape, un guichet
+                if(etape.getSuccesseurs().getFirst().estUneActivite() && etape.getPredecesseurs().size() > 1) {
+                    throw new MondeException("Un guichet ne peut posseder qu'une seule activite restreinte comme successeur");
+                }
+
+                // 9. Une activite restreinte ne peut pas etre une entree
+                if(etape.getSuccesseurs().getFirst().estUneEntree()) {
+                    throw new MondeException("Une activite restreinte ne peut pas etre une entree");
+                }
+            }
+        }
+
+        // 10. cycles
     }
 
     private Monde creerMonde() {
@@ -43,7 +98,49 @@ public class SimulationIG implements Observateur {
     }
 
     @Override
-    public void reagir() {
+    public void reagir() {}
 
+    private boolean auMoinsUneEntree() {
+        for (EtapeIG etape : this.mondeIG) {
+            if(etape.estUneEntree()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean auMoinsUneSortie() {
+        for (EtapeIG etape : this.mondeIG) {
+            if(etape.estUneSortie()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean possedeEntree(EtapeIG etape) {
+        if(etape.estUneEntree()) { return true; }
+
+        for (EtapeIG predecesseur : etape.getPredecesseurs()) {
+            if(possedeEntree(predecesseur)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean possedeSortie(EtapeIG etape) {
+        if(etape.estUneSortie()) { return true; }
+
+        for (EtapeIG successeur : etape.getSuccesseurs()) {
+            if(possedeSortie(successeur)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

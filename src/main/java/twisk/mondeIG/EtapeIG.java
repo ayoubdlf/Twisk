@@ -287,6 +287,14 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
         this.predecesseurs.remove(etape);
     }
 
+    public ArrayList<EtapeIG> getSuccesseurs() {
+        return this.successeurs;
+    }
+
+    public ArrayList<EtapeIG> getPredecesseurs() {
+        return this.predecesseurs;
+    }
+
 
     // —————————— METHODES PRIVES ——————————
 

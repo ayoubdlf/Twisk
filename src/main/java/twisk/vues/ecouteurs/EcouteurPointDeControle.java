@@ -16,7 +16,7 @@ public class EcouteurPointDeControle implements EventHandler<MouseEvent> {
 
     /**
      * Constructeur de la classe EcouteurPointDeControle.
-     * 
+     *
      * @param monde Le monde.
      * @param vue   La vue.
      */
@@ -48,6 +48,13 @@ public class EcouteurPointDeControle implements EventHandler<MouseEvent> {
                 this.monde.notifierObservateurs();
                 return;
             }
+            // if(this.pdc.estUtilise()) {
+            //     VueTwiskException.alert("Ajout d'arc impossible", "Le point de controle est deja utilise par un arc");
+            //
+            //     this.monde.supprimerArcTemporaire();
+            //     this.monde.notifierObservateurs();
+            //     return;
+            // }
 
             try {
                 this.monde.ajouter(this.vue.getPointDeControle());
@@ -61,3 +68,4 @@ public class EcouteurPointDeControle implements EventHandler<MouseEvent> {
     }
 
 }
+

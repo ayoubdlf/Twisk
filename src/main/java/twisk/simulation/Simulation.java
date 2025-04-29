@@ -1,13 +1,14 @@
 package twisk.simulation;
 
 import twisk.monde.*;
+import twisk.mondeIG.SujetObserve;
 import twisk.outils.KitC;
 import java.util.*;
 
 /**
  * Classe Simulation pour la simulation de l'application Twisk.
  */
-public class Simulation {
+public class Simulation extends SujetObserve {
 
     private Monde monde;
     private KitC  kitC;

@@ -28,7 +28,7 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
 
     /**
      * Retourne un itérateur sur les étapes du monde.
-     * 
+     *
      * @return Un itérateur sur les étapes.
      */
     @Override
@@ -63,8 +63,8 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
      */
     public int getNbEtapesSelectionnees() {
         return (int) this.etapes.values().stream()
-            .filter(EtapeIG::estSelectionne)
-            .count();
+                .filter(EtapeIG::estSelectionne)
+                .count();
     }
 
     /**
@@ -74,13 +74,13 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
      */
     public int getNbArcsSelectionnes() {
         return (int) this.arcs.stream()
-            .filter(ArcIG::estSelectionne)
-            .count();
+                .filter(ArcIG::estSelectionne)
+                .count();
     }
 
     /**
      * Retourne le point de controle temporaire.
-     * 
+     *
      * @return Le point de controle temporaire.
      */
     public PointDeControleIG[] getArcTemporaire() {
@@ -89,7 +89,7 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
 
     /**
      * Retourne si les arcs sont en train d'être animés.
-     * 
+     *
      * @return Vrai si les arcs sont en train d'être animés, faux sinon.
      */
     public boolean estAnimationArcs() {
@@ -102,14 +102,14 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
 
     /**
      * Retourne l'étape sélectionnée.
-     * 
+     *
      * @return L'étape sélectionnée ou null si aucune étape n'est sélectionnée.
      */
     public EtapeIG getEtapeSelectionnee() {
         return this.etapes.values().stream()
-            .filter(EtapeIG::estSelectionne)
-            .findFirst()
-            .orElse(null);
+                .filter(EtapeIG::estSelectionne)
+                .findFirst()
+                .orElse(null);
     }
 
     /**
@@ -127,7 +127,7 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
 
     /**
      * Ajoute une étape de type spécifié au monde.
-     * 
+     *
      * @param type Le type de l'étape à ajouter (Activite ou Guichet).
      */
     public void ajouter(String type) {
@@ -144,7 +144,7 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
 
     /**
      * Ajoute un arc entre deux points de contrôle.
-     * 
+     *
      * @param p1 Le premier point de contrôle.
      * @param p2 Le deuxième point de contrôle.
      */
@@ -167,12 +167,16 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
         p1.setEstUtilise(true);
         p2.setEstUtilise(true);
 
+        // ajouter les successeurs / predecesseurs
+        p1.getEtape().ajouterSuccesseur(p2.getEtape());
+        p2.getEtape().ajouterPredecesseur(p1.getEtape());
+
         this.notifierObservateurs();
     }
 
     /**
      * Ajoute un point de controle temporaire.
-     * 
+     *
      * @param point Le point de controle temporaire à ajouter.
      */
     public void ajouter(PointDeControleIG point) throws TwiskException {
@@ -199,13 +203,13 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
 
     /**
      * Renomme les étapes sélectionnées avec le nom spécifié.
-     * 
+     *
      * @param nom Le nouveau nom à attribuer aux étapes sélectionnées.
      */
     public void renommerSelection(String nom) {
         this.etapes.values().stream()
-            .filter(EtapeIG::estSelectionne)
-            .forEach(etape -> etape.setNom(nom));
+                .filter(EtapeIG::estSelectionne)
+                .forEach(etape -> etape.setNom(nom));
 
         this.deselectionnerSelection();
         this.notifierObservateurs();
@@ -228,9 +232,9 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
      */
     public void supprimerEtapesSelectionnes() {
         List<EtapeIG> etapesASupprimer = this.etapes.values().stream()
-            .filter(EtapeIG::estSelectionne)
-            .toList();
-        
+                .filter(EtapeIG::estSelectionne)
+                .toList();
+
         for (EtapeIG etape : etapesASupprimer) {
             this.supprimerEtape(etape);
         }
@@ -246,8 +250,12 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
                 .forEach(arc -> {
                     arc.getP1().setEstUtilise(false);
                     arc.getP2().setEstUtilise(false);
+
+                    // on suprime les successeurs/predecesseurs lorsqu'on supprime un arc
+                    arc.getP1().getEtape().supprimerSuccesseur(arc.getP2().getEtape());
+                    arc.getP2().getEtape().supprimerPredecesseur(arc.getP1().getEtape());
                 });
-        
+
         this.arcs.removeIf(ArcIG::estSelectionne);
     }
 
@@ -261,14 +269,18 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
                 .forEach(arc -> {
                     arc.getP1().setEstUtilise(false);
                     arc.getP2().setEstUtilise(false);
+
+                    // on suprime les successeurs/predecesseurs lorsqu'on supprime un arc
+                    arc.getP1().getEtape().supprimerSuccesseur(arc.getP2().getEtape());
+                    arc.getP2().getEtape().supprimerPredecesseur(arc.getP1().getEtape());
                 });
-        
+
         this.arcs.removeIf(arc -> arc.getP1().getEtape().estSelectionne() || arc.getP2().getEtape().estSelectionne());
     }
 
     /**
      * Supprime une étape du monde.
-     * 
+     *
      * @param etape L'étape à supprimer.
      */
     public void supprimerEtape(EtapeIG etape) {
@@ -279,6 +291,10 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
             if(arc.getP1().getEtape().equals(etape) || arc.getP2().getEtape().equals(etape)) {
                 arc.getP1().setEstUtilise(false);
                 arc.getP2().setEstUtilise(false);
+
+                // on suprime les successeurs/predecesseurs lorsqu'on supprime un arc
+                arc.getP1().getEtape().supprimerSuccesseur(arc.getP2().getEtape());
+                arc.getP2().getEtape().supprimerPredecesseur(arc.getP1().getEtape());
             }
         });
 
@@ -316,8 +332,8 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
      */
     public void setSelectionCommeEntree() {
         this.etapes.values().stream()
-            .filter(EtapeIG::estSelectionne)
-            .forEach(etape -> etape.setEstUneEntree(!etape.estUneEntree()));
+                .filter(EtapeIG::estSelectionne)
+                .forEach(etape -> etape.setEstUneEntree(!etape.estUneEntree()));
 
         this.deselectionnerSelection();
         this.notifierObservateurs();
@@ -328,8 +344,8 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
      */
     public void setSelectionCommeSortie() {
         this.etapes.values().stream()
-            .filter(EtapeIG::estSelectionne)
-            .forEach(etape -> etape.setEstUneSortie(!etape.estUneSortie()));
+                .filter(EtapeIG::estSelectionne)
+                .forEach(etape -> etape.setEstUneSortie(!etape.estUneSortie()));
 
         this.deselectionnerSelection();
         this.notifierObservateurs();
@@ -337,7 +353,7 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
 
     /**
      * Définit si les arcs sont en train d'être animés.
-     * 
+     *
      * @param animationArcs Vrai si les arcs sont en train d'être animés, faux sinon.
      */
     public void setAnimationArcs(boolean animationArcs) {
@@ -348,7 +364,7 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
 
     /**
      * Crée une étape en fonction du type spécifié.
-     * 
+     *
      * @param type Le type de l'étape à créer.
      * @return L'étape créée ou null si le type est invalide.
      */
@@ -388,23 +404,31 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
             EtapeIG etape2 = arc.getP2().getEtape();
 
             if(
-                etape1.equals(p1.getEtape()) && etape2.equals(p2.getEtape()) ||
-                etape1.equals(p2.getEtape()) && etape2.equals(p1.getEtape())
+                    etape1.equals(p1.getEtape()) && etape2.equals(p2.getEtape()) ||
+                            etape1.equals(p2.getEtape()) && etape2.equals(p1.getEtape())
             ) {
                 throw new TwiskException("Le successeur est deja lie avec un arc à cette etape");
             }
         }
 
-        // Le successeur ne peut pas etre une entree
-        if(p2.getEtape().estUneEntree()) {
-            throw new TwiskException("Le successeur ne peut pas etre une entree");
+        // p1 et p2 font partie de la meme etape
+        if(p1.getEtape().equals(p2.getEtape())) {
+            throw new TwiskException("L'arc ne peut pas commencer et terminer dans la meme etape");
         }
 
-        // Une sortie ne peut pas avoir de successeurs
-        if(p1.getEtape().estUneSortie()) {
-            throw new TwiskException("Une sortie ne peut pas avoir de successeurs");
+        // Le successeur ne peut pas etre une entree
+        if(p2.getEtape().estUneEntree()) {
+            if(p2.getEtape().estUneEntree() && !p2.getEtape().estUneSortie()) {
+                throw new TwiskException("Le successeur ne peut pas etre une entree");
+            }
+
+            // Une sortie ne peut pas avoir de successeurs
+            if(p1.getEtape().estUneSortie()) {
+                throw new TwiskException("Une sortie ne peut pas avoir de successeurs");
+            }
+
         }
 
     }
-
 }
+

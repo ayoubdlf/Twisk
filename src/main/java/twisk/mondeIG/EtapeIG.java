@@ -1,6 +1,8 @@
 package twisk.mondeIG;
 
 import java.util.*;
+
+import twisk.monde.Etape;
 import twisk.outils.FabriqueIdentifiant;
 import static twisk.outils.TailleComposants.*;
 
@@ -15,11 +17,12 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
     protected PointDeControleIG[] pointsDeControle;
     private boolean estSelectionne;
     private boolean estUneEntree, estUneSortie, estUneActivite, estUnGuichet;
+    ArrayList<EtapeIG> predecesseurs, successeurs;
 
 
     /**
      * Constructeur de la classe EtapeIG.
-     * 
+     *
      * @param nom Le nom de l'étape.
      * @param largeur La largeur de l'étape.
      * @param hauteur La hauteur de l'étape.
@@ -41,6 +44,9 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
         this.estUneSortie     = false;
         this.estUneActivite   = false;
         this.estUnGuichet     = false;
+
+        this.successeurs      = new ArrayList<>();
+        this.predecesseurs    = new ArrayList<>();
     }
 
 
@@ -48,7 +54,7 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
 
     /**
      * Retourne le nom de l'étape.
-     * 
+     *
      * @return le nom de l'étape
      */
     public String getNom() {
@@ -57,7 +63,7 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
 
     /**
      * Retourne la largeur de l'étape.
-     * 
+     *
      * @return la largeur de l'étape
      */
     public int getLargeur() {
@@ -66,7 +72,7 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
 
     /**
      * Retourne la hauteur de l'étape.
-     * 
+     *
      * @return la hauteur de l'étape
      */
     public int getHauteur() {
@@ -75,7 +81,7 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
 
     /**
      * Retourne l'identifiant de l'étape.
-     * 
+     *
      * @return l'identifiant de l'étape
      */
     public String getIdentifiant() {
@@ -84,7 +90,7 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
 
     /**
      * Retourne la position de l'étape.
-     * 
+     *
      * @return un tableau contenant les coordonnées de la position
      */
     public int[] getPosition() {
@@ -93,7 +99,7 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
 
     /**
      * Indique si l'étape est sélectionnée.
-     * 
+     *
      * @return true si l'étape est sélectionnée, false sinon
      */
     public boolean estSelectionne() {
@@ -102,7 +108,7 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
 
     /**
      * Indique si l'étape est une entrée.
-     * 
+     *
      * @return true si l'étape est une entrée, false sinon
      */
     public boolean estUneEntree() {
@@ -111,7 +117,7 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
 
     /**
      * Indique si l'étape est une sortie.
-     * 
+     *
      * @return true si l'étape est une sortie, false sinon
      */
     public boolean estUneSortie() {
@@ -120,7 +126,7 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
 
     /**
      * Indique si l'étape est une activité.
-     * 
+     *
      * @return true si l'étape est une activité, false sinon
      */
     public boolean estUneActivite() {
@@ -129,7 +135,7 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
 
     /**
      * Indique si l'étape est un guichet.
-     * 
+     *
      * @return true si l'étape est un guichet, false sinon
      */
     public boolean estUnGuichet() {
@@ -138,7 +144,7 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
 
     /**
      * Retourne un itérateur sur les points de contrôle de l'étape.
-     * 
+     *
      * @return un itérateur sur les points de contrôle
      */
     public Iterator<PointDeControleIG> iterator() {
@@ -157,7 +163,7 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
 
     /**
      * Définit le nom de l'étape.
-     * 
+     *
      * @param nom le nom à définir, ne doit pas être nul ou vide
      */
     public void setNom(String nom) {
@@ -168,7 +174,7 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
 
     /**
      * Définit la largeur de l'étape.
-     * 
+     *
      * @param largeur la largeur à définir, doit être supérieure à 0
      */
     public void setLargeur(int largeur) {
@@ -179,7 +185,7 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
 
     /**
      * Définit la hauteur de l'étape.
-     * 
+     *
      * @param hauteur la hauteur à définir, doit être supérieure à 0
      */
     public void setHauteur(int hauteur) {
@@ -190,7 +196,7 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
 
     /**
      * Définit la position de l'étape.
-     * 
+     *
      * @param x la coordonnée x à définir
      * @param y la coordonnée y à définir
      */
@@ -201,7 +207,7 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
 
     /**
      * Définit si l'étape est sélectionnée.
-     * 
+     *
      * @param estSelectionne true pour sélectionner l'étape, false sinon
      */
     public void setEstSelectionne(boolean estSelectionne) {
@@ -210,7 +216,7 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
 
     /**
      * Définit si l'étape est une entrée.
-     * 
+     *
      * @param estUneEntree true si l'étape est une entrée, false sinon
      */
     public void setEstUneEntree(boolean estUneEntree) {
@@ -219,7 +225,7 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
 
     /**
      * Définit si l'étape est une sortie.
-     * 
+     *
      * @param estUneSortie true si l'étape est une sortie, false sinon
      */
     public void setEstUneSortie(boolean estUneSortie) {
@@ -228,7 +234,7 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
 
     /**
      * Définit si l'étape est une activité.
-     * 
+     *
      * @param estUneActivite true si l'étape est une activité, false sinon
      */
     public void setEstUneActivite(boolean estUneActivite) {
@@ -237,7 +243,7 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
 
     /**
      * Définit si l'étape est un guichet.
-     * 
+     *
      * @param estUnGuichet true si l'étape est un guichet, false sinon
      */
     public void setEstUnGuichet(boolean estUnGuichet) {
@@ -245,11 +251,48 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
     }
 
 
+    // —————————— METHODES PUBLIQUES ——————————
+
+    public void ajouterSuccesseur(EtapeIG etape) {
+        assert (etape != null) : "Les etapes ne doivent pas etre nulles";
+
+        this.successeurs.add(etape);
+    }
+
+    public void ajouterPredecesseur(EtapeIG etape) {
+        assert (etape != null) : "Les etapes ne doivent pas etre nulles";
+
+        this.predecesseurs.add(etape);
+    }
+
+    /**
+     * Supprime un successeur de cette étape.
+     *
+     * @param etape le successeur à supprimer, ne doit pas être nul
+     */
+    public void supprimerSuccesseur(EtapeIG etape) {
+        assert (etape != null) : "L'etape ne doit pas etre nulle";
+
+        this.successeurs.remove(etape);
+    }
+
+    /**
+     * Supprime un prédecesseur de cette étape.
+     *
+     * @param etape le prédecesseur à supprimer, ne doit pas être nul
+     */
+    public void supprimerPredecesseur(EtapeIG etape) {
+        assert (etape != null) : "L'etape ne doit pas etre nulle";
+
+        this.predecesseurs.remove(etape);
+    }
+
+
     // —————————— METHODES PRIVES ——————————
 
     /**
      * Retourne une position aléatoire.
-     * 
+     *
      * @param max la valeur maximale
      * @return une position aléatoire entre 0 et max
      */
@@ -262,3 +305,4 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
     }
 
 }
+

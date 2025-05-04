@@ -2,12 +2,8 @@ package twisk.simulation;
 
 import twisk.exceptions.MondeException;
 import twisk.monde.Monde;
-import twisk.mondeIG.EtapeIG;
-import twisk.mondeIG.MondeIG;
-import twisk.mondeIG.SujetObserve;
+import twisk.mondeIG.*;
 import twisk.vues.Observateur;
-
-import java.util.Iterator;
 
 
 public class SimulationIG implements Observateur {
@@ -18,13 +14,13 @@ public class SimulationIG implements Observateur {
 
 
     public SimulationIG(MondeIG mondeIG, Simulation simulation) {
-        assert (mondeIG != null) : "Le monde ne doit pas etre null";
+        assert (mondeIG != null)    : "Le monde ne doit pas etre null";
+        assert (simulation != null) : "La simulation ne doit pas etre nulle";
 
         this.mondeIG = mondeIG;
         this.monde   = null;
         this.simulation = simulation;
         this.simulation.ajouterObservateur(this);
-
     }
 
     public void simuler() throws MondeException {
@@ -33,10 +29,9 @@ public class SimulationIG implements Observateur {
 
         // Creation du monde
         this.monde = this.creerMonde();
-
     }
 
-    private void verifierMondeIG() throws MondeException {
+    public void verifierMondeIG() throws MondeException {
         // 1. Il y'a au moins une entree
         if(!this.auMoinsUneEntree()) {
             throw new MondeException("Le monde doit avoir au moins une entree");
@@ -47,50 +42,51 @@ public class SimulationIG implements Observateur {
             throw new MondeException("Le monde doit avoir au moins une sortie");
         }
 
-        // 3. Toute activite est accessible depuis une entree
         for (EtapeIG etape : this.mondeIG) {
-            if(!this.possedeEntree(etape)) {
+            // 3. Toute activite est accessible depuis une entree
+            if(!etape.estUneSortie() && !this.possedeEntree(etape)) {
                 throw new MondeException("Une etape du monde ne possede pas d'entree");
             }
-        }
 
-        // 4. Toute activite mene à une sortie
-        for (EtapeIG etape : this.mondeIG) {
-            if(!this.possedeSortie(etape)) {
+            // 4. Toute activite mene à une sortie
+            if(!etape.estUneSortie() && !this.possedeSortie(etape)) {
                 throw new MondeException("Une etape du monde ne possede pas de sortie");
             }
-        }
 
-        for (EtapeIG etape : this.mondeIG) {
+            // 5. Une sortie ne peut pas avoir de successeurs
+            if(etape.estUneSortie() && etape.getSuccesseurs().size() > 1) {
+                throw new MondeException("Une sortie ne peut pas avoir de successeurs");
+            }
+
             if(etape.estUnGuichet()) {
-                // 5. Un guichet ne peut pas etre une sortie
+                // 6. Un guichet ne peut pas etre une sortie
                 if(etape.estUneSortie()) {
                     throw new MondeException("Un guichet ne peut pas etre une sortie");
                 }
 
-                // 6. Apres un guichet une seule etape
+                // 7. Apres un guichet une seule etape
                 if(etape.getSuccesseurs().size() > 1) {
                     throw new MondeException("Un guichet ne peut posseder qu'une seule activite restreinte comme successeur");
                 }
 
-                // 7. Apres un guichet une unique activite restreinte
+                // 8. Apres un guichet une unique activite restreinte
                 if(!etape.getSuccesseurs().getFirst().estUneActivite()) {
                     throw new MondeException("Un guichet ne peut posseder qu'une seule activite restreinte comme successeur");
                 }
 
-                // 8. Une activite restreinte connait qu'une seule etape, un guichet
+                // 9. Une activite restreinte connait qu'une seule etape, un guichet
                 if(etape.getSuccesseurs().getFirst().estUneActivite() && etape.getPredecesseurs().size() > 1) {
                     throw new MondeException("Un guichet ne peut posseder qu'une seule activite restreinte comme successeur");
                 }
 
-                // 9. Une activite restreinte ne peut pas etre une entree
+                // 10. Une activite restreinte ne peut pas etre une entree
                 if(etape.getSuccesseurs().getFirst().estUneEntree()) {
                     throw new MondeException("Une activite restreinte ne peut pas etre une entree");
                 }
             }
         }
 
-        // 10. cycles
+        // 11. cycles
     }
 
     private Monde creerMonde() {

@@ -388,9 +388,10 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
     private void checkConditionsAjouter(PointDeControleIG p1, PointDeControleIG p2) throws TwiskException {
 
         // Point de controle deja utilise
-        if(p1.estUtilise() || p2.estUtilise()) {
-            throw new TwiskException("Le point de controle est deja utilise");
-        }
+        // TODO : necessaire ou pas?
+        // if(p1.estUtilise() || p2.estUtilise()) {
+        //     throw new TwiskException("Le point de controle est deja utilise");
+        // }
 
         // p1 et p2 font partie de la meme etape
         if(p1.getEtape().equals(p2.getEtape())) {
@@ -418,9 +419,10 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
 
         // Le successeur ne peut pas etre une entree
         if(p2.getEtape().estUneEntree()) {
-            if(p2.getEtape().estUneEntree() && !p2.getEtape().estUneSortie()) {
-                throw new TwiskException("Le successeur ne peut pas etre une entree");
-            }
+            // TODO: Cette condition sera check dans SimulationIG
+            // if(p2.getEtape().estUneEntree() && !p2.getEtape().estUneSortie()) {
+            //     throw new TwiskException("Le successeur ne peut pas etre une entree");
+            // }
 
             // Une sortie ne peut pas avoir de successeurs
             if(p1.getEtape().estUneSortie()) {

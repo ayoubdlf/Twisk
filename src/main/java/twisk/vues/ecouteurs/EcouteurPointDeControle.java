@@ -41,13 +41,6 @@ public class EcouteurPointDeControle implements EventHandler<MouseEvent> {
     public void handle(MouseEvent event) {
         if (event.getEventType() == MouseEvent.MOUSE_CLICKED) {
 
-            if(this.pdc.estUtilise()) {
-                VueTwiskException.alert("Ajout d'arc impossible", "Le point de controle est deja utilise par un arc");
-
-                this.monde.supprimerArcTemporaire();
-                this.monde.notifierObservateurs();
-                return;
-            }
             // if(this.pdc.estUtilise()) {
             //     VueTwiskException.alert("Ajout d'arc impossible", "Le point de controle est deja utilise par un arc");
             //

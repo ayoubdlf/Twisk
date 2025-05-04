@@ -1,15 +1,18 @@
 package twisk.simulation;
 
+import twisk.ClientTwisk;
 import twisk.exceptions.MondeException;
-import twisk.monde.Monde;
+import twisk.monde.*;
 import twisk.mondeIG.*;
+import twisk.outils.ClassLoaderPerso;
 import twisk.vues.Observateur;
+
+import java.lang.reflect.Method;
 
 
 public class SimulationIG implements Observateur {
 
     private MondeIG mondeIG;
-    private Monde   monde;
     private Simulation simulation;
 
 
@@ -17,8 +20,7 @@ public class SimulationIG implements Observateur {
         assert (mondeIG != null)    : "Le monde ne doit pas etre null";
         assert (simulation != null) : "La simulation ne doit pas etre nulle";
 
-        this.mondeIG = mondeIG;
-        this.monde   = null;
+        this.mondeIG    = mondeIG;
         this.simulation = simulation;
         this.simulation.ajouterObservateur(this);
     }
@@ -28,7 +30,31 @@ public class SimulationIG implements Observateur {
         this.verifierMondeIG();
 
         // Creation du monde
-        this.monde = this.creerMonde();
+        Monde monde = this.creerMonde();
+
+        // Simulation du monde
+        try {
+            ClassLoaderPerso loader = new ClassLoaderPerso(ClientTwisk.class.getClassLoader());
+            Class<?> simulation     = loader.loadClass("twisk.simulation.Simulation");
+            Object instance         = simulation.getDeclaredConstructor().newInstance();
+
+            Method setNbClients     = instance.getClass().getMethod("setNbClients", int.class);
+            Method simuler          = instance.getClass().getMethod("simuler", Monde.class);
+
+            setNbClients.invoke(instance, 5); // TODO: hard coded
+            simuler.invoke(instance, monde);
+
+            loader       = null;
+            simulation   = null;
+            instance     = null;
+            setNbClients = null;
+            simuler      = null;
+
+            System.gc();
+        } catch (Exception e) {
+            // TODO: exceptions
+            e.printStackTrace();
+        }
     }
 
     public void verifierMondeIG() throws MondeException {
@@ -45,12 +71,12 @@ public class SimulationIG implements Observateur {
         for (EtapeIG etape : this.mondeIG) {
             // 3. Toute activite est accessible depuis une entree
             if(!etape.estUneSortie() && !this.possedeEntree(etape)) {
-                throw new MondeException("Une etape du monde ne possede pas d'entree");
+                throw new MondeException("Chaque etape du monde doit etre accessible par une entree");
             }
 
             // 4. Toute activite mene à une sortie
             if(!etape.estUneSortie() && !this.possedeSortie(etape)) {
-                throw new MondeException("Une etape du monde ne possede pas de sortie");
+                throw new MondeException("Chaque etape du monde doit mener à une sortie");
             }
 
             // 5. Une sortie ne peut pas avoir de successeurs
@@ -58,24 +84,24 @@ public class SimulationIG implements Observateur {
                 throw new MondeException("Une sortie ne peut pas avoir de successeurs");
             }
 
+            // 6. Une activite restreinte ne peut posseder qu'un seul et unique guichet comme predecesseur
+            if(etape.estUneActivite() && etape.getPredecesseurs().size() > 1 && etape.getPredecesseurs().getFirst().estUnGuichet()) {
+                throw new MondeException("Une activite restreinte connait un seul et unique guichet");
+            }
+
             if(etape.estUnGuichet()) {
-                // 6. Un guichet ne peut pas etre une sortie
+                // 7. Un guichet ne peut pas etre une sortie
                 if(etape.estUneSortie()) {
                     throw new MondeException("Un guichet ne peut pas etre une sortie");
                 }
 
-                // 7. Apres un guichet une seule etape
+                // 8. Apres un guichet une seule etape
                 if(etape.getSuccesseurs().size() > 1) {
                     throw new MondeException("Un guichet ne peut posseder qu'une seule activite restreinte comme successeur");
                 }
 
-                // 8. Apres un guichet une unique activite restreinte
+                // 9. Apres un guichet une unique activite restreinte
                 if(!etape.getSuccesseurs().getFirst().estUneActivite()) {
-                    throw new MondeException("Un guichet ne peut posseder qu'une seule activite restreinte comme successeur");
-                }
-
-                // 9. Une activite restreinte connait qu'une seule etape, un guichet
-                if(etape.getSuccesseurs().getFirst().estUneActivite() && etape.getPredecesseurs().size() > 1) {
                     throw new MondeException("Un guichet ne peut posseder qu'une seule activite restreinte comme successeur");
                 }
 
@@ -90,11 +116,34 @@ public class SimulationIG implements Observateur {
     }
 
     private Monde creerMonde() {
-        return null;
-    }
+        CorrespondancesEtapes correspondancesEtapes = new CorrespondancesEtapes();
+        Monde monde = new Monde();
 
-    @Override
-    public void reagir() {}
+        // Creation des etapes
+        for (EtapeIG etapeIG : this.mondeIG) {
+            correspondancesEtapes.ajouter(etapeIG, this.transformerEtapeIGEnEtape(etapeIG));
+        }
+
+        // Definition des successeurs
+        for (EtapeIG etapeIG : this.mondeIG) {
+            for (EtapeIG successeurIG : etapeIG.getSuccesseurs()) {
+                correspondancesEtapes.get(etapeIG).ajouterSuccesseur(correspondancesEtapes.get(successeurIG));
+            }
+        }
+
+        // Ajout des etapes dans le monde
+        for (EtapeIG etapeIG : this.mondeIG) {
+            monde.ajouter(correspondancesEtapes.get(etapeIG));
+        }
+
+        // Ajout des entrees/sorties dans le monde
+        for (EtapeIG etapeIG : this.mondeIG) {
+            if(etapeIG.estUneEntree()) { monde.aCommeEntree(correspondancesEtapes.get(etapeIG)); }
+            if(etapeIG.estUneSortie()) { monde.aCommeSortie(correspondancesEtapes.get(etapeIG)); }
+        }
+
+        return monde;
+    }
 
     private boolean auMoinsUneEntree() {
         for (EtapeIG etape : this.mondeIG) {
@@ -139,4 +188,29 @@ public class SimulationIG implements Observateur {
 
         return false;
     }
+
+    private Etape transformerEtapeIGEnEtape(EtapeIG etapeIG) {
+
+        if (etapeIG.estUneEntree() || etapeIG.estUneSortie() || etapeIG.estUneActivite()) {
+            ActiviteIG activiteIG = (ActiviteIG) etapeIG;
+
+            // Activite Restreinte
+            if(!etapeIG.getPredecesseurs().isEmpty() && etapeIG.getPredecesseurs().getFirst().estUnGuichet()) {
+                return new ActiviteRestreinte(activiteIG.getNom(), activiteIG.getTemps(), activiteIG.getEcartTemps());
+            }
+
+            // Entree ou Sortie ou Activite
+            return new Activite(activiteIG.getNom(), activiteIG.getTemps(), activiteIG.getEcartTemps());
+        }
+
+        if (etapeIG.estUnGuichet()) {
+            GuichetIG guichetIG = (GuichetIG) etapeIG;
+            return new Guichet(guichetIG.getNom(), guichetIG.getJetons());
+        }
+
+        return null;
+    }
+
+    @Override
+    public void reagir() {}
 }

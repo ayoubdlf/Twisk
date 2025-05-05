@@ -6,9 +6,7 @@ import twisk.monde.*;
 import twisk.mondeIG.*;
 import twisk.outils.ClassLoaderPerso;
 import twisk.vues.Observateur;
-
 import java.lang.reflect.Method;
-import java.util.HashMap;
 
 
 public class SimulationIG implements Observateur {
@@ -16,6 +14,7 @@ public class SimulationIG implements Observateur {
     private MondeIG mondeIG;
     private Simulation simulation;
     private Monde monde;
+    private CorrespondancesEtapes correspondancesEtapes;
 
 
     public SimulationIG(MondeIG mondeIG, Simulation simulation) {
@@ -25,7 +24,10 @@ public class SimulationIG implements Observateur {
         this.mondeIG    = mondeIG;
         this.monde      = null;
         this.simulation = simulation;
-        this.simulation.ajouterObservateur(this);
+        this.correspondancesEtapes = null;
+
+        this.mondeIG.ajouterObservateur(this);
+        // this.simulation.ajouterObservateur(this);// TODO: à enlever?
     }
 
     public void simuler() throws MondeException {
@@ -119,7 +121,7 @@ public class SimulationIG implements Observateur {
     }
 
     private Monde creerMonde() {
-        CorrespondancesEtapes correspondancesEtapes = new CorrespondancesEtapes();
+        correspondancesEtapes = new CorrespondancesEtapes();
         Monde monde = new Monde();
 
         // Creation des etapes
@@ -215,8 +217,19 @@ public class SimulationIG implements Observateur {
     }
 
     private void updatePositionClients() {
-        for (EtapeIG etapeIG : this.mondeIG) {
+        for (EtapeIG etape : this.mondeIG) {
+            etape.supprimerClients();
+        }
 
+        // mise a jour de la position des clients dans les differentes etapes
+        for (Client client : this.simulation.getGestionnaireClients()) {
+            Etape etape = client.getEtape();
+            if (etape != null) {
+                EtapeIG etapeIG = this.correspondancesEtapes.get(etape);
+                if (etapeIG != null) {
+                    etapeIG.getClients().add(client);
+                }
+            }
         }
     }
 

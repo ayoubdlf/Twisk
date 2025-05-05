@@ -4,6 +4,8 @@ import java.util.*;
 
 import twisk.monde.Etape;
 import twisk.outils.FabriqueIdentifiant;
+import twisk.simulation.Client;
+
 import static twisk.outils.TailleComposants.*;
 
 
@@ -18,7 +20,7 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
     private boolean estSelectionne;
     private boolean estUneEntree, estUneSortie, estUneActivite, estUnGuichet;
     ArrayList<EtapeIG> predecesseurs, successeurs;
-    private ArrayList<Integer> client = new ArrayList<>();
+    private ArrayList<Client> clients;
 
 
     /**
@@ -48,6 +50,7 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
 
         this.successeurs      = new ArrayList<>();
         this.predecesseurs    = new ArrayList<>();
+        this.clients          = new ArrayList<>();
     }
 
 
@@ -152,9 +155,10 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
         return Arrays.stream(this.pointsDeControle).iterator();
     }
 
-    public ArrayList<Integer> getClients() {
-        return this.client;
+    public ArrayList<Client> getClients() {
+        return this.clients;
     }
+
     /**
      * Retourne une chaîne de caractères représentant l'étape.
      *
@@ -254,6 +258,9 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
         this.estUnGuichet = estUnGuichet;
     }
 
+    public void setClients(ArrayList<Client> clients) {
+        this.clients = clients;
+    }
 
     // —————————— METHODES PUBLIQUES ——————————
 
@@ -299,11 +306,8 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
         return this.predecesseurs;
     }
 
-    public void ajouterClient(int id) {
-        this.client.add(id);
-    }
     public void supprimerClients() {
-        this.client.clear();
+        this.clients.clear();
     }
 
 

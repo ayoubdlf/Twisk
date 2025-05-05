@@ -34,8 +34,8 @@ public class Simulation extends SujetObserve {
         return this.nbClients;
     }
 
-    public int[] getPositionsClients() {
-        return ou_sont_les_clients(this.monde.nbEtapes(), this.nbClients);
+    public GestionnaireClients getGestionnaireClients() {
+        return this.gestionnaireClients;
     }
 
     /* —————————— SETTERS —————————— */

@@ -7,17 +7,24 @@ import java.util.HashMap;
 
 public class CorrespondancesEtapes {
 
-    HashMap<EtapeIG, Etape> etapes;
+    private HashMap<EtapeIG, Etape> etapes;
+    private HashMap<Etape, EtapeIG> etapesIG;
 
     public CorrespondancesEtapes() {
-        this.etapes = new HashMap<>();
+        this.etapes   = new HashMap<>();
+        this.etapesIG = new HashMap<>();
     }
 
     public void ajouter(EtapeIG etapeIG, Etape etape) {
         this.etapes.put(etapeIG, etape);
+        this.etapesIG.put(etape, etapeIG);
     }
 
     public Etape get(EtapeIG etapeIG) {
         return this.etapes.get(etapeIG);
+    }
+
+    public EtapeIG get(Etape etape) {
+        return this.etapesIG.get(etape);
     }
 }

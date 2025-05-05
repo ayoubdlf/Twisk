@@ -82,7 +82,12 @@ public class VueActiviteIG extends VueEtapeIG {
         VBox.setVgrow(body, Priority.ALWAYS);
         body.getStyleClass().add("vue-activite-body");
 
-        for (Client client : )
+        for (Client client : etape.getClients()) {
+            // TODO: RANG
+            VueClient vueClient = new VueClient();
+            // vueClient.getStyleClass().add("client-circle"); // TODO:
+            body.getChildren().add(vueClient);
+        }
 
         this.getChildren().add(body);
     }

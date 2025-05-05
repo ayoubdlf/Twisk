@@ -5,6 +5,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.shape.SVGPath;
 import twisk.mondeIG.*;
+import twisk.simulation.Client;
+
 import java.util.ArrayList;
 
 
@@ -79,6 +81,8 @@ public class VueActiviteIG extends VueEtapeIG {
         HBox body = new HBox();
         VBox.setVgrow(body, Priority.ALWAYS);
         body.getStyleClass().add("vue-activite-body");
+
+        for (Client client : )
 
         this.getChildren().add(body);
     }

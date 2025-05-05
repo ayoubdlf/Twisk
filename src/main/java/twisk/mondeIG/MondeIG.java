@@ -428,7 +428,6 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
             if(p1.getEtape().estUneSortie()) {
                 throw new TwiskException("Une sortie ne peut pas avoir de successeurs");
             }
-
         }
 
     }

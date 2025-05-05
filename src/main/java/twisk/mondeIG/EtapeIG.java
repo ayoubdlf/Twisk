@@ -18,6 +18,7 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
     private boolean estSelectionne;
     private boolean estUneEntree, estUneSortie, estUneActivite, estUnGuichet;
     ArrayList<EtapeIG> predecesseurs, successeurs;
+    private ArrayList<Integer> client = new ArrayList<>();
 
 
     /**
@@ -151,6 +152,9 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
         return Arrays.stream(this.pointsDeControle).iterator();
     }
 
+    public ArrayList<Integer> getClients() {
+        return this.client;
+    }
     /**
      * Retourne une chaîne de caractères représentant l'étape.
      *
@@ -294,6 +298,14 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
     public ArrayList<EtapeIG> getPredecesseurs() {
         return this.predecesseurs;
     }
+
+    public void ajouterClient(int id) {
+        this.client.add(id);
+    }
+    public void supprimerClients() {
+        this.client.clear();
+    }
+
 
 
     // —————————— METHODES PRIVES ——————————

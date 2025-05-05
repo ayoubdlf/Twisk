@@ -11,4 +11,5 @@ public class TailleComposants {
 
     // —————————— POINT DE CONTROLE ——————————
     public static final int POINT_DE_CONTROLE_RADIUS  = 8;
+    public static final int CLIENT_RADIUS             = 8;
 }

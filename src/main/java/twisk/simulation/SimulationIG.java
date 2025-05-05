@@ -8,12 +8,14 @@ import twisk.outils.ClassLoaderPerso;
 import twisk.vues.Observateur;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
 
 
 public class SimulationIG implements Observateur {
 
     private MondeIG mondeIG;
     private Simulation simulation;
+    private Monde monde;
 
 
     public SimulationIG(MondeIG mondeIG, Simulation simulation) {
@@ -21,6 +23,7 @@ public class SimulationIG implements Observateur {
         assert (simulation != null) : "La simulation ne doit pas etre nulle";
 
         this.mondeIG    = mondeIG;
+        this.monde      = null;
         this.simulation = simulation;
         this.simulation.ajouterObservateur(this);
     }
@@ -30,7 +33,7 @@ public class SimulationIG implements Observateur {
         this.verifierMondeIG();
 
         // Creation du monde
-        Monde monde = this.creerMonde();
+        this.monde = this.creerMonde();
 
         // Simulation du monde
         try {
@@ -211,6 +214,14 @@ public class SimulationIG implements Observateur {
         return null;
     }
 
+    private void updatePositionClients() {
+        for (EtapeIG etapeIG : this.mondeIG) {
+
+        }
+    }
+
     @Override
-    public void reagir() {}
+    public void reagir() {
+        this.updatePositionClients();
+    }
 }

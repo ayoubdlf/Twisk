@@ -9,7 +9,7 @@ import static twisk.outils.TailleComposants.POINT_DE_CONTROLE_RADIUS;
 
 public class VueLigneDroiteIG extends VueArcIG {
 
-    private Line     line;
+    private Line line;
     private Polyline polyline;
 
 

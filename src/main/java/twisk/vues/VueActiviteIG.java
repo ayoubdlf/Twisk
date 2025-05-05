@@ -1,5 +1,6 @@
 package twisk.vues;
 
+import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
@@ -27,11 +28,21 @@ public class VueActiviteIG extends VueEtapeIG {
 
     @Override
     public void draw() {
-        this.getChildren().clear();
+        VueActiviteIG vueActiviteIG = this;
 
-        this.initStyle();
-        this.drawHeader();
-        this.drawBody();
+        Runnable command = () -> {
+            vueActiviteIG.getChildren().clear();
+
+            vueActiviteIG.initStyle();
+            vueActiviteIG.drawHeader();
+            vueActiviteIG.drawBody();
+        };
+
+        if(Platform.isFxApplicationThread()) {
+            command.run();
+        } else {
+            Platform.runLater(command);
+        }
     }
 
 

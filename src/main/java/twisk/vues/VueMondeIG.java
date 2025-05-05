@@ -1,5 +1,6 @@
 package twisk.vues;
 
+import javafx.application.Platform;
 import javafx.scene.Cursor;
 import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
@@ -54,10 +55,20 @@ public class VueMondeIG extends Pane implements Observateur {
      * Dessine la vue.
      */
     private void draw() {
-        this.getChildren().clear();
+        VueMondeIG vueMondeIG = this;
 
-        this.drawArcs();
-        this.drawEtapes();
+        Runnable command = () -> {
+            vueMondeIG.getChildren().clear();
+
+            vueMondeIG.drawArcs();
+            vueMondeIG.drawEtapes();
+        };
+
+        if(Platform.isFxApplicationThread()) {
+            command.run();
+        } else {
+            Platform.runLater(command);
+        }
     }
 
     /**

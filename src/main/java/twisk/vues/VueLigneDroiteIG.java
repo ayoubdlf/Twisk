@@ -1,5 +1,6 @@
 package twisk.vues;
 
+import javafx.application.Platform;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.*;
 import twisk.mondeIG.*;
@@ -27,8 +28,18 @@ public class VueLigneDroiteIG extends VueArcIG {
 
     @Override
     public void draw() {
-        this.drawLine();
-        this.drawPolyline();
+        VueLigneDroiteIG vueLigneDroiteIG = this;
+
+        Runnable command = () -> {
+            vueLigneDroiteIG.drawLine();
+            vueLigneDroiteIG.drawPolyline();
+        };
+
+        if(Platform.isFxApplicationThread()) {
+            command.run();
+        } else {
+            Platform.runLater(command);
+        }
     }
 
 

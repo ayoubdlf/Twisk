@@ -1,10 +1,12 @@
 package twisk.simulation;
 
+import javafx.concurrent.Task;
 import twisk.ClientTwisk;
 import twisk.exceptions.MondeException;
 import twisk.monde.*;
 import twisk.mondeIG.*;
 import twisk.outils.ClassLoaderPerso;
+import twisk.outils.ThreadsManager;
 import twisk.vues.Observateur;
 import java.lang.reflect.Method;
 
@@ -38,28 +40,37 @@ public class SimulationIG implements Observateur {
         this.monde = this.creerMonde();
 
         // Simulation du monde
-        try {
-            ClassLoaderPerso loader = new ClassLoaderPerso(ClientTwisk.class.getClassLoader());
-            Class<?> simulation     = loader.loadClass("twisk.simulation.Simulation");
-            Object instance         = simulation.getDeclaredConstructor().newInstance();
 
-            Method setNbClients     = instance.getClass().getMethod("setNbClients", int.class);
-            Method simuler          = instance.getClass().getMethod("simuler", Monde.class);
+        Task<Void> task = new Task<>() {
+            @Override
+            protected Void call() throws MondeException {
+                try {
+                    ClassLoaderPerso loader = new ClassLoaderPerso(ClientTwisk.class.getClassLoader());
+                    Class<?> simulation = loader.loadClass("twisk.simulation.Simulation");
+                    Object instance = simulation.getDeclaredConstructor().newInstance();
 
-            setNbClients.invoke(instance, 5); // TODO: hard coded
-            simuler.invoke(instance, monde);
+                    Method setNbClients = instance.getClass().getMethod("setNbClients", int.class);
+                    Method simuler = instance.getClass().getMethod("simuler", Monde.class);
 
-            loader       = null;
-            simulation   = null;
-            instance     = null;
-            setNbClients = null;
-            simuler      = null;
+                    setNbClients.invoke(instance, 5); // TODO: hard coded
+                    simuler.invoke(instance, monde);
 
-            System.gc();
-        } catch (Exception e) {
-            // TODO: exceptions
-            e.printStackTrace();
-        }
+                    loader = null;
+                    simulation = null;
+                    instance = null;
+                    setNbClients = null;
+                    simuler = null;
+
+                    System.gc();
+                } catch (Exception e) {
+                    throw new MondeException("Erreur lors de la simulation du monde");
+                }
+
+                return null;
+            }
+        };
+
+        ThreadsManager.getInstance().lancer(task);
     }
 
     public void verifierMondeIG() throws MondeException {

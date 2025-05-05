@@ -1,5 +1,6 @@
 package twisk.vues;
 
+import javafx.application.Platform;
 import javafx.scene.input.MouseEvent;
 import twisk.mondeIG.*;
 import javafx.scene.shape.*;
@@ -32,8 +33,18 @@ public class VueCourbeIG extends VueArcIG {
 
     @Override
     public void draw() {
-        this.drawCourbe();
-        this.drawPolyline();
+        VueCourbeIG vueCourbeIG = this;
+
+        Runnable command = () -> {
+            vueCourbeIG.drawCourbe();
+            vueCourbeIG.drawPolyline();
+        };
+
+        if(Platform.isFxApplicationThread()) {
+            command.run();
+        } else {
+            Platform.runLater(command);
+        }
     }
 
 

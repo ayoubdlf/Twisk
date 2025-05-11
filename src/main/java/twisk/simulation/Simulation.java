@@ -14,12 +14,14 @@ public class Simulation extends SujetObserve {
     private KitC  kitC;
     private int   nbClients;
     private GestionnaireClients gestionnaireClients;
+    private int[] positionClients;
 
 
     public Simulation() {
         this.kitC                = new KitC();
         this.nbClients           = 0;
         this.gestionnaireClients = new GestionnaireClients();
+        this.positionClients     = null;
 
         kitC.creerEnvironnement();
     }
@@ -79,9 +81,10 @@ public class Simulation extends SujetObserve {
 
         int[] simulation       = start_simulation(nbEtapes, nbGuichets, this.getNbClients(), tabJetonsGuichet);
 
-        this.afficherListeClients(nbEtapes, this.getNbClients());
+        this.afficherListeClients(simulation, this.getNbClients());
         this.afficherPositionsClients(nbEtapes, this.getNbClients());
 
+        this.gestionnaireClients.nettoyer();
         this.nettoyage();
     }
 
@@ -103,16 +106,12 @@ public class Simulation extends SujetObserve {
         return tabJetonsGuichets.stream().mapToInt(Integer::intValue).toArray();
     }
 
-    private void afficherListeClients(int NB_ETAPES, int NB_CLIENTS) {
-        int[] positions  = ou_sont_les_clients(NB_ETAPES , NB_CLIENTS);
-
-        int[] tabClients = new int[NB_CLIENTS]; // tableau contenant uniquement le pid des clients (utilse pour gestionnaireClients)
-        System.arraycopy(positions, 1, tabClients, 0, NB_CLIENTS);
-        this.gestionnaireClients.setClients(tabClients);
+    private void afficherListeClients(int[] pids, int NB_CLIENTS) {
+        this.gestionnaireClients.setClients(pids);
 
         System.out.print("pids des clients : ");
         for (int i = 0; i < NB_CLIENTS; i++) {
-            System.out.printf("%d%s", tabClients[i], (i < NB_CLIENTS - 1) ? ", " : ""); // Si on est dans le dernier client, n'affiche pas la virgule
+            System.out.printf("%d%s", pids[i], (i < NB_CLIENTS - 1) ? ", " : ""); // Si on est dans le dernier client, n'affiche pas la virgule
         }
 
         System.out.print("\n\n");
@@ -128,33 +127,31 @@ public class Simulation extends SujetObserve {
     }
 
     private void afficherPositionsClients(int NB_ETAPES, int NB_CLIENTS) {
-        int[] positions;
-
         while(true) {
             try {
-                positions = ou_sont_les_clients(NB_ETAPES, NB_CLIENTS);
+                this.positionClients = ou_sont_les_clients(NB_ETAPES, NB_CLIENTS);
                 // System.out.println(Arrays.toString(positions));
 
                 for (int i = 0; i < NB_ETAPES; i++) {
-                    int nbClients = positions[this.monde.getEtape(i).getIdEtape() * (NB_CLIENTS + 1)];
+                    int nbClients = this.positionClients[this.monde.getEtape(i).getIdEtape() * (NB_CLIENTS + 1)];
 
                     this.afficherEtape(i, nbClients);
 
                     for (int j = 0; j < nbClients; j++) {
-                        int client = positions[this.monde.getEtape(i).getIdEtape() * (NB_CLIENTS + 1) + (j + 1)];
+                        int client = this.positionClients[this.monde.getEtape(i).getIdEtape() * (NB_CLIENTS + 1) + (j + 1)];
                         System.out.printf("%d%s", client, ((j+1) < nbClients) ? ", " : "");
 
-                        this.gestionnaireClients.allerA(client, this.monde.getEtape(i), j);
+                        this.gestionnaireClients.allerA(client, this.monde.getEtape(i), j+1);
                     }
 
                     System.out.print("\n");
-
                 }
 
                 if(estTouteEtapeDansSortie(NB_ETAPES, NB_CLIENTS)) { break; }
 
                 System.out.println(); // nouvelle ligne entre chaque seconde
 
+                this.notifierObservateurs();
                 Thread.sleep(1000); // 1000ms
 
             } catch (InterruptedException ignored) {
@@ -162,6 +159,7 @@ public class Simulation extends SujetObserve {
         }
 
         System.out.println("\nsimulation terminee.");
+        this.notifierObservateurs();
     }
 
     /* —————————— FONCTIONS NATIVES —————————— */

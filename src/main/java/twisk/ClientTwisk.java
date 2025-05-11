@@ -44,7 +44,6 @@ public class ClientTwisk {
 
             System.gc();
         } catch (Exception e) {
-            // TODO: exceptions
             e.printStackTrace();
         }
     }

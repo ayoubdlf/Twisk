@@ -10,7 +10,6 @@ public class ThreadsManager {
     private static ArrayList<Thread> threads;
 
     private ThreadsManager() {
-        instance = null;
         threads  = new ArrayList<>();
     }
 
@@ -34,6 +33,7 @@ public class ThreadsManager {
             thread.interrupt();
         }
 
+        threads.clear();
         instance = null;
     }
 

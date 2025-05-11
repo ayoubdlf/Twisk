@@ -207,6 +207,17 @@
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 0);
 }
 
+.vue-etape-body {
+    fx-background-color: white;
+    -fx-padding: 4 12;
+    -fx-border-color: gray-200;
+    -fx-border-width: 1;
+    -fx-border-style: dashed;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-spacing: 4;
+}
+
 /* VUE-ACTIVITE */
 .vue-activite {}
 
@@ -229,6 +240,7 @@
     -fx-border-style: dashed;
     -fx-border-radius: 10;
     -fx-background-radius: 10;
+    -fx-spacing: 4;
 }
 
 .vue-activite-temps {
@@ -575,4 +587,13 @@
     -fx-tick-label-fill: black-800;
     -fx-tick-length: 5;
     -fx-minor-tick-length: 3;
+}
+
+
+/* CLIENT */
+
+.client-circle {
+    -fx-cursor: pointer;
+    /*-fx-stroke: gray-200;*/
+    /*-fx-stroke-width: 0.5;*/
 }

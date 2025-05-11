@@ -1,5 +1,6 @@
 package twisk.simulation;
 
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import twisk.ClientTwisk;
 import twisk.exceptions.MondeException;
@@ -9,27 +10,24 @@ import twisk.outils.ClassLoaderPerso;
 import twisk.outils.ThreadsManager;
 import twisk.vues.Observateur;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 
 public class SimulationIG implements Observateur {
 
     private MondeIG mondeIG;
-    private Simulation simulation;
     private Monde monde;
     private CorrespondancesEtapes correspondancesEtapes;
+    Object simulation;
 
 
-    public SimulationIG(MondeIG mondeIG, Simulation simulation) {
+    public SimulationIG(MondeIG mondeIG) {
         assert (mondeIG != null)    : "Le monde ne doit pas etre null";
-        assert (simulation != null) : "La simulation ne doit pas etre nulle";
 
-        this.mondeIG    = mondeIG;
-        this.monde      = null;
-        this.simulation = simulation;
+        this.mondeIG               = mondeIG;
+        this.monde                 = null;
         this.correspondancesEtapes = null;
-
-        this.mondeIG.ajouterObservateur(this);
-        // this.simulation.ajouterObservateur(this);// TODO: à enlever?
+        this.simulation            = null;
     }
 
     public void simuler() throws MondeException {
@@ -41,25 +39,29 @@ public class SimulationIG implements Observateur {
 
         // Simulation du monde
 
+        SimulationIG classeActuelle = this; // on peut pas faire utiliser le `this` dans `ajouterObservateur.invoke(instance, this)`, du coup on le definis avant le Task
+
         Task<Void> task = new Task<>() {
             @Override
             protected Void call() throws MondeException {
                 try {
-                    ClassLoaderPerso loader = new ClassLoaderPerso(ClientTwisk.class.getClassLoader());
-                    Class<?> simulation = loader.loadClass("twisk.simulation.Simulation");
-                    Object instance = simulation.getDeclaredConstructor().newInstance();
+                    ClassLoaderPerso loader   = new ClassLoaderPerso(SimulationIG.class.getClassLoader());
+                    Class<?> simulationClass  = loader.loadClass("twisk.simulation.Simulation");
+                    simulation                = simulationClass.getDeclaredConstructor().newInstance();
 
-                    Method setNbClients = instance.getClass().getMethod("setNbClients", int.class);
-                    Method simuler = instance.getClass().getMethod("simuler", Monde.class);
+                    Method ajouterObservateur = simulation.getClass().getMethod("ajouterObservateur", Observateur.class);
+                    Method setNbClients       = simulation.getClass().getMethod("setNbClients", int.class);
+                    Method simuler            = simulation.getClass().getMethod("simuler", Monde.class);
 
-                    setNbClients.invoke(instance, 5); // TODO: hard coded
-                    simuler.invoke(instance, monde);
+                    ajouterObservateur.invoke(simulation, classeActuelle);
+                    setNbClients.invoke(simulation, 5); // TODO: hard coded
+                    simuler.invoke(simulation, monde);
 
-                    loader = null;
-                    simulation = null;
-                    instance = null;
-                    setNbClients = null;
-                    simuler = null;
+                    loader          = null;
+                    simulationClass = null;
+                    simulation      = null;
+                    setNbClients    = null;
+                    simuler         = null;
 
                     System.gc();
                 } catch (Exception e) {
@@ -227,25 +229,28 @@ public class SimulationIG implements Observateur {
         return null;
     }
 
-    private void updatePositionClients() {
-        for (EtapeIG etape : this.mondeIG) {
-            etape.supprimerClients();
-        }
-
-        // mise a jour de la position des clients dans les differentes etapes
-        for (Client client : this.simulation.getGestionnaireClients()) {
-            Etape etape = client.getEtape();
-            if (etape != null) {
-                EtapeIG etapeIG = this.correspondancesEtapes.get(etape);
-                if (etapeIG != null) {
-                    etapeIG.getClients().add(client);
-                }
-            }
-        }
-    }
-
     @Override
     public void reagir() {
-        this.updatePositionClients();
+        try {
+            Method classe = this.simulation.getClass().getMethod("getGestionnaireClients");
+            GestionnaireClients getGestionnaireClients = (GestionnaireClients) classe.invoke(this.simulation);
+
+            // On supprime les clients d'avant
+            for (EtapeIG etapeIG : this.mondeIG) {
+                etapeIG.supprimerClients();
+            }
+
+            for (Client client : getGestionnaireClients) {
+                Etape etape = client.getEtape();
+                if (etape != null) {
+                    EtapeIG etapeIG = this.correspondancesEtapes.get(etape);
+                    if (etapeIG != null) {
+                        etapeIG.ajouterClient(client);
+                    }
+                }
+            }
+
+            this.mondeIG.notifierObservateurs(); // TODO: est-ce correct the ne pas avoir de this.mondeIG.ajouterObservateur(this) et de mettre ca ici? (OUI pour moi)
+        } catch (Exception ignored) {}
     }
 }

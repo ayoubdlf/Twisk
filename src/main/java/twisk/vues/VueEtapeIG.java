@@ -6,7 +6,10 @@ import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.shape.*;
 import twisk.mondeIG.*;
+import twisk.simulation.Client;
 import twisk.vues.ecouteurs.EcouteurEtape;
+
+import java.util.ArrayList;
 
 
 public abstract class VueEtapeIG extends VBox {
@@ -100,6 +103,31 @@ public abstract class VueEtapeIG extends VBox {
             event.consume();
         });
 
+    }
+
+    /**
+     * Dessine les clients de l'etape.
+     */
+    protected void drawBody() {
+        HBox body = new HBox();
+        VBox.setVgrow(body, Priority.ALWAYS);
+        body.getStyleClass().add("vue-etape-body");
+
+        ArrayList<Client> clients = new ArrayList<>(this.etape.getClients());
+        clients.sort((c1, c2) -> c2.getRang() - c1.getRang());  // du plus grand rang, au plus petit rang
+
+        body.getChildren().clear();
+        for (Client client : clients) {
+            VueClient vueClient = new VueClient(this.monde, client);
+            body.getChildren().add(vueClient);
+
+            // Afficher le rang au centre
+            // Label rangTexte = new Label(Integer.toString(client.getRang()));
+            // StackPane stack = new StackPane(vueClient, rangTexte);
+            // body.getChildren().add(stack);
+        }
+
+        this.getChildren().add(body);
     }
 
     protected SVGPath getIconeEntree() {

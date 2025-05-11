@@ -6,7 +6,10 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.shape.SVGPath;
 import twisk.mondeIG.*;
+import twisk.simulation.Client;
+
 import java.util.ArrayList;
+import java.util.Comparator;
 
 
 public class VueGuichetIG extends VueEtapeIG {
@@ -82,18 +85,6 @@ public class VueGuichetIG extends VueEtapeIG {
         header.getChildren().addAll(nodes);
         this.getChildren().add(header);
     }
-
-    /**
-     * Dessine le corps de l'activité.
-     */
-    private void drawBody() {
-        HBox body = new HBox();
-        VBox.setVgrow(body, Priority.ALWAYS);
-        body.getStyleClass().add("vue-guichet-body");
-
-        this.getChildren().add(body);
-    }
-
 
     private HBox getJetons() {
         HBox jetons = new HBox();

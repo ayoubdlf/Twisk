@@ -5,17 +5,15 @@ import twisk.monde.Etape;
 
 public class Client {
 
-    private int numeroClient;
+    private int pid;
     private int rang;
     private Etape etape;
 
 
-    public Client(int numero) {
-        assert (numero >= 0) : "Le numéro du client doit être positif";
-        
-        this.numeroClient = numero;
-        this.rang         = -1;
-        this.etape        = null;
+    public Client(int pid) {
+        this.pid   = pid;
+        this.rang  = -1;
+        this.etape = null;
     }
 
 
@@ -42,7 +40,7 @@ public class Client {
      * @return le numéro identifiant le client
      */
     public int getNumeroClient() {
-        return this.numeroClient;
+        return this.pid;
     }
 
     /**
@@ -66,7 +64,7 @@ public class Client {
      * @return une chaîne de caractères décrivant le client
      */
     public String toString() {
-        return String.format("Client: %d, Pid: %d, Rang: %d", this.numeroClient, this.numeroClient, this.rang);
+        return String.format("Client: %d, Pid: %d, Rang: %d", this.pid, this.pid, this.rang);
     }
 
 }

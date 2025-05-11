@@ -7,8 +7,7 @@ import javafx.scene.layout.*;
 import javafx.scene.shape.SVGPath;
 import twisk.mondeIG.*;
 import twisk.simulation.Client;
-
-import java.util.ArrayList;
+import java.util.*;
 
 
 public class VueActiviteIG extends VueEtapeIG {
@@ -44,7 +43,6 @@ public class VueActiviteIG extends VueEtapeIG {
             Platform.runLater(command);
         }
     }
-
 
     // —————————— METHODES PRIVES ——————————
 
@@ -84,25 +82,6 @@ public class VueActiviteIG extends VueEtapeIG {
         header.getChildren().addAll(nodes);
         this.getChildren().add(header);
     }
-
-    /**
-     * Dessine le corps de l'activité.
-     */
-    private void drawBody() {
-        HBox body = new HBox();
-        VBox.setVgrow(body, Priority.ALWAYS);
-        body.getStyleClass().add("vue-activite-body");
-
-        for (Client client : etape.getClients()) {
-            // TODO: RANG
-            VueClient vueClient = new VueClient();
-            // vueClient.getStyleClass().add("client-circle"); // TODO:
-            body.getChildren().add(vueClient);
-        }
-
-        this.getChildren().add(body);
-    }
-
 
     private HBox getTemps() {
         HBox temps = new HBox();

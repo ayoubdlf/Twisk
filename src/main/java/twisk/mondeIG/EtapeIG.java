@@ -258,8 +258,8 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
         this.estUnGuichet = estUnGuichet;
     }
 
-    public void setClients(ArrayList<Client> clients) {
-        this.clients = clients;
+    public void ajouterClient(Client client) {
+        this.clients.add(client);
     }
 
     // —————————— METHODES PUBLIQUES ——————————

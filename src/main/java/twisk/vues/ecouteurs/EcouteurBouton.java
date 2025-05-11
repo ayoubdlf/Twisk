@@ -40,7 +40,7 @@ public class EcouteurBouton implements EventHandler<ActionEvent> {
 
         if(this.button.getId().equals("Simulation")) {
             try {
-                SimulationIG simulationIG = new SimulationIG(this.monde, new Simulation());
+                SimulationIG simulationIG = new SimulationIG(this.monde);
                 simulationIG.simuler();
             } catch (Exception e) {
                 VueMondeException.alert("Simulation impossible", e.getMessage());

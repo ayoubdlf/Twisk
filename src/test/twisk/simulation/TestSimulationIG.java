@@ -36,7 +36,7 @@ class TestSimulationIG {
         mondeIG.ajouter(etape2, etape3);
 
         assertThrows(MondeException.class, () -> {
-            SimulationIG simulation = new SimulationIG(mondeIG, new Simulation());
+            SimulationIG simulation = new SimulationIG(mondeIG);
             simulation.verifierMondeIG();
         });
     }
@@ -60,7 +60,7 @@ class TestSimulationIG {
         mondeIG.ajouter(etape2, etape3);
 
         assertThrows(MondeException.class, () -> {
-            SimulationIG simulation = new SimulationIG(mondeIG, new Simulation());
+            SimulationIG simulation = new SimulationIG(mondeIG);
             simulation.verifierMondeIG();
         });
     }
@@ -84,7 +84,7 @@ class TestSimulationIG {
         mondeIG.ajouter(etape2, etape3);
 
         assertThrows(MondeException.class, () -> {
-            SimulationIG simulation = new SimulationIG(mondeIG, new Simulation());
+            SimulationIG simulation = new SimulationIG(mondeIG);
             simulation.verifierMondeIG();
         });
     }
@@ -108,7 +108,7 @@ class TestSimulationIG {
         // mondeIG.ajouter(etape2, etape3);
 
         assertThrows(MondeException.class, () -> {
-            SimulationIG simulation = new SimulationIG(mondeIG, new Simulation());
+            SimulationIG simulation = new SimulationIG(mondeIG);
             simulation.verifierMondeIG();
         });
     }
@@ -132,7 +132,7 @@ class TestSimulationIG {
         mondeIG.ajouter(etape2, etape3);
 
         assertThrows(MondeException.class, () -> {
-            SimulationIG simulation = new SimulationIG(mondeIG, new Simulation());
+            SimulationIG simulation = new SimulationIG(mondeIG);
             simulation.verifierMondeIG();
         });
     }
@@ -153,7 +153,7 @@ class TestSimulationIG {
         mondeIG.ajouter(etape1, etape2);
 
         assertThrows(MondeException.class, () -> {
-            SimulationIG simulation = new SimulationIG(mondeIG, new Simulation());
+            SimulationIG simulation = new SimulationIG(mondeIG);
             simulation.verifierMondeIG();
         });
     }
@@ -179,7 +179,7 @@ class TestSimulationIG {
         mondeIG.ajouter(etape2, etape3);
 
         assertThrows(MondeException.class, () -> {
-            SimulationIG simulation = new SimulationIG(mondeIG, new Simulation());
+            SimulationIG simulation = new SimulationIG(mondeIG);
             simulation.verifierMondeIG();
         });
     }
@@ -204,7 +204,7 @@ class TestSimulationIG {
         mondeIG.ajouter(etape2, etape3);
 
         assertDoesNotThrow(() -> {
-            SimulationIG simulation = new SimulationIG(mondeIG, new Simulation());
+            SimulationIG simulation = new SimulationIG(mondeIG);
             simulation.verifierMondeIG();
         });
     }
@@ -232,7 +232,7 @@ class TestSimulationIG {
         mondeIG.ajouter(etape3, etape4);
 
         assertThrows(MondeException.class, () -> {
-            SimulationIG simulation = new SimulationIG(mondeIG, new Simulation());
+            SimulationIG simulation = new SimulationIG(mondeIG);
             simulation.verifierMondeIG();
         });
     }
@@ -258,7 +258,7 @@ class TestSimulationIG {
         mondeIG.ajouter(etape2, etape3);
 
         assertThrows(MondeException.class, () -> {
-            SimulationIG simulation = new SimulationIG(mondeIG, new Simulation());
+            SimulationIG simulation = new SimulationIG(mondeIG);
             simulation.verifierMondeIG();
         });
     }

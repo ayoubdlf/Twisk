@@ -1,7 +1,9 @@
 package twisk.outils;
 
 import java.io.*;
+import java.lang.management.ManagementFactory;
 import java.nio.file.*;
+import java.util.ArrayList;
 
 
 public class KitC {
@@ -10,6 +12,8 @@ public class KitC {
      * Constructeur de la classe KitC.
      */
     public KitC() {}
+
+    /* —————————— METHODES PUBLIQUES —————————— */
 
     /**
      * Crée l'environnement nécessaire pour la simulation.
@@ -114,6 +118,28 @@ public class KitC {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Tue tout les processus pour les PIDs fournis.
+     *
+     * @param pids Les processus à tuer.
+     */
+    public void killProcessus(int[] pids) {
+        if (pids == null) { return; }
+
+        for (int pid : pids) {
+            String commande = "kill -9 " + pid;
+            ProcessBuilder pb = new ProcessBuilder(commande.split(" "));
+
+            try {
+                pb.inheritIO().start().waitFor();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /* —————————— METHODES PRIVEES —————————— */
 
     private boolean isMac() {
         // Check si l'utilisateur est riche ou pas

@@ -5,7 +5,6 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.VBox;
 import twisk.mondeIG.*;
-
 import java.util.Objects;
 
 
@@ -411,7 +410,7 @@ public class VueMenu extends MenuBar implements Observateur {
                 if (!nbClientsStr.isEmpty()) {
                     try {
                         int nbClientsInt = Integer.parseInt(nbClientsStr);
-                        if(nbClientsInt <= 0) { VueTwiskException.alert("Parametre invalide", "Le nombre de clients doit etre superieur à 0"); return;  }
+                        if(nbClientsInt <= 0 || nbClientsInt >= 50) { VueTwiskException.alert("Parametre invalide", "Le nombre de clients doit etre superieur à 0 et inferieur à 50"); return;  }
 
                         this.mondeIG.setNbClients(nbClientsInt);
                         this.mondeIG.notifierObservateurs(); // TODO: pas vrainment besoin de notifier les observateurs

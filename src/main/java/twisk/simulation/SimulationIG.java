@@ -26,6 +26,9 @@ public class SimulationIG implements Observateur {
         this.simulation            = null;
     }
 
+
+    // —————————— METHODES PUBLIQUES ——————————
+
     public void simuler() throws MondeException {
         // Verification du monde
         this.verifierMondeIG();
@@ -71,7 +74,26 @@ public class SimulationIG implements Observateur {
         ThreadsManager.getInstance().lancer(task);
     }
 
-    public void verifierMondeIG() throws MondeException {
+    public void stopSimulation() throws MondeException {
+        try {
+            ThreadsManager.getInstance().detruireTout();
+
+            if (this.simulation != null) {
+                Method stopSimulation = this.simulation.getClass().getMethod("stopSimulation");
+                stopSimulation.invoke(simulation);
+            }
+
+            this.mondeIG.notifierObservateurs();
+
+        } catch (Exception ignored) {
+            throw new MondeException("Erreur lors de l'arret de la simulation");
+        }
+    }
+
+
+    // —————————— METHODES PRIVES ——————————
+
+    private void verifierMondeIG() throws MondeException {
         // 1. Il y'a au moins une entree
         if(!this.auMoinsUneEntree()) {
             throw new MondeException("Le monde doit avoir au moins une entree");

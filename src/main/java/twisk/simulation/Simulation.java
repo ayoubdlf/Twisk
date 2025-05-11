@@ -10,11 +10,12 @@ import java.util.*;
  */
 public class Simulation extends SujetObserve {
 
-    private Monde monde;
-    private KitC  kitC;
-    private int   nbClients;
+    private Monde               monde;
+    private KitC                kitC;
+    private int                 nbClients;
     private GestionnaireClients gestionnaireClients;
-    private int[] positionClients;
+    private int[]               positionClients;
+    private boolean             simulationActive;
 
 
     public Simulation() {
@@ -22,11 +23,13 @@ public class Simulation extends SujetObserve {
         this.nbClients           = 0;
         this.gestionnaireClients = new GestionnaireClients();
         this.positionClients     = null;
+        this.simulationActive    = false;
 
         kitC.creerEnvironnement();
     }
 
     /* —————————— GETTERS —————————— */
+
     /**
      * Récupère le nombre de clients.
      * 
@@ -40,7 +43,9 @@ public class Simulation extends SujetObserve {
         return this.gestionnaireClients;
     }
 
+
     /* —————————— SETTERS —————————— */
+
     /**
      * Définit le nombre de clients pour la simulation.
      * 
@@ -53,7 +58,8 @@ public class Simulation extends SujetObserve {
         this.nbClients = nbClients;
     }
 
-    /* —————————— METHODES —————————— */
+
+    /* —————————— METHODES PUBLIQUES —————————— */
 
     /**
      * Simule le processus de simulation en utilisant le monde spécifié.
@@ -71,6 +77,13 @@ public class Simulation extends SujetObserve {
         this.startSimulation();
     }
 
+    public void stopSimulation() {
+        this.simulationActive = false;
+    }
+
+
+    /* —————————— METHODES PRIVES —————————— */
+
     private void startSimulation() {
 
         System.out.println(this.monde);
@@ -78,6 +91,7 @@ public class Simulation extends SujetObserve {
         int[] tabJetonsGuichet = this.getTabJetonsGuichets();
         int nbEtapes           = this.monde.nbEtapes();
         int nbGuichets         = this.monde.nbGuichets();
+        this.simulationActive  = true;
 
         int[] simulation       = start_simulation(nbEtapes, nbGuichets, this.getNbClients(), tabJetonsGuichet);
 
@@ -85,6 +99,7 @@ public class Simulation extends SujetObserve {
         this.afficherPositionsClients(nbEtapes, this.getNbClients());
 
         this.gestionnaireClients.nettoyer();
+        this.kitC.killProcessus(simulation);
         this.nettoyage();
     }
 
@@ -127,7 +142,7 @@ public class Simulation extends SujetObserve {
     }
 
     private void afficherPositionsClients(int NB_ETAPES, int NB_CLIENTS) {
-        while(true) {
+        while(this.simulationActive) {
             try {
                 this.positionClients = ou_sont_les_clients(NB_ETAPES, NB_CLIENTS);
                 // System.out.println(Arrays.toString(positions));
@@ -162,7 +177,9 @@ public class Simulation extends SujetObserve {
         this.notifierObservateurs();
     }
 
+
     /* —————————— FONCTIONS NATIVES —————————— */
+
     /**
      * Fonction native qui démarre la simulation.
      * 

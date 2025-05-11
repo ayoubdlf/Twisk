@@ -3,8 +3,6 @@ package twisk.vues.ecouteurs;
 import javafx.event.*;
 import javafx.scene.control.Button;
 import twisk.mondeIG.MondeIG;
-import twisk.simulation.*;
-import twisk.vues.VueMondeException;
 
 
 public class EcouteurBouton implements EventHandler<ActionEvent> {
@@ -36,15 +34,6 @@ public class EcouteurBouton implements EventHandler<ActionEvent> {
     public void handle(ActionEvent actionEvent) {
         if(this.button.getId().equals("Activite") || this.button.getId().equals("Guichet")) {
             this.monde.ajouter(this.button.getId());
-        }
-
-        if(this.button.getId().equals("Simulation")) {
-            try {
-                SimulationIG simulationIG = new SimulationIG(this.monde);
-                simulationIG.simuler();
-            } catch (Exception e) {
-                VueMondeException.alert("Simulation impossible", e.getMessage());
-            }
         }
     }
 

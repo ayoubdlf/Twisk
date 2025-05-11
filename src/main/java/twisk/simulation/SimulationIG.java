@@ -1,16 +1,12 @@
 package twisk.simulation;
 
-import javafx.application.Platform;
 import javafx.concurrent.Task;
-import twisk.ClientTwisk;
 import twisk.exceptions.MondeException;
 import twisk.monde.*;
 import twisk.mondeIG.*;
-import twisk.outils.ClassLoaderPerso;
-import twisk.outils.ThreadsManager;
+import twisk.outils.*;
 import twisk.vues.Observateur;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 
 
 public class SimulationIG implements Observateur {
@@ -54,7 +50,7 @@ public class SimulationIG implements Observateur {
                     Method simuler            = simulation.getClass().getMethod("simuler", Monde.class);
 
                     ajouterObservateur.invoke(simulation, classeActuelle);
-                    setNbClients.invoke(simulation, 5); // TODO: hard coded
+                    setNbClients.invoke(simulation, mondeIG.getNbClients());
                     simuler.invoke(simulation, monde);
 
                     loader          = null;

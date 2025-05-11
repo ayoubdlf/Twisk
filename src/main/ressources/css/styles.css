@@ -495,7 +495,7 @@
     -fx-font-size: 14;
 }
 
-.dialog-nom-etape, .dialog-jetons-etape {
+.dialog-nom-etape, .dialog-jetons-etape, .dialog-clients-etape {
     -fx-font-family: 'Geist Regular';
     -fx-font-size: 12;
 }

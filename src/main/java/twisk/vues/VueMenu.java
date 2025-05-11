@@ -48,7 +48,13 @@ public class VueMenu extends MenuBar implements Observateur {
                 item.setDisable(true);
             }
         });
-        this.monde.getItems().forEach(item -> item.setDisable((nbEtapesSelectionnes != 1) || (nbArcsSelectionnes != 0)));
+
+        this.monde.getItems().forEach(item -> {
+            if((nbEtapesSelectionnes != 1 || nbArcsSelectionnes != 0) &&  (item.getId() == null || item.getId() != null && !item.getId().equals("nbClients"))) {
+                item.setDisable(true);
+            }
+        });
+
         this.parametres.getItems().forEach(parametre -> parametre.setDisable(nbEtapesSelectionnes != 1));
     }
 
@@ -96,8 +102,9 @@ public class VueMenu extends MenuBar implements Observateur {
     private void menuMonde() {
         this.monde = new Menu("Monde");
 
-        MenuItem entree = new MenuItem("Entree");
-        MenuItem sortie = new MenuItem("Sortie");
+        MenuItem entree    = new MenuItem("Entree");
+        MenuItem sortie    = new MenuItem("Sortie");
+        MenuItem nbClients = new MenuItem("Modifier le nombre de clients");
 
         entree.setOnAction(event -> this.mondeIG.supprimerSelection());
 
@@ -107,7 +114,10 @@ public class VueMenu extends MenuBar implements Observateur {
         sortie.setAccelerator(KeyCombination.keyCombination("Ctrl+S"));
         sortie.setOnAction(event -> this.mondeIG.setSelectionCommeSortie());
 
-        this.monde.getItems().addAll(entree, sortie);
+        nbClients.setOnAction(event -> this.afficherFenetreMondeNbClients());
+        nbClients.setId("nbClients");
+
+        this.monde.getItems().addAll(entree, sortie, nbClients);
     }
 
     /**
@@ -344,6 +354,70 @@ public class VueMenu extends MenuBar implements Observateur {
 
                     this.mondeIG.deselectionnerSelection();
                     this.mondeIG.notifierObservateurs();
+                }
+            }
+        });
+    }
+
+    private void afficherFenetreMondeNbClients() {
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Twisk");
+        dialog.setHeaderText("Parametres Monde");
+
+        // Boutons annuler et valider
+        dialog.getDialogPane().getButtonTypes().clear();
+        ButtonType buttonAnnulerType = new ButtonType("Annuler", ButtonBar.ButtonData.CANCEL_CLOSE);
+        ButtonType buttonValiderType = new ButtonType("Valider", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(buttonAnnulerType, buttonValiderType);
+
+        VBox content = new VBox(16);
+
+        // description
+        Label description = new Label("Veuillez entrer le nombre de clients");
+        description.getStyleClass().add("dialog-description");
+        content.getChildren().add(description);
+
+        VBox group = new VBox();
+        group.setSpacing(6);
+        // nombre de clients
+        Label nbClients = new Label("Nombre de clients");
+        nbClients.getStyleClass().add("dialog-clients-etape");
+
+        // input
+        TextField textField = new TextField();
+        textField.setPromptText("Entrez le nombre de clients");
+        textField.setText(Integer.toString(this.mondeIG.getNbClients()));
+        textField.getStyleClass().add("dialog-input");
+        group.getChildren().addAll(nbClients, textField);
+
+        content.getChildren().add(group);
+
+        // Style the buttons
+        Button buttonAnnuler = (Button) dialog.getDialogPane().lookupButton(buttonAnnulerType);
+        Button buttonValider = (Button) dialog.getDialogPane().lookupButton(buttonValiderType);
+
+        buttonAnnuler.getStyleClass().add("dialog-button-annuler");
+        buttonValider.getStyleClass().add("dialog-button-valider");
+
+        DialogPane dialogPane = dialog.getDialogPane();
+        dialogPane.setContent(content);
+        dialogPane.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/styles.css")).toExternalForm());
+        dialogPane.getStyleClass().add("dialog");
+
+        dialog.showAndWait().ifPresent(response -> {
+            if (response == buttonValiderType) {
+                String nbClientsStr = textField.getText();
+
+                if (!nbClientsStr.isEmpty()) {
+                    try {
+                        int nbClientsInt = Integer.parseInt(nbClientsStr);
+                        if(nbClientsInt <= 0) { VueTwiskException.alert("Parametre invalide", "Le nombre de clients doit etre superieur à 0"); return;  }
+
+                        this.mondeIG.setNbClients(nbClientsInt);
+                        this.mondeIG.notifierObservateurs(); // TODO: pas vrainment besoin de notifier les observateurs
+                    } catch (Exception e) {
+                        VueTwiskException.alert("Parametre invalide", "Le nombre de clients doit etre un entier superieur à 0");
+                    }
                 }
             }
         });

@@ -11,6 +11,7 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
     private ArrayList<ArcIG> arcs;
     private PointDeControleIG[] arcTemporaire; // arc entre un point de controle et la souris
     private boolean animationArcs;
+    private int nbClients;
 
 
     /**
@@ -21,6 +22,7 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
         this.arcs          = new ArrayList<>(5);
         this.arcTemporaire = new PointDeControleIG[2];
         this.animationArcs = false;
+        this.nbClients     = 5; // Par default il y'aura 5 clients
     }
 
 
@@ -110,6 +112,10 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
                 .filter(EtapeIG::estSelectionne)
                 .findFirst()
                 .orElse(null);
+    }
+
+    public int getNbClients() {
+        return this.nbClients;
     }
 
     /**
@@ -358,6 +364,10 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
      */
     public void setAnimationArcs(boolean animationArcs) {
         this.animationArcs = animationArcs;
+    }
+
+    public void setNbClients(int nbClients) {
+        this.nbClients = nbClients;
     }
 
     // —————————— METHODES PRIVES ——————————

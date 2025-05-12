@@ -1,5 +1,10 @@
 package twisk.monde;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import twisk.mondeIG.ActiviteIG;
+import twisk.mondeIG.EtapeIG;
+import twisk.mondeIG.GuichetIG;
 import twisk.outils.FabriqueNumero;
 
 import java.text.Normalizer;
@@ -203,6 +208,40 @@ public abstract class Etape implements Iterable<Etape> {
 
     public Iterator<Etape> iterator() {
         return this.successeurs.iterator();
+    }
+
+    public String getType() {
+        if(this.estUneEntree())   { return "entree"; }
+        if(this.estUneSortie())   { return "sortie"; }
+        if(this.estUneActivite()) { return "activite"; }
+        if(this.estUnGuichet())   { return "guichet"; }
+
+        return "";
+    }
+
+    public JsonObject toJson() {
+        JsonObject json = new JsonObject();
+
+        json.addProperty("type", this.getType());
+        json.addProperty("nom", this.getNom());
+
+        if(this.estUnGuichet()) {
+            json.addProperty("nbJetons", ((Guichet) this).getNbJetons());
+        }
+
+        if(this.estUneActivite()) {
+            json.addProperty("temps", ((Activite) this).getTemps());
+            json.addProperty("ecartTemps", ((Activite) this).getEcartTemps());
+        }
+
+        JsonArray jsonSuccesseurs = new JsonArray();
+        for (Etape successeur : this.getSuccesseurs()) {
+            jsonSuccesseurs.add(successeur.getNom());
+        }
+
+        json.add("successeurs", jsonSuccesseurs);
+
+        return json;
     }
 
     /**

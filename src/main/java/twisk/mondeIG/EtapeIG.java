@@ -1,11 +1,8 @@
 package twisk.mondeIG;
 
 import java.util.*;
-
-import twisk.monde.Etape;
 import twisk.outils.FabriqueIdentifiant;
 import twisk.simulation.Client;
-
 import static twisk.outils.TailleComposants.*;
 
 

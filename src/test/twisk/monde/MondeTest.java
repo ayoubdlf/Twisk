@@ -224,4 +224,21 @@ class MondeTest {
 
         assertFalse(iterator.hasNext());
     }
+
+    @Test
+    void testToJson() {
+        Monde monde = new Monde();
+
+        Etape[] etapes = {
+                new Activite("Activite"),
+                new Activite("Activite"),
+                new Guichet("Guichet"),
+                new Activite("Activite"),
+                new Guichet("Guichet")
+        };
+
+        monde.ajouter(etapes);
+
+        System.out.println(monde.toJson());
+    }
 }

@@ -93,7 +93,7 @@ public class SimulationIG implements Observateur {
 
     // —————————— METHODES PRIVES ——————————
 
-    private void verifierMondeIG() throws MondeException {
+    void verifierMondeIG() throws MondeException {
         // 1. Il y'a au moins une entree
         if(!this.auMoinsUneEntree()) {
             throw new MondeException("Le monde doit avoir au moins une entree");

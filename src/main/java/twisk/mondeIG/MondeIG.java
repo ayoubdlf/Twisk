@@ -440,6 +440,32 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
             }
         }
 
+        if(this.estAccessibleDepuis(p1.getEtape(), p2.getEtape())) {
+            throw new TwiskException("L'etape de depart est inaccessible depuis l'etape de fin");
+        }
+
     }
+    public boolean estAccessibleDepuis(EtapeIG depart, EtapeIG arrivee) {
+        ArrayList<String> visites = new ArrayList<>();
+        return detecteCycle(arrivee, depart, visites);
+    }
+
+    private boolean detecteCycle(EtapeIG courant, EtapeIG cible, ArrayList<String> visites) {
+        if (visites.contains(cible.getIdentifiant())) {
+            return true; // Déjà visité, on arrête là pour éviter les boucles infinies
+        }
+
+        visites.add(cible.getIdentifiant());
+
+        // Parcours des successeurs (les arcs sortants depuis cette étape)
+        for(EtapeIG successeur : courant.getSuccesseurs()) {
+            if (this.detecteCycle(successeur, cible, visites)) {
+                return true; // On a trouvé un chemin jusqu'à la cible
+            }
+        }
+
+        return false; // Aucun chemin trouvé
+    }
+
 }
 

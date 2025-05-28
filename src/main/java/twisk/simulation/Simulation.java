@@ -3,6 +3,8 @@ package twisk.simulation;
 import twisk.monde.*;
 import twisk.mondeIG.SujetObserve;
 import twisk.outils.KitC;
+import twisk.outils.ThreadsManager;
+
 import java.util.*;
 
 /**
@@ -73,12 +75,17 @@ public class Simulation extends SujetObserve {
         this.kitC.compiler();
         this.kitC.construireLaBibliotheque();
 
-        System.load("/tmp/twisk/libTwisk.so");
+        try {
+            System.load("/tmp/twisk/libTwisk.so");
+        } catch (UnsatisfiedLinkError ignored) {}
+
         this.startSimulation();
     }
 
     public void stopSimulation() {
         this.simulationActive = false;
+        ThreadsManager.getInstance().detruireTout();
+
     }
 
 
@@ -93,7 +100,10 @@ public class Simulation extends SujetObserve {
         int nbGuichets         = this.monde.nbGuichets();
         this.simulationActive  = true;
 
+        System.out.println(111);
         int[] simulation       = start_simulation(nbEtapes, nbGuichets, this.getNbClients(), tabJetonsGuichet);
+        System.out.println(222);
+        System.out.println(Arrays.toString(simulation));
 
         this.afficherListeClients(simulation, this.getNbClients());
         this.afficherPositionsClients(nbEtapes, this.getNbClients());

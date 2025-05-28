@@ -44,7 +44,7 @@ public class SimulationIG implements Observateur {
             @Override
             protected Void call() throws MondeException {
                 try {
-                    ClassLoaderPerso loader   = new ClassLoaderPerso(SimulationIG.class.getClassLoader());
+                    ClassLoaderPerso loader   = new ClassLoaderPerso(classeActuelle.getClass().getClassLoader());
                     Class<?> simulationClass  = loader.loadClass("twisk.simulation.Simulation");
                     simulation                = simulationClass.getDeclaredConstructor().newInstance();
 
@@ -76,11 +76,9 @@ public class SimulationIG implements Observateur {
 
     public void stopSimulation() throws MondeException {
         try {
-            ThreadsManager.getInstance().detruireTout();
-
             if (this.simulation != null) {
                 Method stopSimulation = this.simulation.getClass().getMethod("stopSimulation");
-                stopSimulation.invoke(simulation);
+                stopSimulation.invoke(this.simulation);
             }
 
             this.mondeIG.notifierObservateurs();

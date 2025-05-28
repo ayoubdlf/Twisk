@@ -28,6 +28,7 @@ public class EcouteurBoutonSimulation implements EventHandler<ActionEvent> {
         this.button      = button;
         this.simulation  = new SimulationIG(this.monde);
         this.estActivite = false;
+        this.simulation = new SimulationIG(this.monde);
     }
 
 
@@ -40,7 +41,6 @@ public class EcouteurBoutonSimulation implements EventHandler<ActionEvent> {
      */
     @Override
     public void handle(ActionEvent actionEvent) {
-        System.out.println(this.estActivite);
         if(!this.estActivite) {
             // On lance la simulation
             try {
@@ -52,6 +52,7 @@ public class EcouteurBoutonSimulation implements EventHandler<ActionEvent> {
             // On stop la simulation
             try {
                 this.simulation.stopSimulation();
+                // this.simulation = null;
             } catch (Exception e) {
                 VueMondeException.alert("Arret de la simulation impossible", e.getMessage());
             }

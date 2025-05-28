@@ -34,7 +34,6 @@ public class ThreadsManager {
         }
 
         threads.clear();
-        instance = null;
     }
 
 }

@@ -83,16 +83,12 @@ public class Simulation extends SujetObserve {
     public void stopSimulation() {
         this.simulationActive = false;
         ThreadsManager.getInstance().detruireTout();
-
     }
 
 
     /* —————————— METHODES PRIVES —————————— */
 
     private void startSimulation() {
-
-        System.out.println(this.monde);
-
         int[] tabJetonsGuichet = this.getTabJetonsGuichets();
         int nbEtapes           = this.monde.nbEtapes();
         int nbGuichets         = this.monde.nbGuichets();
@@ -100,8 +96,8 @@ public class Simulation extends SujetObserve {
 
         int[] simulation       = start_simulation(nbEtapes, nbGuichets, this.getNbClients(), tabJetonsGuichet);
 
-        this.afficherListeClients(simulation, this.getNbClients());
-        this.afficherPositionsClients(nbEtapes, this.getNbClients());
+        this.gestionnaireClients.setClients(simulation);
+        this.updatePositionsClients(nbEtapes, this.getNbClients());
 
         this.gestionnaireClients.nettoyer();
         this.kitC.killProcessus(simulation);
@@ -126,60 +122,27 @@ public class Simulation extends SujetObserve {
         return tabJetonsGuichets.stream().mapToInt(Integer::intValue).toArray();
     }
 
-    private void afficherListeClients(int[] pids, int NB_CLIENTS) {
-        this.gestionnaireClients.setClients(pids);
-
-        System.out.print("pids des clients : ");
-        for (int i = 0; i < NB_CLIENTS; i++) {
-            System.out.printf("%d%s", pids[i], (i < NB_CLIENTS - 1) ? ", " : ""); // Si on est dans le dernier client, n'affiche pas la virgule
-        }
-
-        System.out.print("\n\n");
-    }
-
-    private void afficherEtape(int nbEtape, int NB_CLIENTS) {
-        System.out.format(
-            "etape %-2d %-20s %d clients ",
-            this.monde.getEtape(nbEtape).getIdEtape(),
-            "(" + this.monde.getEtape(nbEtape).getNom() + ")",
-            NB_CLIENTS
-        );
-    }
-
-    private void afficherPositionsClients(int NB_ETAPES, int NB_CLIENTS) {
+    private void updatePositionsClients(int NB_ETAPES, int NB_CLIENTS) {
         while(this.simulationActive) {
             try {
                 this.positionClients = ou_sont_les_clients(NB_ETAPES, NB_CLIENTS);
-                // System.out.println(Arrays.toString(positions));
 
                 for (int i = 0; i < NB_ETAPES; i++) {
                     int nbClients = this.positionClients[this.monde.getEtape(i).getIdEtape() * (NB_CLIENTS + 1)];
 
-                    this.afficherEtape(i, nbClients);
-
                     for (int j = 0; j < nbClients; j++) {
                         int client = this.positionClients[this.monde.getEtape(i).getIdEtape() * (NB_CLIENTS + 1) + (j + 1)];
-                        System.out.printf("%d%s", client, ((j+1) < nbClients) ? ", " : "");
-
                         this.gestionnaireClients.allerA(client, this.monde.getEtape(i), j+1);
                     }
-
-                    System.out.print("\n");
                 }
 
                 if(estTouteEtapeDansSortie(NB_ETAPES, NB_CLIENTS)) { break; }
 
-                System.out.println(); // nouvelle ligne entre chaque seconde
-
-                // this.notifierObservateurs(); Mainteant les `this.notifierObservateurs()` sont appele directement dans SimulationIG (ca resout mon bug des threads)
                 Thread.sleep(1000); // 1s
 
-            } catch (InterruptedException ignored) {
-            }
+            } catch (InterruptedException ignored) {}
         }
 
-        System.out.println("\nsimulation terminee.");
-        // this.notifierObservateurs(); Mainteant les `this.notifierObservateurs()` sont appele directement dans SimulationIG (ca resout mon bug des threads)
     }
 
 

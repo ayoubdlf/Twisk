@@ -1,0 +1,120 @@
+{
+  "nbClients": 5,
+  "etapes": [
+    {
+      "type": "activite",
+      "nom": "Activite 4",
+      "identifiant": "ETAPE-4",
+      "x": 566,
+      "y": 80,
+      "temps": 2,
+      "ecartTemps": 1
+    },
+    {
+      "type": "activite",
+      "nom": "Activite 5",
+      "identifiant": "ETAPE-5",
+      "x": 583,
+      "y": 403,
+      "temps": 2,
+      "ecartTemps": 1
+    },
+    {
+      "type": "guichet",
+      "nom": "Guichet 2",
+      "identifiant": "ETAPE-2",
+      "x": 275,
+      "y": 404,
+      "jetons": 1
+    },
+    {
+      "type": "sortie",
+      "nom": "Activite 3",
+      "identifiant": "ETAPE-3",
+      "x": 847,
+      "y": 246,
+      "temps": 2,
+      "ecartTemps": 1
+    },
+    {
+      "type": "entree",
+      "nom": "Activite 0",
+      "identifiant": "ETAPE-0",
+      "x": 14,
+      "y": 262,
+      "temps": 2,
+      "ecartTemps": 1
+    },
+    {
+      "type": "activite",
+      "nom": "Activite 1",
+      "identifiant": "ETAPE-1",
+      "x": 198,
+      "y": 78,
+      "temps": 2,
+      "ecartTemps": 1
+    }
+  ],
+  "arcs": [
+    {
+      "source": {
+        "identifiant": "ETAPE-1",
+        "index": 1
+      },
+      "destination": {
+        "identifiant": "ETAPE-4",
+        "index": 3
+      }
+    },
+    {
+      "source": {
+        "identifiant": "ETAPE-4",
+        "index": 1
+      },
+      "destination": {
+        "identifiant": "ETAPE-3",
+        "index": 0
+      }
+    },
+    {
+      "source": {
+        "identifiant": "ETAPE-2",
+        "index": 0
+      },
+      "destination": {
+        "identifiant": "ETAPE-5",
+        "index": 3
+      }
+    },
+    {
+      "source": {
+        "identifiant": "ETAPE-5",
+        "index": 1
+      },
+      "destination": {
+        "identifiant": "ETAPE-3",
+        "index": 2
+      }
+    },
+    {
+      "source": {
+        "identifiant": "ETAPE-0",
+        "index": 0
+      },
+      "destination": {
+        "identifiant": "ETAPE-1",
+        "index": 3
+      }
+    },
+    {
+      "source": {
+        "identifiant": "ETAPE-0",
+        "index": 2
+      },
+      "destination": {
+        "identifiant": "ETAPE-2",
+        "index": 1
+      }
+    }
+  ]
+}

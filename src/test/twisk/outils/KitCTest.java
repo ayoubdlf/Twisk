@@ -43,9 +43,7 @@ class KitCTest {
             String str = Files.readString(path).trim();
 
             assertEquals("AAA", str);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } catch (IOException ignored) {}
     }
 
     @Test

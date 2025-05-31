@@ -43,9 +43,7 @@ public class ClientTwisk {
             simuler      = null;
 
             System.gc();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception ignored) {}
     }
 
     /**

@@ -44,7 +44,6 @@ public class ClassLoaderPerso extends ClassLoader {
             // System.out.println("la classe retournée : " + c);
             return c;
         } catch (IOException e) {
-            e.printStackTrace();
             return null;
         }
     }

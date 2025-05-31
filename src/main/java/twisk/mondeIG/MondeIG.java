@@ -356,30 +356,39 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
                 String jsonString = stringBuilder.toString();
                 JsonObject JSON   = JsonParser.parseString(jsonString).getAsJsonObject();
 
-                this.etapes.clear();
-                this.arcs.clear();
-
-                // On set le nombre de clients
-                this.nbClients = JSON.get("nbClients").getAsInt();
-
-                // On ajoute els etapes
-                JsonArray etapesJson = JSON.getAsJsonArray("etapes");
-                for (JsonElement elem : etapesJson) {
-                    JsonObject etapeJson = elem.getAsJsonObject();
-                    this.ajouterDepuisJson(etapeJson);
-                }
-
-                // On ajoute les arcs
-                JsonArray arcsJson = JSON.getAsJsonArray("arcs");
-                for (JsonElement elem : arcsJson) {
-                    JsonObject arcJson = elem.getAsJsonObject();
-                    this.ajouterArcDepuisJson(arcJson);
-                }
-
-                this.notifierObservateurs();
+                this.chargerDepuisJson(JSON);
             } catch (Exception e) {
                 VueMondeException.alert("Erreur lors du chargement", e.getMessage());
             }
+        }
+    }
+
+    public void chargerDepuisJson(JsonObject JSON) {
+        try {
+            this.etapes.clear();
+            this.arcs.clear();
+
+            // On set le nombre de clients
+            this.nbClients = JSON.get("nbClients").getAsInt();
+
+            // On ajoute els etapes
+            JsonArray etapesJson = JSON.getAsJsonArray("etapes");
+            for (JsonElement elem : etapesJson) {
+                JsonObject etapeJson = elem.getAsJsonObject();
+                this.ajouterDepuisJson(etapeJson);
+            }
+
+            // On ajoute les arcs
+            JsonArray arcsJson = JSON.getAsJsonArray("arcs");
+            for (JsonElement elem : arcsJson) {
+                JsonObject arcJson = elem.getAsJsonObject();
+                this.ajouterArcDepuisJson(arcJson);
+            }
+
+            this.notifierObservateurs();
+
+        } catch (Exception e) {
+            VueMondeException.alert("Erreur lors du chargement", e.getMessage());
         }
     }
 

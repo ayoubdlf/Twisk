@@ -1,10 +1,12 @@
 package twisk.vues;
 
+import com.google.gson.JsonObject;
 import javafx.application.Platform;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.VBox;
 import twisk.mondeIG.*;
+import twisk.opanai.ChatGPT;
 import twisk.outils.ThreadsManager;
 import java.util.Objects;
 
@@ -12,7 +14,7 @@ import java.util.Objects;
 public class VueMenu extends MenuBar implements Observateur {
 
     private MondeIG mondeIG;
-    private Menu fichier, edition, monde, parametres, options;
+    private Menu fichier, edition, monde, parametres, options, optionsChatGPT;
 
 
     /**
@@ -29,8 +31,9 @@ public class VueMenu extends MenuBar implements Observateur {
         this.menuMonde();
         this.menuParametres();
         this.menuOptions();
+        this.menuChatGPT();
 
-        this.getMenus().addAll(this.fichier, this.edition, this.monde, this.parametres, this.options);
+        this.getMenus().addAll(this.fichier, this.edition, this.monde, this.parametres, this.options, this.optionsChatGPT);
 
         this.reagir();
     }
@@ -440,6 +443,83 @@ public class VueMenu extends MenuBar implements Observateur {
                         VueTwiskException.alert("Parametre invalide", "Le nombre de clients doit etre un entier superieur à 0");
                     }
                 }
+            }
+        });
+    }
+
+    private void menuChatGPT() {
+        this.optionsChatGPT = new Menu("ChatGPT");
+
+        MenuItem chatgpt = new MenuItem("Generer un monde");
+
+        chatgpt.setOnAction(event -> this.afficherFenetreChatGPT());
+
+        this.optionsChatGPT.getItems().addAll(chatgpt);
+    }
+
+    private void afficherFenetreChatGPT() {
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Twisk");
+        dialog.setHeaderText("Génération d'un monde via ChatGPT");
+
+        // Boutons annuler et valider
+        dialog.getDialogPane().getButtonTypes().clear();
+        ButtonType buttonAnnulerType = new ButtonType("Annuler", ButtonBar.ButtonData.CANCEL_CLOSE);
+        ButtonType buttonValiderType = new ButtonType("Générer", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(buttonAnnulerType, buttonValiderType);
+
+        VBox content = new VBox(16);
+
+        // description
+        Label description = new Label("Veuillez décrire clairement le monde que vous souhaitez générer.");
+        description.getStyleClass().add("dialog-description");
+        content.getChildren().add(description);
+
+        VBox group = new VBox();
+        group.setSpacing(6);
+        // nombre de clients
+        Label nbClients = new Label("Prompt");
+        nbClients.getStyleClass().add("dialog-clients-etape");
+
+        // input
+        TextArea textArea = new TextArea();
+        textArea.setMinHeight(100);
+        textArea.setPrefHeight(100);
+        textArea.setWrapText(true);
+        textArea.setStyle("-fx-alignment: top-left; -fx-padding: 2 1;");
+        textArea.setPromptText("Décrivez ici votre monde (ex: un aéroport avec contrôle de sécurité, salle d'attente, portes d'embarquement...)");
+        textArea.getStyleClass().add("dialog-input");
+        group.getChildren().addAll(nbClients, textArea);
+
+        content.getChildren().add(group);
+
+        // Style the buttons
+        Button buttonAnnuler = (Button) dialog.getDialogPane().lookupButton(buttonAnnulerType);
+        Button buttonValider = (Button) dialog.getDialogPane().lookupButton(buttonValiderType);
+
+        buttonAnnuler.getStyleClass().add("dialog-button-annuler");
+        buttonValider.getStyleClass().add("dialog-button-valider");
+
+        DialogPane dialogPane = dialog.getDialogPane();
+        dialogPane.setContent(content);
+        dialogPane.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/styles.css")).toExternalForm());
+        dialogPane.getStyleClass().add("dialog");
+
+        dialog.showAndWait().ifPresent(response -> {
+            if (response == buttonValiderType) {
+                if(textArea.getText().isEmpty() || textArea.getText().length() < 20) {
+                    VueTwiskException.alert("Prompt invalide", "Veuillez écrire une description plus détaillée (au moins 20 caractères).");
+                    return;
+                }
+
+                JsonObject mondeGenere = null;
+                try {
+                    mondeGenere = ChatGPT.demanderMonde(textArea.getText());
+                } catch (Exception e) {
+                    VueTwiskException.alert("Monde invalide", "Le monde généré par ChatGPT est incorrect. Veuillez réessayer avec une autre description.");
+                }
+
+                this.mondeIG.chargerDepuisJson(mondeGenere);
             }
         });
     }

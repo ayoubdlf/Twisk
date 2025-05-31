@@ -40,9 +40,7 @@ public class KitC {
                 }
             }
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } catch (IOException ignored) {}
 
     }
 
@@ -55,9 +53,7 @@ public class KitC {
         try {
             Path fichier = Paths.get("/tmp/twisk/client.c");
             Files.write(fichier, codeC.getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } catch (IOException ignored) {}
     }
 
     /**

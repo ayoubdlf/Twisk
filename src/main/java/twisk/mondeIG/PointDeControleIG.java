@@ -1,5 +1,6 @@
 package twisk.mondeIG;
 
+import com.google.gson.JsonObject;
 import twisk.outils.FabriqueIdentifiant;
 import static twisk.outils.TailleComposants.POINT_DE_CONTROLE_RADIUS;
 
@@ -139,6 +140,15 @@ public class PointDeControleIG {
      */
     public boolean estEnBas() {
         return this.posStr.equals("BAS");
+    }
+
+    public JsonObject toJson() {
+        JsonObject json = new JsonObject();
+
+        json.addProperty("etape", this.getEtape().getIdentifiant());
+        json.addProperty("index", Integer.parseInt(this.getIdentifiant().split("_")[1])-1);
+
+        return json;
     }
 
     /**

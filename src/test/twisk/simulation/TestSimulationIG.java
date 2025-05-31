@@ -3,6 +3,7 @@ package twisk.simulation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import twisk.exceptions.*;
+import twisk.monde.Monde;
 import twisk.mondeIG.*;
 import twisk.outils.FabriqueIdentifiant;
 
@@ -18,7 +19,7 @@ class TestSimulationIG {
     }
 
     @Test
-    void testSansEntree() throws TwiskException {
+    void testSansEntree() throws MondeException {
         MondeIG mondeIG = new MondeIG();
 
         mondeIG.ajouter("Activite");
@@ -42,7 +43,7 @@ class TestSimulationIG {
     }
 
     @Test
-    void testSansSortie() throws TwiskException {
+    void testSansSortie() throws MondeException {
         MondeIG mondeIG = new MondeIG();
 
         mondeIG.ajouter("Activite");
@@ -66,7 +67,7 @@ class TestSimulationIG {
     }
 
     @Test
-    void testToutAccessibleDepuisEntree() throws TwiskException {
+    void testToutAccessibleDepuisEntree() throws MondeException {
         MondeIG mondeIG = new MondeIG();
 
         mondeIG.ajouter("Activite");
@@ -90,7 +91,7 @@ class TestSimulationIG {
     }
 
     @Test
-    void testToutEtapeMeneUneSortie() throws TwiskException {
+    void testToutEtapeMeneUneSortie() throws MondeException {
         MondeIG mondeIG = new MondeIG();
 
         mondeIG.ajouter("Activite");
@@ -114,7 +115,7 @@ class TestSimulationIG {
     }
 
     @Test
-    void testGuichetPeutPasEtreSortie() throws TwiskException {
+    void testGuichetPeutPasEtreSortie() throws MondeException {
         MondeIG mondeIG = new MondeIG();
 
         mondeIG.ajouter("Activite");
@@ -138,7 +139,7 @@ class TestSimulationIG {
     }
 
     @Test
-    void testSortieAvecSuccesseurs() throws TwiskException {
+    void testSortieAvecSuccesseurs() throws MondeException {
         MondeIG mondeIG = new MondeIG();
 
         mondeIG.ajouter("Activite");
@@ -159,7 +160,7 @@ class TestSimulationIG {
     }
 
     @Test
-    void testGuichetPossedeUnSeulSuccesseur() throws TwiskException {
+    void testGuichetPossedeUnSeulSuccesseur() throws MondeException {
         MondeIG mondeIG = new MondeIG();
 
         mondeIG.ajouter("Guichet");
@@ -185,7 +186,7 @@ class TestSimulationIG {
     }
 
     @Test
-    void testGuichetPossedeUneSeulActiviteRestreinte() throws TwiskException {
+    void testGuichetPossedeUneSeulActiviteRestreinte() throws MondeException {
         MondeIG mondeIG = new MondeIG();
 
         mondeIG.ajouter("Guichet");
@@ -210,7 +211,7 @@ class TestSimulationIG {
     }
 
     @Test
-    void testActiviteRestreintePossedeUnGuichetCommePredecesseur() throws TwiskException {
+    void testActiviteRestreintePossedeUnGuichetCommePredecesseur() throws MondeException {
         MondeIG mondeIG = new MondeIG();
 
         mondeIG.ajouter("Guichet");
@@ -238,7 +239,7 @@ class TestSimulationIG {
     }
 
     @Test
-    void testActiviteRestreinteNonEntree() throws TwiskException {
+    void testActiviteRestreinteNonEntree() throws MondeException {
         MondeIG mondeIG = new MondeIG();
 
         mondeIG.ajouter("Guichet");

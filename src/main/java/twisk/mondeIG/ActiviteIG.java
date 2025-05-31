@@ -47,11 +47,6 @@ public class ActiviteIG extends EtapeIG {
         return this.ecartTemps;
     }
 
-    @Override
-    public String toString() {
-        return String.format("%s(%d, %d)", this.getNom(), this.getTemps(), this.getEcartTemps());
-    }
-
 
     // —————————— SETTERS ——————————
 

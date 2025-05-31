@@ -1,6 +1,8 @@
 package twisk.mondeIG;
 
 import java.util.*;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import twisk.outils.FabriqueIdentifiant;
 import twisk.simulation.Client;
 import static twisk.outils.TailleComposants.*;
@@ -156,13 +158,54 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
         return this.clients;
     }
 
+    public String getType() {
+        if(this.estUneEntree())   { return "entree"; }
+        if(this.estUneSortie())   { return "sortie"; }
+        if(this.estUneActivite()) { return "activite"; }
+        if(this.estUnGuichet())   { return "guichet"; }
+
+        return "";
+    }
+
+    public JsonObject toJson() {
+        JsonObject json = new JsonObject();
+
+        json.addProperty("type", this.getType());
+        json.addProperty("nom", this.getNom());
+        json.addProperty("identifiant", this.getIdentifiant());
+        json.addProperty("x", this.getPosition()[0]);
+        json.addProperty("y", this.getPosition()[1]);
+
+        if(this.estUnGuichet()) {
+            json.addProperty("nbJetons", ((GuichetIG) this).getJetons());
+        }
+
+        if(this.estUneActivite()) {
+            json.addProperty("temps", ((ActiviteIG) this).getTemps());
+            json.addProperty("ecartTemps", ((ActiviteIG) this).getEcartTemps());
+        }
+
+        return json;
+    }
+
     /**
      * Retourne une chaîne de caractères représentant l'étape.
      *
      * @return une chaîne de caractères représentant l'étape
      */
-    public abstract String toString();
+    public String toString() {
+        if(this.estUneActivite) {
+            ActiviteIG activiteIG = (ActiviteIG) this;
+            return String.format("%s(%d, %d)", activiteIG.getNom(), activiteIG.getTemps(), activiteIG.getEcartTemps());
+        }
 
+        if(this.estUnGuichet) {
+            GuichetIG activiteIG = (GuichetIG) this;
+            return String.format("%s(%d)", activiteIG.getNom(), activiteIG.getJetons());
+        }
+
+        return null;
+    }
 
     // —————————— SETTERS ——————————
 
@@ -307,6 +350,11 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
         this.clients.clear();
     }
 
+    // —————————— METHODES DEDIE AU CHARGEMENT JSON ——————————
+
+    public void setIdentifiant(String identifiant) {
+        this.identifiant = identifiant;
+    }
 
 
     // —————————— METHODES PRIVES ——————————
@@ -325,5 +373,8 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
         return random.nextInt(max);
     }
 
+    public PointDeControleIG getPointDeControle(int i) {
+        return this.pointsDeControle[i];
+    }
 }
 

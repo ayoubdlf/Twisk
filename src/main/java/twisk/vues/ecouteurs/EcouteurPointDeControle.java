@@ -2,7 +2,7 @@ package twisk.vues.ecouteurs;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
-import twisk.exceptions.TwiskException;
+import twisk.exceptions.MondeException;
 import twisk.mondeIG.*;
 import twisk.vues.*;
 
@@ -51,8 +51,8 @@ public class EcouteurPointDeControle implements EventHandler<MouseEvent> {
 
             try {
                 this.monde.ajouter(this.vue.getPointDeControle());
-            } catch (TwiskException e) {
-                VueTwiskException.alert("Ajout d'arc impossible", e.getMessage());
+            } catch (MondeException e) {
+                VueMondeException.alert("Ajout d'arc impossible", e.getMessage());
 
                 this.monde.supprimerArcTemporaire();
                 this.monde.notifierObservateurs();

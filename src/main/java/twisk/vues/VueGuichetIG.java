@@ -6,10 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.shape.SVGPath;
 import twisk.mondeIG.*;
-import twisk.simulation.Client;
-
 import java.util.ArrayList;
-import java.util.Comparator;
 
 
 public class VueGuichetIG extends VueEtapeIG {
@@ -43,7 +40,6 @@ public class VueGuichetIG extends VueEtapeIG {
             command.run();
         } else {
             Platform.runLater(command);
-
         }
     }
 

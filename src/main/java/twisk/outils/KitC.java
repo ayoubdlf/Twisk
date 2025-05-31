@@ -1,9 +1,7 @@
 package twisk.outils;
 
 import java.io.*;
-import java.lang.management.ManagementFactory;
 import java.nio.file.*;
-import java.util.ArrayList;
 
 
 public class KitC {
@@ -78,9 +76,9 @@ public class KitC {
 
         try {
             pb.inheritIO().start().waitFor();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        } catch (Exception ignored) {}
     }
 
     /**
@@ -99,9 +97,9 @@ public class KitC {
 
         try {
             pb.inheritIO().start().waitFor();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        } catch (Exception ignored) {}
     }
 
     /**
@@ -114,9 +112,9 @@ public class KitC {
 
         try {
             pb.inheritIO().start().waitFor();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        } catch (Exception ignored) {}
     }
 
     /**
@@ -133,9 +131,9 @@ public class KitC {
 
             try {
                 pb.inheritIO().start().waitFor();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            } catch (Exception ignored) {}
         }
     }
 

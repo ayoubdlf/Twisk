@@ -5,6 +5,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.VBox;
 import twisk.mondeIG.*;
+import twisk.outils.ThreadsManager;
 import java.util.Objects;
 
 
@@ -38,23 +39,33 @@ public class VueMenu extends MenuBar implements Observateur {
 
     @Override
     public void reagir() {
-        int nbEtapesSelectionnes = this.mondeIG.getNbEtapesSelectionnees();
-        int nbArcsSelectionnes   = this.mondeIG.getNbArcsSelectionnes();
+        VueMenu vueMenu = this;
 
-        this.edition.getItems().forEach(item -> {
-            item.setDisable(nbEtapesSelectionnes == 0 && nbArcsSelectionnes == 0);
-            if((nbEtapesSelectionnes != 1 || nbArcsSelectionnes != 0) && item.getId() != null && item.getId().equals("renommer")) {
-                item.setDisable(true);
-            }
-        });
+        Runnable command = () -> {
+            int nbEtapesSelectionnes = vueMenu.mondeIG.getNbEtapesSelectionnees();
+            int nbArcsSelectionnes   = vueMenu.mondeIG.getNbArcsSelectionnes();
 
-        this.monde.getItems().forEach(item -> {
-            if((nbEtapesSelectionnes != 1 || nbArcsSelectionnes != 0) &&  (item.getId() == null || item.getId() != null && !item.getId().equals("nbClients"))) {
-                item.setDisable(true);
-            }
-        });
+            vueMenu.edition.getItems().forEach(item -> {
+                item.setDisable(nbEtapesSelectionnes == 0 && nbArcsSelectionnes == 0);
+                if((nbEtapesSelectionnes != 1 || nbArcsSelectionnes != 0) && item.getId() != null && item.getId().equals("renommer")) {
+                    item.setDisable(true);
+                }
+            });
 
-        this.parametres.getItems().forEach(parametre -> parametre.setDisable(nbEtapesSelectionnes != 1));
+            vueMenu.monde.getItems().forEach(item -> {
+                if((nbEtapesSelectionnes != 1 || nbArcsSelectionnes != 0) &&  (item.getId() == null || item.getId() != null && !item.getId().equals("nbClients"))) {
+                    item.setDisable(true);
+                }
+            });
+
+            vueMenu.parametres.getItems().forEach(parametre -> parametre.setDisable(nbEtapesSelectionnes != 1));
+        };
+
+        if(Platform.isFxApplicationThread()) {
+            command.run();
+        } else {
+            Platform.runLater(command);
+        }
     }
 
 
@@ -66,9 +77,20 @@ public class VueMenu extends MenuBar implements Observateur {
     private void menuFichier() {
         this.fichier = new Menu("Fichier");
 
+        MenuItem chargerJson = new MenuItem("Charger un monde");
+        MenuItem sauverJson  = new MenuItem("Sauvegarder le monde");
+
+        sauverJson.setOnAction(event  -> this.mondeIG.sauvegarderEnJson());
+        chargerJson.setOnAction(event -> this.mondeIG.chargerDepuisJson());
+
+        this.fichier.getItems().addAll(chargerJson, sauverJson);
+
         MenuItem quitter = new MenuItem("Quitter");
         quitter.setAccelerator(KeyCombination.keyCombination("Ctrl+Q"));
-        quitter.setOnAction(event -> Platform.exit());
+        quitter.setOnAction(event -> {
+            ThreadsManager.getInstance().detruireTout();
+            Platform.exit();
+        });
 
         this.fichier.getItems().add(quitter);
     }

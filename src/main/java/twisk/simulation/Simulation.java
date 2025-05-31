@@ -4,7 +4,6 @@ import twisk.monde.*;
 import twisk.mondeIG.SujetObserve;
 import twisk.outils.KitC;
 import twisk.outils.ThreadsManager;
-
 import java.util.*;
 
 /**
@@ -26,8 +25,6 @@ public class Simulation extends SujetObserve {
         this.gestionnaireClients = new GestionnaireClients();
         this.positionClients     = null;
         this.simulationActive    = false;
-
-        kitC.creerEnvironnement();
     }
 
     /* —————————— GETTERS —————————— */
@@ -71,6 +68,7 @@ public class Simulation extends SujetObserve {
     public void simuler(Monde monde) {
         this.monde = monde;
 
+        this.kitC.creerEnvironnement();
         this.kitC.creerFichier(this.monde.toC());
         this.kitC.compiler();
         this.kitC.construireLaBibliotheque();
@@ -100,10 +98,7 @@ public class Simulation extends SujetObserve {
         int nbGuichets         = this.monde.nbGuichets();
         this.simulationActive  = true;
 
-        System.out.println(111);
         int[] simulation       = start_simulation(nbEtapes, nbGuichets, this.getNbClients(), tabJetonsGuichet);
-        System.out.println(222);
-        System.out.println(Arrays.toString(simulation));
 
         this.afficherListeClients(simulation, this.getNbClients());
         this.afficherPositionsClients(nbEtapes, this.getNbClients());
@@ -176,15 +171,15 @@ public class Simulation extends SujetObserve {
 
                 System.out.println(); // nouvelle ligne entre chaque seconde
 
-                this.notifierObservateurs();
-                Thread.sleep(1000); // 1000ms
+                // this.notifierObservateurs(); Mainteant les `this.notifierObservateurs()` sont appele directement dans SimulationIG (ca resout mon bug des threads)
+                Thread.sleep(1000); // 1s
 
             } catch (InterruptedException ignored) {
             }
         }
 
         System.out.println("\nsimulation terminee.");
-        this.notifierObservateurs();
+        // this.notifierObservateurs(); Mainteant les `this.notifierObservateurs()` sont appele directement dans SimulationIG (ca resout mon bug des threads)
     }
 
 

@@ -1,6 +1,12 @@
 package twisk.mondeIG;
 
-import twisk.exceptions.TwiskException;
+import com.google.gson.*;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import twisk.exceptions.MondeException;
+import twisk.vues.VueMondeException;
+import java.io.File;
+import java.io.FileWriter;
 import java.util.*;
 import static twisk.outils.TailleComposants.*;
 
@@ -23,6 +29,8 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
         this.arcTemporaire = new PointDeControleIG[2];
         this.animationArcs = false;
         this.nbClients     = 5; // Par default il y'aura 5 clients
+
+        // this.test();
     }
 
 
@@ -154,7 +162,7 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
      * @param p1 Le premier point de contrôle.
      * @param p2 Le deuxième point de contrôle.
      */
-    public void ajouter(PointDeControleIG p1, PointDeControleIG p2) throws TwiskException {
+    public void ajouter(PointDeControleIG p1, PointDeControleIG p2) throws MondeException {
         assert(p1 != null && p2 != null) : "Les deux points de controles ne doivent pas etre nuls";
         this.supprimerArcTemporaire();
 
@@ -185,7 +193,7 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
      *
      * @param point Le point de controle temporaire à ajouter.
      */
-    public void ajouter(PointDeControleIG point) throws TwiskException {
+    public void ajouter(PointDeControleIG point) throws MondeException {
         assert(point != null) : "Le point de controle ne doit pas etre null";
 
         if(this.arcTemporaire[0] == null) {
@@ -331,6 +339,83 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
         Arrays.fill(this.arcTemporaire, null);
     }
 
+
+    public void chargerDepuisJson() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Charger un fichier JSON");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers JSON", "*.json"));
+
+        File fichierJson = fileChooser.showOpenDialog(new Stage());
+        if (fichierJson != null) {
+            try (Scanner scanner = new Scanner(fichierJson)) {
+                StringBuilder stringBuilder = new StringBuilder();
+                while (scanner.hasNextLine()) {
+                    stringBuilder.append(scanner.nextLine());
+                }
+
+                String jsonString = stringBuilder.toString();
+                JsonObject JSON   = JsonParser.parseString(jsonString).getAsJsonObject();
+
+                this.etapes.clear();
+                this.arcs.clear();
+
+                // On set le nombre de clients
+                this.nbClients = JSON.get("nbClients").getAsInt();
+
+                // On ajoute els etapes
+                JsonArray etapesJson = JSON.getAsJsonArray("etapes");
+                for (JsonElement elem : etapesJson) {
+                    JsonObject etapeJson = elem.getAsJsonObject();
+                    this.ajouterDepuisJson(etapeJson);
+                }
+
+                // On ajoute les arcs
+                JsonArray arcsJson = JSON.getAsJsonArray("arcs");
+                for (JsonElement elem : arcsJson) {
+                    JsonObject arcJson = elem.getAsJsonObject();
+                    this.ajouterArcDepuisJson(arcJson);
+                }
+
+                this.notifierObservateurs();
+            } catch (Exception e) {
+                VueMondeException.alert("Erreur lors du chargement", e.getMessage());
+            }
+        }
+    }
+
+    /**
+     * Sauvegarde l'état du monde en JSON.
+     */
+    public void sauvegarderEnJson() {
+        JsonObject JSON = new JsonObject();
+
+        JSON.addProperty("nbClients", this.nbClients);
+
+        JsonArray etapesJson = new JsonArray();
+        JsonArray arcsJson   = new JsonArray();
+
+        for (EtapeIG etape : this)  { etapesJson.add(etape.toJson()); }
+        for (ArcIG arc : this.arcs) { arcsJson.add(arc.toJson()); }
+
+        JSON.add("etapes", etapesJson);
+        JSON.add("arcs",   arcsJson);
+
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Sauvegarder sous..");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers JSON", "*.json"));
+
+        File fichierJson = fileChooser.showSaveDialog(new Stage());
+        if (fichierJson != null) {
+            try (FileWriter writer = new FileWriter(fichierJson)) {
+                writer.write(gson.toJson(JSON)); // le json
+            } catch (Exception e) {
+                VueMondeException.alert("Erreur lors de la sauvegarde", e.getMessage());
+            }
+        }
+    }
+
     // —————————— SETTERS ——————————
 
     /**
@@ -370,7 +455,141 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
         this.nbClients = nbClients;
     }
 
+    // —————————— METHODES DEDIE AU CHARGEMENT JSON ——————————
+    public void ajouterDepuisJson(JsonObject etapeJson) {
+        assert(etapeJson != null)  : "L'etape ne doit pas etre null";
+
+        String type, nom, identifiant;
+        int x, y;
+        int temps = 0, ecartTemps = 0, jetons = 0;
+
+        try {
+            type           = etapeJson.get("type").getAsString();
+            nom            = etapeJson.get("nom").getAsString();
+            identifiant    = etapeJson.get("identifiant").getAsString();
+            x              = etapeJson.get("x").getAsInt();
+            y              = etapeJson.get("y").getAsInt();
+        } catch (Exception e) {
+            VueMondeException.alert("Erreur de chargement JSON", "Impossible de lire les propriétés de l'étape : " + e.getMessage());
+            return;
+        }
+
+        boolean estUnGuichet   = type.equals("guichet");
+        boolean estUneActivite = !estUnGuichet;
+
+        if(estUneActivite) {
+            try {
+                temps      = etapeJson.get("temps").getAsInt();
+                ecartTemps = etapeJson.get("ecartTemps").getAsInt();
+            } catch (Exception e) {
+                VueMondeException.alert("Erreur de chargement JSON", "Impossible de lire les propriétés 'temps' et 'ecart temps' de l'activite : " + e.getMessage());
+                return;
+            }
+        }
+
+        if(estUnGuichet) {
+            try {
+                jetons = etapeJson.get("jetons").getAsInt();
+            } catch (Exception e) {
+                VueMondeException.alert("Erreur de chargement JSON", "Impossible de lire la propriétés 'jetons' du guichet : " + e.getMessage());
+                return;
+            }
+        }
+
+        EtapeIG etape;
+
+        if(estUnGuichet) {
+            etape = this.creationGuichetDepuisJson(type, nom, identifiant, x, y, jetons);
+        } else {
+            etape = this.creationActiviteDepuisJson(type, nom, identifiant, x, y, temps, ecartTemps);
+        }
+
+        this.etapes.put(etape.getIdentifiant(), etape);
+
+        this.notifierObservateurs();
+    }
+
+    private void ajouterArcDepuisJson(JsonObject arcsJson) {
+        assert(arcsJson != null)  : "Les arcs ne doivent pas etre null";
+
+        EtapeIG etapeSource, etapeDestination;
+        int indexPdcEtapeSource, indexPdcEtapeDestination;
+
+        try {
+            JsonObject source        = arcsJson.get("source").getAsJsonObject();
+            JsonObject destination   = arcsJson.get("destination").getAsJsonObject();
+
+            etapeSource              = this.getEtapeByIdentifiant(source.get("etape").getAsString()); // TODO: change en identifiant
+            etapeDestination         = this.getEtapeByIdentifiant(destination.get("etape").getAsString()); // TODO: change en identifiant
+
+            indexPdcEtapeSource      = source.get("index").getAsInt();
+            indexPdcEtapeDestination = destination.get("index").getAsInt();
+        } catch (Exception e) {
+            VueMondeException.alert("Erreur de chargement JSON", "Impossible de lire les propriétés de l'arc : " + e.getMessage());
+            return;
+        }
+
+        if(etapeSource == null || etapeDestination == null) {
+            VueMondeException.alert("Erreur de chargement JSON", "L'étape source ou destination spécifiée pour l'arc est introuvable.");
+            return;
+        }
+
+        try {
+            this.ajouter(etapeSource.getPointDeControle(indexPdcEtapeSource), etapeDestination.getPointDeControle(indexPdcEtapeDestination));
+        } catch (MondeException e) {
+            VueMondeException.alert("Erreur lors de l'ajout d'un arc", "Impossible d'ajouter l'arc : " + e.getMessage());
+        }
+    }
+
+    private EtapeIG creationActiviteDepuisJson(String type, String nom, String identifiant, int x, int y, int temps, int ecartTemps) {
+        ActiviteIG activite = new ActiviteIG(nom, ETAPE_LARGEUR, ETAPE_HAUTEUR);
+        activite.setIdentifiant(identifiant);
+        activite.setTemps(temps);
+        activite.setEcartTemps(ecartTemps);
+        activite.setPosition(x, y);
+        activite.setEstUneEntree(type.equals("entree"));
+        activite.setEstUneSortie(type.equals("sortie"));
+
+        return activite;
+    }
+
+    private EtapeIG creationGuichetDepuisJson(String type, String nom, String identifiant, int x, int y, int jetons) {
+        GuichetIG guichet = new GuichetIG(nom, ETAPE_LARGEUR, ETAPE_HAUTEUR);
+        guichet.setIdentifiant(identifiant);
+        guichet.setPosition(x, y);
+        guichet.setEstUneEntree(type.equals("entree"));
+        guichet.setJetons(jetons);
+
+        return guichet;
+    }
+
     // —————————— METHODES PRIVES ——————————
+
+    private void test() {
+        this.ajouter("Activite");
+        this.ajouter("Activite");
+        this.ajouter("Activite");
+
+        Iterator<EtapeIG> iterator = this.iterator();
+
+        EtapeIG activite0 = iterator.next();
+        EtapeIG activite1 = iterator.next();
+        EtapeIG activite2 = iterator.next();
+
+        try {
+            this.ajouter(activite0.getPointDeControle(1), activite1.getPointDeControle(3));
+            this.ajouter(activite1.getPointDeControle(1), activite2.getPointDeControle(3));
+        } catch(Exception ignored) {}
+
+        activite0.setEstUneEntree(true);
+        activite2.setEstUneSortie(true);
+
+        activite0.setPosition(100, TWISK_HAUTEUR/2 - ETAPE_HAUTEUR);
+        activite1.setPosition(400, TWISK_HAUTEUR/2 - ETAPE_HAUTEUR);
+        activite2.setPosition(700, TWISK_HAUTEUR/2 - ETAPE_HAUTEUR);
+
+        this.notifierObservateurs();
+    }
 
     /**
      * Crée une étape en fonction du type spécifié.
@@ -395,17 +614,17 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
         return null;
     }
 
-    private void checkConditionsAjouter(PointDeControleIG p1, PointDeControleIG p2) throws TwiskException {
+    private void checkConditionsAjouter(PointDeControleIG p1, PointDeControleIG p2) throws MondeException {
 
         // Point de controle deja utilise
         // TODO : necessaire ou pas?
         // if(p1.estUtilise() || p2.estUtilise()) {
-        //     throw new TwiskException("Le point de controle est deja utilise");
+        //     throw new MondeException("Le point de controle est deja utilise");
         // }
 
         // p1 et p2 font partie de la meme etape
         if(p1.getEtape().equals(p2.getEtape())) {
-            throw new TwiskException("L'arc ne peut pas commencer et terminer dans la meme etape");
+            throw new MondeException("L'arc ne peut pas commencer et terminer dans la meme etape");
         }
 
         // p2 est deja lie à p1 avec un autre arc
@@ -418,33 +637,34 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
                     etape1.equals(p1.getEtape()) && etape2.equals(p2.getEtape()) ||
                             etape1.equals(p2.getEtape()) && etape2.equals(p1.getEtape())
             ) {
-                throw new TwiskException("Le successeur est deja lie avec un arc à cette etape");
+                throw new MondeException("Le successeur est deja lie avec un arc à cette etape");
             }
         }
 
         // p1 et p2 font partie de la meme etape
         if(p1.getEtape().equals(p2.getEtape())) {
-            throw new TwiskException("L'arc ne peut pas commencer et terminer dans la meme etape");
+            throw new MondeException("L'arc ne peut pas commencer et terminer dans la meme etape");
         }
 
         // Le successeur ne peut pas etre une entree
         if(p2.getEtape().estUneEntree()) {
             // TODO: Cette condition sera check dans SimulationIG
             // if(p2.getEtape().estUneEntree() && !p2.getEtape().estUneSortie()) {
-            //     throw new TwiskException("Le successeur ne peut pas etre une entree");
+            //     throw new MondeException("Le successeur ne peut pas etre une entree");
             // }
 
             // Une sortie ne peut pas avoir de successeurs
             if(p1.getEtape().estUneSortie()) {
-                throw new TwiskException("Une sortie ne peut pas avoir de successeurs");
+                throw new MondeException("Une sortie ne peut pas avoir de successeurs");
             }
         }
 
         if(this.estAccessibleDepuis(p1.getEtape(), p2.getEtape())) {
-            throw new TwiskException("L'etape de depart est inaccessible depuis l'etape de fin");
+            throw new MondeException("L'etape de depart est inaccessible depuis l'etape de fin");
         }
 
     }
+
     public boolean estAccessibleDepuis(EtapeIG depart, EtapeIG arrivee) {
         ArrayList<String> visites = new ArrayList<>();
         return detecteCycle(arrivee, depart, visites);
@@ -467,5 +687,14 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
         return false; // Aucun chemin trouvé
     }
 
+    private EtapeIG getEtapeByIdentifiant(String identifiant) {
+        for (EtapeIG etape : this.etapes.values()) {
+            if (etape.getIdentifiant().equals(identifiant)) {
+                return etape;
+            }
+        }
+
+        return null;
+    }
 }
 

@@ -37,11 +37,6 @@ public class GuichetIG extends EtapeIG {
         return this.jetons;
     }
 
-    @Override
-    public String toString() {
-        return String.format("%s(%d)", this.getNom(), this.getJetons());
-    }
-
 
     // —————————— SETTERS ——————————
 

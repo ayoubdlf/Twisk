@@ -1,5 +1,6 @@
 package twisk.mondeIG;
 
+import com.google.gson.JsonObject;
 
 public abstract class ArcIG {
 
@@ -60,6 +61,15 @@ public abstract class ArcIG {
      */
     public String getIdentifiant() {
         return this.identifiant;
+    }
+
+    public JsonObject toJson() {
+        JsonObject json = new JsonObject();
+
+        json.add("source",      this.getP1().toJson());
+        json.add("destination", this.getP2().toJson());
+
+        return json;
     }
 
     /**

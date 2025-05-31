@@ -1,9 +1,6 @@
 package twisk.monde;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import twisk.outils.FabriqueNumero;
-
 import java.util.*;
 
 
@@ -153,19 +150,6 @@ public class Monde implements Iterable<Etape> {
      */
     public Iterator<Etape> iteratorGuichets() {
         return this.etapes.iteratorGuichets();
-    }
-
-    public JsonObject toJson() {
-        JsonObject json  = new JsonObject();
-        JsonArray etapes = new JsonArray();
-
-        for (Etape etape : this.etapes) {
-            etapes.add(etape.toJson());
-        }
-
-        json.add("monde", etapes);
-
-        return json;
     }
 
     /**

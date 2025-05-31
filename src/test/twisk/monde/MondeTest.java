@@ -238,7 +238,5 @@ class MondeTest {
         };
 
         monde.ajouter(etapes);
-
-        System.out.println(monde.toJson());
     }
 }

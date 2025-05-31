@@ -1,11 +1,18 @@
 package twisk.simulation;
 
+import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
 import twisk.exceptions.MondeException;
 import twisk.monde.*;
 import twisk.mondeIG.*;
 import twisk.outils.*;
 import twisk.vues.Observateur;
+import twisk.vues.ecouteurs.EcouteurBoutonSimulation;
+
 import java.lang.reflect.Method;
 
 
@@ -15,6 +22,9 @@ public class SimulationIG implements Observateur {
     private Monde monde;
     private CorrespondancesEtapes correspondancesEtapes;
     Object simulation;
+    Timeline notifierTimeline;
+    private boolean estActive;
+    private EcouteurBoutonSimulation boutonSimulation;
 
 
     public SimulationIG(MondeIG mondeIG) {
@@ -24,6 +34,14 @@ public class SimulationIG implements Observateur {
         this.monde                 = null;
         this.correspondancesEtapes = null;
         this.simulation            = null;
+        this.estActive             = false;
+    }
+
+    public SimulationIG(MondeIG mondeIG, EcouteurBoutonSimulation boutonSimulation) {
+        this(mondeIG);
+        assert (boutonSimulation != null) : "Le bouton de simulation ne doit pas etre null";
+
+        this.boutonSimulation = boutonSimulation;
     }
 
 
@@ -37,7 +55,10 @@ public class SimulationIG implements Observateur {
         this.monde = this.creerMonde();
 
         // Simulation du monde
+        this.startSimulation();
+    }
 
+    private void startSimulation() {
         SimulationIG classeActuelle = this; // on peut pas faire utiliser le `this` dans `ajouterObservateur.invoke(instance, this)`, du coup on le definis avant le Task
 
         Task<Void> task = new Task<>() {
@@ -61,8 +82,8 @@ public class SimulationIG implements Observateur {
                     simulation      = null;
                     setNbClients    = null;
                     simuler         = null;
-
                     System.gc();
+                    SimulationIG.this.stopSimulation();
                 } catch (Exception e) {
                     throw new MondeException("Erreur lors de la simulation du monde");
                 }
@@ -72,22 +93,40 @@ public class SimulationIG implements Observateur {
         };
 
         ThreadsManager.getInstance().lancer(task);
+
+        // Ici c'est la seule solution que j'ai trouve à mon bug, appeler `this.mondeIG.notifierObservateurs()` chaque seconde ici et non dans la classe Simulation
+        notifierTimeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> Platform.runLater(() -> {
+            this.mondeIG.notifierObservateurs();
+            this.reagir();
+        })));
+        notifierTimeline.setCycleCount(Animation.INDEFINITE);
+        notifierTimeline.play();
     }
 
     public void stopSimulation() throws MondeException {
         try {
+            this.setEstActive(false);
+            Platform.runLater(() -> this.boutonSimulation.updateBouton());
+            this.notifierTimeline.stop(); // Au lieu de `this.mondeIG.notifierObservateurs();`
+
             if (this.simulation != null) {
                 Method stopSimulation = this.simulation.getClass().getMethod("stopSimulation");
                 stopSimulation.invoke(this.simulation);
             }
 
-            this.mondeIG.notifierObservateurs();
-
-        } catch (Exception ignored) {
+            this.estActive = false;
+        } catch (Exception e) {
             throw new MondeException("Erreur lors de l'arret de la simulation");
         }
     }
 
+    public boolean estActive() {
+        return estActive;
+    }
+
+    public void setEstActive(boolean estActive) {
+        this.estActive = estActive;
+    }
 
     // —————————— METHODES PRIVES ——————————
 
@@ -266,7 +305,6 @@ public class SimulationIG implements Observateur {
                 }
             }
 
-            this.mondeIG.notifierObservateurs(); // TODO: est-ce correct the ne pas avoir de this.mondeIG.ajouterObservateur(this) et de mettre ca ici? (OUI pour moi)
         } catch (Exception ignored) {}
     }
 }

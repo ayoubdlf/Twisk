@@ -177,7 +177,7 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
         json.addProperty("y", this.getPosition()[1]);
 
         if(this.estUnGuichet()) {
-            json.addProperty("nbJetons", ((GuichetIG) this).getJetons());
+            json.addProperty("jetons", ((GuichetIG) this).getJetons());
         }
 
         if(this.estUneActivite()) {

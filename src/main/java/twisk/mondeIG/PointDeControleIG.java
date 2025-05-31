@@ -145,7 +145,7 @@ public class PointDeControleIG {
     public JsonObject toJson() {
         JsonObject json = new JsonObject();
 
-        json.addProperty("etape", this.getEtape().getIdentifiant());
+        json.addProperty("identifiant", this.getEtape().getIdentifiant());
         json.addProperty("index", Integer.parseInt(this.getIdentifiant().split("_")[1])-1);
 
         return json;

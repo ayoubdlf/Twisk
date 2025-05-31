@@ -12,8 +12,9 @@ import twisk.mondeIG.*;
 import twisk.outils.*;
 import twisk.vues.Observateur;
 import twisk.vues.ecouteurs.EcouteurBoutonSimulation;
-
 import java.lang.reflect.Method;
+import java.util.HashSet;
+import java.util.Set;
 
 
 public class SimulationIG implements Observateur {
@@ -59,13 +60,12 @@ public class SimulationIG implements Observateur {
     }
 
     private void startSimulation() {
-        SimulationIG classeActuelle = this; // on peut pas faire utiliser le `this` dans `ajouterObservateur.invoke(instance, this)`, du coup on le definis avant le Task
 
         Task<Void> task = new Task<>() {
             @Override
             protected Void call() throws MondeException {
                 try {
-                    ClassLoaderPerso loader   = new ClassLoaderPerso(classeActuelle.getClass().getClassLoader());
+                    ClassLoaderPerso loader   = new ClassLoaderPerso(SimulationIG.this.getClass().getClassLoader());
                     Class<?> simulationClass  = loader.loadClass("twisk.simulation.Simulation");
                     simulation                = simulationClass.getDeclaredConstructor().newInstance();
 
@@ -73,7 +73,7 @@ public class SimulationIG implements Observateur {
                     Method setNbClients       = simulation.getClass().getMethod("setNbClients", int.class);
                     Method simuler            = simulation.getClass().getMethod("simuler", Monde.class);
 
-                    ajouterObservateur.invoke(simulation, classeActuelle);
+                    ajouterObservateur.invoke(simulation, SimulationIG.this);
                     setNbClients.invoke(simulation, mondeIG.getNbClients());
                     simuler.invoke(simulation, monde);
 
@@ -105,16 +105,24 @@ public class SimulationIG implements Observateur {
 
     public void stopSimulation() throws MondeException {
         try {
-            this.setEstActive(false);
-            Platform.runLater(() -> this.boutonSimulation.updateBouton());
-            this.notifierTimeline.stop(); // Au lieu de `this.mondeIG.notifierObservateurs();`
-
             if (this.simulation != null) {
                 Method stopSimulation = this.simulation.getClass().getMethod("stopSimulation");
                 stopSimulation.invoke(this.simulation);
             }
 
+            // On supprime les clients d'avant (ca evite de voir des clients lorsqu'on relance une simulation, psk il etait sauvegarde toujours en memoire)
+            for (EtapeIG etapeIG : this.mondeIG) {
+                etapeIG.supprimerClients();
+            }
+
             this.estActive = false;
+            this.setEstActive(false);
+            this.notifierTimeline.stop(); // Au lieu de `this.mondeIG.notifierObservateurs();`
+            Platform.runLater(() -> {
+                this.boutonSimulation.updateBouton();
+                this.mondeIG.notifierObservateurs();
+                this.reagir();
+            });
         } catch (Exception e) {
             throw new MondeException("Erreur lors de l'arret de la simulation");
         }
@@ -186,6 +194,14 @@ public class SimulationIG implements Observateur {
         }
 
         // 11. cycles
+        for (EtapeIG depart : this.mondeIG) {
+            for (EtapeIG successeur : depart.getSuccesseurs()) {
+                // Si un successeur peut atteindre le départ, il y a un cycle
+                if (this.estAccessibleDepuis(depart, successeur)) {
+                    throw new MondeException("Cycle détecté : l'étape '" + depart.getNom() + "' est accessible depuis son successeur '" + successeur.getNom() + "'");
+                }
+            }
+        }
     }
 
     private Monde creerMonde() {
@@ -282,6 +298,48 @@ public class SimulationIG implements Observateur {
         }
 
         return null;
+    }
+
+    /**
+     * Vérifie s'il existe un chemin depuis 'arrivee' vers 'depart'.
+     */
+    public boolean estAccessibleDepuis(EtapeIG depart, EtapeIG arrivee) {
+        Set<String> visites = new HashSet<>();
+        return this.existeChemin(arrivee, depart, visites);
+    }
+
+    /**
+     * Méthode récursive qui cherche un chemin de 'depart' vers 'cible'.
+     *
+     * @param depart    L'étape de depart
+     * @param cible     L'étape que l'on cherche à atteindre
+     * @param visites   Ensemble des identifiants déjà parcourus
+     * @return true si l'on trouve 'cible' dans le sous-graphe de 'depart'
+     */
+    private boolean existeChemin(EtapeIG depart, EtapeIG cible, Set<String> visites) {
+        // 1. Si on est arrivé sur la cible, on a trouvé un chemin
+        if (depart.equals(cible)) {
+            return true;
+        }
+
+        // 2. Si on a déjà exploré ce noeud, on s'arrête
+        String idCourant = depart.getIdentifiant();
+        if (visites.contains(idCourant)) {
+            return false;
+        }
+
+        // 3. On marque 'depart' comme visité
+        visites.add(idCourant);
+
+        // 4. On explore récursivement tous les successeurs
+        for (EtapeIG successeur : depart.getSuccesseurs()) {
+            if (existeChemin(successeur, cible, visites)) {
+                return true; // Dès qu'on trouve un chemin, on remonte en retour
+            }
+        }
+
+        // 5. Aucun successeur n'a mené à la cible
+        return false;
     }
 
     @Override

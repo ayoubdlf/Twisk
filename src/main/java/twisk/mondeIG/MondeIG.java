@@ -519,8 +519,8 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
             JsonObject source        = arcsJson.get("source").getAsJsonObject();
             JsonObject destination   = arcsJson.get("destination").getAsJsonObject();
 
-            etapeSource              = this.getEtapeByIdentifiant(source.get("etape").getAsString()); // TODO: change en identifiant
-            etapeDestination         = this.getEtapeByIdentifiant(destination.get("etape").getAsString()); // TODO: change en identifiant
+            etapeSource              = this.getEtapeByIdentifiant(source.get("identifiant").getAsString());
+            etapeDestination         = this.getEtapeByIdentifiant(destination.get("identifiant").getAsString());
 
             indexPdcEtapeSource      = source.get("index").getAsInt();
             indexPdcEtapeDestination = destination.get("index").getAsInt();
@@ -615,13 +615,6 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
     }
 
     private void checkConditionsAjouter(PointDeControleIG p1, PointDeControleIG p2) throws MondeException {
-
-        // Point de controle deja utilise
-        // TODO : necessaire ou pas?
-        // if(p1.estUtilise() || p2.estUtilise()) {
-        //     throw new MondeException("Le point de controle est deja utilise");
-        // }
-
         // p1 et p2 font partie de la meme etape
         if(p1.getEtape().equals(p2.getEtape())) {
             throw new MondeException("L'arc ne peut pas commencer et terminer dans la meme etape");
@@ -648,43 +641,12 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
 
         // Le successeur ne peut pas etre une entree
         if(p2.getEtape().estUneEntree()) {
-            // TODO: Cette condition sera check dans SimulationIG
-            // if(p2.getEtape().estUneEntree() && !p2.getEtape().estUneSortie()) {
-            //     throw new MondeException("Le successeur ne peut pas etre une entree");
-            // }
 
             // Une sortie ne peut pas avoir de successeurs
             if(p1.getEtape().estUneSortie()) {
                 throw new MondeException("Une sortie ne peut pas avoir de successeurs");
             }
         }
-
-        if(this.estAccessibleDepuis(p1.getEtape(), p2.getEtape())) {
-            throw new MondeException("L'etape de depart est inaccessible depuis l'etape de fin");
-        }
-
-    }
-
-    public boolean estAccessibleDepuis(EtapeIG depart, EtapeIG arrivee) {
-        ArrayList<String> visites = new ArrayList<>();
-        return detecteCycle(arrivee, depart, visites);
-    }
-
-    private boolean detecteCycle(EtapeIG courant, EtapeIG cible, ArrayList<String> visites) {
-        if (visites.contains(cible.getIdentifiant())) {
-            return true; // Déjà visité, on arrête là pour éviter les boucles infinies
-        }
-
-        visites.add(cible.getIdentifiant());
-
-        // Parcours des successeurs (les arcs sortants depuis cette étape)
-        for(EtapeIG successeur : courant.getSuccesseurs()) {
-            if (this.detecteCycle(successeur, cible, visites)) {
-                return true; // On a trouvé un chemin jusqu'à la cible
-            }
-        }
-
-        return false; // Aucun chemin trouvé
     }
 
     private EtapeIG getEtapeByIdentifiant(String identifiant) {

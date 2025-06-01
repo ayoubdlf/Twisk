@@ -141,7 +141,7 @@ public class Simulation extends SujetObserve {
 
                 if(estTouteEtapeDansSortie(NB_ETAPES, NB_CLIENTS)) { break; }
 
-                Thread.sleep(1000); // 1s
+                Thread.sleep(100); // 100ms (je pourrais l'enlever aussi mais j;ai decide de mettre 10ms pour la loop)
 
             } catch (InterruptedException ignored) {}
         }

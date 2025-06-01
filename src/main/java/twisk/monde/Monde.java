@@ -202,7 +202,7 @@ public class Monde implements Iterable<Etape> {
 
         // body
         sb.append("\nvoid simulation(int ids) {\n");
-            sb.append("\tsrand(time(NULL) + ids);\n\n");
+            sb.append("\tsrand((unsigned int)clock());\n\n");
             sb.append(this.entree.toC(1)); // generer le parcours des client
         sb.append("}\n");
 

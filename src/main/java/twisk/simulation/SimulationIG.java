@@ -333,6 +333,11 @@ public class SimulationIG implements Observateur {
      */
     private Etape transformerEtapeIGEnEtape(EtapeIG etapeIG) {
 
+        if (etapeIG.estUnGuichet()) {
+            GuichetIG guichetIG = (GuichetIG) etapeIG;
+            return new Guichet(guichetIG.getNom(), guichetIG.getJetons());
+        }
+
         if (etapeIG.estUneEntree() || etapeIG.estUneSortie() || etapeIG.estUneActivite()) {
             ActiviteIG activiteIG = (ActiviteIG) etapeIG;
 
@@ -343,11 +348,6 @@ public class SimulationIG implements Observateur {
 
             // Entree ou Sortie ou Activite
             return new Activite(activiteIG.getNom(), activiteIG.getTemps(), activiteIG.getEcartTemps());
-        }
-
-        if (etapeIG.estUnGuichet()) {
-            GuichetIG guichetIG = (GuichetIG) etapeIG;
-            return new Guichet(guichetIG.getNom(), guichetIG.getJetons());
         }
 
         return null;

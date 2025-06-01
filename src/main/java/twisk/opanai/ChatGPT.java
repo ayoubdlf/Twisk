@@ -74,6 +74,7 @@ Chaque arc est de la forme :
    - Toute activité doit mener à une sortie
 
 3. Guichets et Activités restreintes :
+   - Un guichet a exactement UNE ACTIVITE UNIQUEMENT comme successeur
    - Un guichet a exactement UNE activité restreinte comme successeur
    - Une activité restreinte ne peut avoir QU'UN SEUL prédécesseur, le guichet
    - L'activité restreinte peut être aussi une sortie

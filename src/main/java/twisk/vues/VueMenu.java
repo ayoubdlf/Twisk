@@ -48,20 +48,30 @@ public class VueMenu extends MenuBar implements Observateur {
             int nbEtapesSelectionnes = vueMenu.mondeIG.getNbEtapesSelectionnees();
             int nbArcsSelectionnes   = vueMenu.mondeIG.getNbArcsSelectionnes();
 
+            vueMenu.fichier.getItems().forEach(item -> item.setDisable(vueMenu.mondeIG.estSimulationEnCours()));
+
             vueMenu.edition.getItems().forEach(item -> {
                 item.setDisable(nbEtapesSelectionnes == 0 && nbArcsSelectionnes == 0);
                 if((nbEtapesSelectionnes != 1 || nbArcsSelectionnes != 0) && item.getId() != null && item.getId().equals("renommer")) {
                     item.setDisable(true);
                 }
+
+                item.setDisable(vueMenu.mondeIG.estSimulationEnCours());
             });
 
             vueMenu.monde.getItems().forEach(item -> {
-                if((nbEtapesSelectionnes != 1 || nbArcsSelectionnes != 0) &&  (item.getId() == null || item.getId() != null && !item.getId().equals("nbClients"))) {
+                if((nbEtapesSelectionnes != 1 || nbArcsSelectionnes != 0) && (item.getId() == null || item.getId() != null && !item.getId().equals("nbClients"))) {
                     item.setDisable(true);
                 }
+
+                item.setDisable(vueMenu.mondeIG.estSimulationEnCours());
             });
 
-            vueMenu.parametres.getItems().forEach(parametre -> parametre.setDisable(nbEtapesSelectionnes != 1));
+            vueMenu.parametres.getItems().forEach(item -> {
+                item.setDisable(nbEtapesSelectionnes != 1 || vueMenu.mondeIG.estSimulationEnCours());
+            });
+
+            vueMenu.optionsChatGPT.getItems().forEach(item -> item.setDisable(vueMenu.mondeIG.estSimulationEnCours()));
         };
 
         if(Platform.isFxApplicationThread()) {

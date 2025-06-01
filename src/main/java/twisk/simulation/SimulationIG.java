@@ -77,6 +77,7 @@ public class SimulationIG implements Observateur {
      * Démarre l'exécution de la simulation dans un thread séparé.
      */
     private void startSimulation() {
+        this.mondeIG.deselectionnerSelection(); // On evite que l'utilisateur puisse editer une etape qu'il a selectionne avant de cliquer sur le bouton simulation
 
         Task<Void> task = new Task<>() {
             @Override

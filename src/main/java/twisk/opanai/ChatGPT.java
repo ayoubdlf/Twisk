@@ -29,7 +29,7 @@ Tu dois générer un fichier JSON VALIDE, strictement conforme aux règles suiva
 ---
 
 🔢 nbClients
-- Entier strictement positif.
+- Entier strictement positif strictement inferieur à 50.
 
 ---
 
@@ -73,9 +73,11 @@ Chaque arc est de la forme :
    - Toute activité doit être accessible depuis une entrée
    - Toute activité doit mener à une sortie
 
-3. Guichets :
-   - Un guichet a exactement UNE activité comme successeur
-   - Cette activité ne doit avoir AUCUN autre prédécesseur
+3. Guichets et Activités restreintes :
+   - Un guichet a exactement UNE activité restreinte comme successeur
+   - Une activité restreinte ne peut avoir QU'UN SEUL prédécesseur, le guichet
+   - L'activité restreinte peut être aussi une sortie
+   - L'activité restreinte NE PEUT PAS être une entrée
    - Un guichet ne peut pas être une sortie
 
 4. Structure du graphe :

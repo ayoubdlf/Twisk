@@ -2,6 +2,9 @@ package twisk.monde;
 
 public class SasSortie extends Activite {
 
+    /**
+     * Constructeur de la classe SasSortie.
+     */
     public SasSortie() {
         super("sortie");
     }

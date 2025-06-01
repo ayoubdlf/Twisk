@@ -130,6 +130,11 @@ public abstract class VueEtapeIG extends VBox {
         this.getChildren().add(body);
     }
 
+    /**
+     * Retourne l'icône SVG représentant une étape de type entrée.
+     *
+     * @return une forme SVG stylisée pour l'entrée
+     */
     protected SVGPath getIconeEntree() {
         SVGPath svg = new SVGPath();
 
@@ -143,6 +148,11 @@ public abstract class VueEtapeIG extends VBox {
         return svg;
     }
 
+    /**
+     * Retourne l'icône SVG représentant une étape de type activité.
+     *
+     * @return une forme SVG stylisée pour l'activité
+     */
     protected SVGPath getIconeActivite() {
         SVGPath svg = new SVGPath();
 
@@ -155,6 +165,11 @@ public abstract class VueEtapeIG extends VBox {
         return svg;
     }
 
+    /**
+     * Retourne l'icône SVG représentant une étape de type guichet.
+     *
+     * @return une forme SVG stylisée pour guichet
+     */
     protected SVGPath getIconeGuichet() {
         SVGPath svg = this.getIconeActivite();
         svg.getStyleClass().add("svg-guichet");
@@ -162,6 +177,11 @@ public abstract class VueEtapeIG extends VBox {
         return svg;
     }
 
+    /**
+     * Retourne l'icône SVG représentant une étape de type sortie.
+     *
+     * @return une forme SVG stylisée pour l'sortie
+     */
     protected SVGPath getIconeSortie() {
         SVGPath svg = new SVGPath();
 

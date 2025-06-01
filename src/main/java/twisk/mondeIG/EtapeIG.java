@@ -154,10 +154,20 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
         return Arrays.stream(this.pointsDeControle).iterator();
     }
 
+    /**
+     * Retourne la liste des clients présents sur cette étape.
+     *
+     * @return la liste des clients
+     */
     public ArrayList<Client> getClients() {
         return this.clients;
     }
 
+    /**
+     * Retourne le type de l'étape (entrée, sortie, activité ou guichet).
+     *
+     * @return le type de l'étape
+     */
     public String getType() {
         if(this.estUneEntree())   { return "entree"; }
         if(this.estUneSortie())   { return "sortie"; }
@@ -167,6 +177,11 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
         return "";
     }
 
+    /**
+     * Convertit cette étape en un objet JSON.
+     *
+     * @return l'objet JSON représentant l'étape
+     */
     public JsonObject toJson() {
         JsonObject json = new JsonObject();
 
@@ -298,18 +313,33 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
         this.estUnGuichet = estUnGuichet;
     }
 
+    /**
+     * Ajoute un client à cette étape.
+     *
+     * @param client le client à ajouter
+     */
     public void ajouterClient(Client client) {
         this.clients.add(client);
     }
 
     // —————————— METHODES PUBLIQUES ——————————
 
+    /**
+     * Ajoute un successeur à cette étape.
+     *
+     * @param etape l'étape à ajouter comme successeur
+     */
     public void ajouterSuccesseur(EtapeIG etape) {
         assert (etape != null) : "Les etapes ne doivent pas etre nulles";
 
         this.successeurs.add(etape);
     }
 
+    /**
+     * Ajoute un prédécesseur à cette étape.
+     *
+     * @param etape l'étape à ajouter comme prédécesseur
+     */
     public void ajouterPredecesseur(EtapeIG etape) {
         assert (etape != null) : "Les etapes ne doivent pas etre nulles";
 
@@ -338,20 +368,38 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
         this.predecesseurs.remove(etape);
     }
 
+    /**
+     * Retourne la liste des successeurs de cette étape.
+     *
+     * @return la liste des successeurs
+     */
     public ArrayList<EtapeIG> getSuccesseurs() {
         return this.successeurs;
     }
 
+    /**
+     * Retourne la liste des prédécesseurs de cette étape.
+     *
+     * @return la liste des prédécesseurs
+     */
     public ArrayList<EtapeIG> getPredecesseurs() {
         return this.predecesseurs;
     }
 
+    /**
+     * Supprime tous les clients présents sur cette étape.
+     */
     public void supprimerClients() {
         this.clients.clear();
     }
 
     // —————————— METHODES DEDIE AU CHARGEMENT JSON ——————————
 
+    /**
+     * Définit l'identifiant de l'étape.
+     *
+     * @param identifiant l'identifiant à définir
+     */
     public void setIdentifiant(String identifiant) {
         this.identifiant = identifiant;
     }
@@ -373,6 +421,12 @@ public abstract class EtapeIG implements Iterable<PointDeControleIG> {
         return random.nextInt(max);
     }
 
+    /**
+     * Retourne le point de contrôle à l'index spécifié.
+     *
+     * @param i l'indice du point de contrôle
+     * @return le point de contrôle correspondant
+     */
     public PointDeControleIG getPointDeControle(int i) {
         return this.pointsDeControle[i];
     }

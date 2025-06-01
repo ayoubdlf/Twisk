@@ -46,6 +46,9 @@ public class VueActiviteIG extends VueEtapeIG {
 
     // —————————— METHODES PRIVES ——————————
 
+    /**
+     * Initialise le style CSS de l'activité.
+     */
     private void initStyle() {
         this.getStyleClass().add("vue-activite");
 
@@ -56,6 +59,9 @@ public class VueActiviteIG extends VueEtapeIG {
         }
     }
 
+    /**
+     * Construit l'en-tête de l'activité avec les icônes, le nom et le temps d'exécution.
+     */
     private void drawHeader() {
         HBox header = new HBox();
         header.getStyleClass().add("vue-activite-header");
@@ -83,6 +89,11 @@ public class VueActiviteIG extends VueEtapeIG {
         this.getChildren().add(header);
     }
 
+    /**
+     * Crée un conteneur affichant le temps et l'écart de temps de l'activité.
+     *
+     * @return un HBox contenant le composant avec le temps
+     */
     private HBox getTemps() {
         HBox temps = new HBox();
         temps.getStyleClass().add("vue-activite-temps");

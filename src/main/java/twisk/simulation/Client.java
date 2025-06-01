@@ -10,6 +10,11 @@ public class Client {
     private Etape etape;
 
 
+    /**
+     * Constructeur du client.
+     *
+     * @param pid le numéro de processus du client
+     */
     public Client(int pid) {
         this.pid   = pid;
         this.rang  = -1;

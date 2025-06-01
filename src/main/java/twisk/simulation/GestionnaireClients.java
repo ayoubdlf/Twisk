@@ -9,6 +9,10 @@ public class GestionnaireClients implements Iterable<Client> {
     private ArrayList<Client> clients;
 
 
+    /**
+     * Constructeur de la classe GestionnaireClients.
+     * Initialise la liste des clients.
+     */
     public GestionnaireClients() {
         this.clients = new ArrayList<>();
     }
@@ -56,18 +60,23 @@ public class GestionnaireClients implements Iterable<Client> {
         this.clients.clear();
     }
 
+
+    /* —————————— GETTERS —————————— */
+
     /**
      * Retourne un itérateur sur la collection de clients.
      * @return un itérateur de clients
      */
-
-    /* —————————— GETTERS —————————— */
-
     @Override
     public Iterator<Client> iterator() {
         return this.clients.iterator();
     }
 
+    /**
+     * Retourne le nombre de clients.
+     *
+     * @return le nombre de clients
+     */
     public int getNbClients() {
         return this.clients.size();
     }

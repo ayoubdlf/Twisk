@@ -13,6 +13,11 @@ public abstract class Etape implements Iterable<Etape> {
     private GestionnaireEtapes predecesseurs;
 
 
+    /**
+     * Constructeur de la classe Etape.
+     *
+     * @param nom Le nom de l'activité.
+     */
     public Etape(String nom) {
         assert(nom != null && !nom.isEmpty()): "Le nom de l'etape ne doit pas etre nul ou vide" ;
 
@@ -63,6 +68,12 @@ public abstract class Etape implements Iterable<Etape> {
 
     }
 
+    /**
+     * Ajoute un ou plusieurs predecesseurs à l'étape.
+     *
+     * @param etapes un ou plusieurs objets de type Etape à ajouter comme predecesseurs.
+     * @throws AssertionError si les étapes sont nulles ou vides
+     */
     private void ajouterPredecesseur(Etape... etapes) {
         assert (etapes != null)    : "Les etapes ne doivent pas etre nulles";
         assert (etapes.length > 0) : "Les etapes ne doivent pas etre vides";

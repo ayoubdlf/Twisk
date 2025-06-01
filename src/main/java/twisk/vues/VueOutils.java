@@ -45,6 +45,9 @@ public class VueOutils extends TilePane implements Observateur {
         this.ajouterBoutonGuichet();
     }
 
+    /**
+     * Crée et ajoute le bouton de simulation à l'interface.
+     */
     private void ajouterBoutonStartSimulation() {
         Button simulation = new Button("Simulation");
         simulation.setId("Simulation");
@@ -69,6 +72,9 @@ public class VueOutils extends TilePane implements Observateur {
         this.getChildren().add(simulation);
     }
 
+    /**
+     * Crée et ajoute le bouton de activite à l'interface.
+     */
     private void ajouterBoutonActivite() {
         Button activite = new Button("Activite");
         activite.setId("Activite");
@@ -93,6 +99,9 @@ public class VueOutils extends TilePane implements Observateur {
         this.getChildren().add(activite);
     }
 
+    /**
+     * Crée et ajoute le bouton de guochet à l'interface.
+     */
     private void ajouterBoutonGuichet() {
         Button guichet = new Button("Guichet");
         guichet.setId("Guichet");
@@ -116,7 +125,5 @@ public class VueOutils extends TilePane implements Observateur {
 
         this.getChildren().add(guichet);
     }
-
-
 
 }

@@ -33,8 +33,6 @@ public class Guichet extends Etape {
         this.idSemaphore = FabriqueNumero.getInstance().getNumeroSemaphore();
     }
 
-    /* —————————— SETTERS —————————— */
-
     /* —————————— GETTERS —————————— */
 
     @Override

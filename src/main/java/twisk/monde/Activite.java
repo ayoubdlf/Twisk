@@ -33,9 +33,6 @@ public class Activite extends Etape {
         this.ecartTemps = ecartTemps;
     }
 
-    /* —————————— SETTERS —————————— */
-
-
     /* —————————— GETTERS —————————— */
 
 

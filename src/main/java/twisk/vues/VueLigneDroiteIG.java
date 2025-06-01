@@ -14,6 +14,12 @@ public class VueLigneDroiteIG extends VueArcIG {
     private Polyline polyline;
 
 
+    /**
+     * Constructeur de la vue représentant un arc droit entre deux points de contrôle.
+     *
+     * @param monde le monde graphique contenant l'arc
+     * @param arc l'arc à représenter graphiquement
+     */
     public VueLigneDroiteIG(MondeIG monde, ArcIG arc) {
         super(monde, arc);
 

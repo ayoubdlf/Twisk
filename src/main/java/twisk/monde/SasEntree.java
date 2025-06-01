@@ -2,6 +2,9 @@ package twisk.monde;
 
 public class SasEntree extends Activite {
 
+    /**
+     * Constructeur de la classe SasEntree.
+     */
     public SasEntree() {
         super("entree");
     }
@@ -12,7 +15,5 @@ public class SasEntree extends Activite {
     public boolean estUneEntree() {
         return true;
     }
-
-    /* —————————— SETTERS —————————— */
 
 }

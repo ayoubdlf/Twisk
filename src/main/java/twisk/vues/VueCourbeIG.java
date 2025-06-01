@@ -140,6 +140,16 @@ public class VueCourbeIG extends VueArcIG {
         }
     }
 
+    /**
+     * Calcule et applique les points de contrôle pour dessiner une courbe de Bézier entre deux points de contrôle
+     *
+     * @param x1 abscisse du point de départ
+     * @param y1 ordonnée du point de départ
+     * @param x2 abscisse du point d'arrivée
+     * @param y2 ordonnée du point d'arrivée
+     * @param minX valeur minimale de X
+     * @param minY valeur minimale de Y
+     */
     private void handleCourbes(int x1, int y1, int x2, int y2, int minX, int minY) {
         // On a besoin de la position de des deux points (haut, droite, bas, gauche) pour ameillorer les courbes (courbes vers le haut, courbes vers la bas ...)
         boolean p1EstAGauche = this.arc.getP1().estAGauche();

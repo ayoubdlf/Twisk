@@ -63,6 +63,11 @@ public abstract class ArcIG {
         return this.identifiant;
     }
 
+    /**
+     * Convertit l'arc en un objet JSON.
+     *
+     * @return l'objet JSON représentant l'arc
+     */
     public JsonObject toJson() {
         JsonObject json = new JsonObject();
 

@@ -29,8 +29,6 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
         this.arcTemporaire = new PointDeControleIG[2];
         this.animationArcs = false;
         this.nbClients     = 5; // Par default il y'aura 5 clients
-
-        // this.test();
     }
 
 
@@ -122,6 +120,11 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
                 .orElse(null);
     }
 
+    /**
+     * Retourne le nombre de clients dans le monde.
+     *
+     * @return le nombre de clients
+     */
     public int getNbClients() {
         return this.nbClients;
     }
@@ -180,6 +183,9 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
         // Les points de controle sont utilise par un arc
         p1.setEstUtilise(true);
         p2.setEstUtilise(true);
+
+        p1.setEstSortant(true);
+        p2.setEstEntrant(true);
 
         // ajouter les successeurs / predecesseurs
         p1.getEtape().ajouterSuccesseur(p2.getEtape());
@@ -339,7 +345,10 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
         Arrays.fill(this.arcTemporaire, null);
     }
 
-
+    /**
+     * Ouvre un fichier JSON et charge les données dans le monde.
+     * Affiche une alerte en cas d'erreur de lecture.
+     */
     public void chargerDepuisJson() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Charger un fichier JSON");
@@ -363,6 +372,12 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
         }
     }
 
+    /**
+     * Charge les étapes et les arcs depuis un objet JSON.
+     * Vide le contenu actuel avant de charger les nouvelles données.
+     *
+     * @param JSON l'objet JSON contenant les données à charger
+     */
     public void chargerDepuisJson(JsonObject JSON) {
         try {
             this.etapes.clear();
@@ -460,11 +475,21 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
         this.animationArcs = animationArcs;
     }
 
+    /**
+     * Définit le nombre de clients dans le monde.
+     *
+     * @param nbClients le nombre de clients à définir
+     */
     public void setNbClients(int nbClients) {
         this.nbClients = nbClients;
     }
 
     // —————————— METHODES DEDIE AU CHARGEMENT JSON ——————————
+    /**
+     * Ajoute une étape à partir d'un objet JSON.
+     *
+     * @param etapeJson L'objet JSON représentant l'étape.
+     */
     public void ajouterDepuisJson(JsonObject etapeJson) {
         assert(etapeJson != null)  : "L'etape ne doit pas etre null";
 
@@ -518,6 +543,11 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
         this.notifierObservateurs();
     }
 
+    /**
+     * Ajoute un arc à partir d'un objet JSON.
+     *
+     * @param arcsJson L'objet JSON représentant l'arc.
+     */
     private void ajouterArcDepuisJson(JsonObject arcsJson) {
         assert(arcsJson != null)  : "Les arcs ne doivent pas etre null";
 
@@ -550,6 +580,18 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
         }
     }
 
+    /**
+     * Crée une activité à partir des données JSON.
+     *
+     * @param type Le type de l'étape, "entree", "sortie", "activite", "guichet".
+     * @param nom Le nom de l'étape.
+     * @param identifiant L'identifiant de l'étape.
+     * @param x La position horizontale.
+     * @param y La position verticale.
+     * @param temps Le temps d'exécution de l'activité.
+     * @param ecartTemps L'écart de temps de l'activité.
+     * @return L'objet ActiviteIG créé.
+     */
     private EtapeIG creationActiviteDepuisJson(String type, String nom, String identifiant, int x, int y, int temps, int ecartTemps) {
         ActiviteIG activite = new ActiviteIG(nom, ETAPE_LARGEUR, ETAPE_HAUTEUR);
         activite.setIdentifiant(identifiant);
@@ -562,6 +604,18 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
         return activite;
     }
 
+
+    /**
+     * Crée un guichet à partir des données JSON.
+     *
+     * @param type Le type de l'étape, "entree", "sortie", "activite", "guichet".
+     * @param nom Le nom de l'étape.
+     * @param identifiant L'identifiant de l'étape.
+     * @param x La position horizontale.
+     * @param y La position verticale.
+     * @param jetons Le nombre de jetons du guichet.
+     * @return L'objet GuichetIG créé.
+     */
     private EtapeIG creationGuichetDepuisJson(String type, String nom, String identifiant, int x, int y, int jetons) {
         GuichetIG guichet = new GuichetIG(nom, ETAPE_LARGEUR, ETAPE_HAUTEUR);
         guichet.setIdentifiant(identifiant);
@@ -573,32 +627,6 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
     }
 
     // —————————— METHODES PRIVES ——————————
-
-    private void test() {
-        this.ajouter("Activite");
-        this.ajouter("Activite");
-        this.ajouter("Activite");
-
-        Iterator<EtapeIG> iterator = this.iterator();
-
-        EtapeIG activite0 = iterator.next();
-        EtapeIG activite1 = iterator.next();
-        EtapeIG activite2 = iterator.next();
-
-        try {
-            this.ajouter(activite0.getPointDeControle(1), activite1.getPointDeControle(3));
-            this.ajouter(activite1.getPointDeControle(1), activite2.getPointDeControle(3));
-        } catch(Exception ignored) {}
-
-        activite0.setEstUneEntree(true);
-        activite2.setEstUneSortie(true);
-
-        activite0.setPosition(100, TWISK_HAUTEUR/2 - ETAPE_HAUTEUR);
-        activite1.setPosition(400, TWISK_HAUTEUR/2 - ETAPE_HAUTEUR);
-        activite2.setPosition(700, TWISK_HAUTEUR/2 - ETAPE_HAUTEUR);
-
-        this.notifierObservateurs();
-    }
 
     /**
      * Crée une étape en fonction du type spécifié.
@@ -623,6 +651,13 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
         return null;
     }
 
+    /**
+     * Vérifie les conditions de validité avant d'ajouter un arc entre deux points de contrôle.
+     *
+     * @param p1 Le premier point de contrôle.
+     * @param p2 Le second point de contrôle.
+     * @throws MondeException si les conditions d'ajout ne sont pas respectées.
+     */
     private void checkConditionsAjouter(PointDeControleIG p1, PointDeControleIG p2) throws MondeException {
         // p1 et p2 font partie de la meme etape
         if(p1.getEtape().equals(p2.getEtape())) {
@@ -656,8 +691,39 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
                 throw new MondeException("Une sortie ne peut pas avoir de successeurs");
             }
         }
+
+        // Direction specifique si c'est un guichet
+        if(p1.getEtape().estUnGuichet()) {
+            PointDeControleIG pdcDroit  = p1.getEtape().getPointDeControle(0);
+            PointDeControleIG pdcGauche = p1.getEtape().getPointDeControle(1);
+
+            if(!pdcDroit.estUtilise() && !pdcGauche.estUtilise()) { return; }
+
+            if(p1.equals(pdcDroit)  && !pdcDroit.estEntrant()  && !pdcGauche.estSortant()) { return; }
+            if(p1.equals(pdcGauche) && !pdcGauche.estEntrant() && !pdcDroit.estSortant())  { return; }
+
+            throw new MondeException("Cette direction pour le guichet est incorrecte.");
+        }
+
+        if(p2.getEtape().estUnGuichet()) {
+            PointDeControleIG pdcDroit  = p2.getEtape().getPointDeControle(0);
+            PointDeControleIG pdcGauche = p2.getEtape().getPointDeControle(1);
+
+            if(!pdcDroit.estUtilise() && !pdcGauche.estUtilise()) { return; }
+
+            if(p2.equals(pdcDroit)  && !pdcDroit.estSortant()  && !pdcGauche.estEntrant()) { return; }
+            if(p2.equals(pdcGauche) && !pdcGauche.estSortant() && !pdcDroit.estEntrant())  { return; }
+
+            throw new MondeException("Cette direction pour le guichet est incorrecte.");
+        }
     }
 
+    /**
+     * Recherche une étape dans le monde à partir de son identifiant.
+     *
+     * @param identifiant L'identifiant de l'étape à rechercher.
+     * @return L'étape correspondante si elle est trouvée, sinon null.
+     */
     private EtapeIG getEtapeByIdentifiant(String identifiant) {
         for (EtapeIG etape : this.etapes.values()) {
             if (etape.getIdentifiant().equals(identifiant)) {

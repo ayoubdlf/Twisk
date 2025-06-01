@@ -22,8 +22,6 @@ public class ActiviteRestreinte extends Activite {
         super(nom, temps, ecartTemps);
     }
 
-    /* —————————— SETTERS —————————— */
-
     /* —————————— GETTERS —————————— */
 
     @Override

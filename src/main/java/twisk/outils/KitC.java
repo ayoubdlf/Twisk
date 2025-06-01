@@ -135,6 +135,11 @@ public class KitC {
 
     /* —————————— METHODES PRIVEES —————————— */
 
+    /**
+     * Détermine si le système est Mac.
+     *
+     * @return true si le système est Mac, false sinon
+     */
     private boolean isMac() {
         // Check si l'utilisateur est riche ou pas
         String os = System.getProperty("os.name").toLowerCase();

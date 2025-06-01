@@ -178,6 +178,22 @@ public class VueMenu extends MenuBar implements Observateur {
         this.options.getItems().addAll(animationArcs);
     }
 
+    /**
+     * Initialise le menu ChatGPT.
+     */
+    private void menuChatGPT() {
+        this.optionsChatGPT = new Menu("ChatGPT");
+
+        MenuItem chatgpt = new MenuItem("Generer un monde");
+
+        chatgpt.setOnAction(event -> this.afficherFenetreChatGPT());
+
+        this.optionsChatGPT.getItems().addAll(chatgpt);
+    }
+
+    /**
+     * Affiche une boîte de dialogue pour renommer l'étape actuellement sélectionnée.
+     */
     private void afficherFenetreRenommer() {
         EtapeIG etape = this.mondeIG.iteratorEtapesSelectionnees().next();
 
@@ -238,6 +254,9 @@ public class VueMenu extends MenuBar implements Observateur {
         });
     }
 
+    /**
+     * Affiche une boîte de dialogue permettant de modifier le temps et l'écart de temps d'une activité sélectionnée.
+     */
     private void afficherFenetreParametresTemps() {
         if(this.mondeIG.getNbEtapesSelectionnees() != 1) { return; }
         EtapeIG etape = this.mondeIG.iteratorEtapesSelectionnees().next();
@@ -317,6 +336,9 @@ public class VueMenu extends MenuBar implements Observateur {
         });
     }
 
+    /**
+     * Affiche une boîte de dialogue permettant de modifier le nombre de jetons d'un guichet sélectionné.
+     */
     private void afficherFenetreParametresJetons() {
         if(this.mondeIG.getNbEtapesSelectionnees() != 1) { return; }
         EtapeIG etape = this.mondeIG.iteratorEtapesSelectionnees().next();
@@ -383,6 +405,9 @@ public class VueMenu extends MenuBar implements Observateur {
         });
     }
 
+    /**
+     * Affiche une boîte de dialogue pour définir le nombre de clients du monde.
+     */
     private void afficherFenetreMondeNbClients() {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Twisk");
@@ -447,16 +472,9 @@ public class VueMenu extends MenuBar implements Observateur {
         });
     }
 
-    private void menuChatGPT() {
-        this.optionsChatGPT = new Menu("ChatGPT");
-
-        MenuItem chatgpt = new MenuItem("Generer un monde");
-
-        chatgpt.setOnAction(event -> this.afficherFenetreChatGPT());
-
-        this.optionsChatGPT.getItems().addAll(chatgpt);
-    }
-
+    /**
+     * Affiche une boîte de dialogue permettant de décrire un monde à générer via ChatGPT.
+     */
     private void afficherFenetreChatGPT() {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Twisk");

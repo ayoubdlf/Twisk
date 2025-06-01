@@ -60,6 +60,9 @@ public class EcouteurBoutonSimulation implements EventHandler<ActionEvent> {
         this.updateBouton();
     }
 
+    /**
+     * Met à jour l'icône du bouton selon l'état actuel de la simulation
+     */
     public void updateBouton() {
         this.button.setGraphic(((Supplier<SVGPath>) () -> {
             SVGPath svg = new SVGPath();

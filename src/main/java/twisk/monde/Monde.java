@@ -11,6 +11,10 @@ public class Monde implements Iterable<Etape> {
     private SasSortie sortie;
 
 
+    /**
+     * Constructeur de la classe Monde.
+     * Initialise l'entrée, la sortie et la liste des étapes.
+     */
     public Monde() {
         FabriqueNumero.getInstance().reset(); // TODO: est ce c'est correct ? (le cas ou on a plusiers mondes, chaque etape initiale du monde commencera pas 0)
         this.etapes = new GestionnaireEtapes();

@@ -80,6 +80,9 @@ public class Simulation extends SujetObserve {
         this.startSimulation();
     }
 
+    /**
+     * Arrête la simulation en cours et détruit tous les threads associés.
+     */
     public void stopSimulation() {
         this.simulationActive = false;
         ThreadsManager.getInstance().detruireTout();

@@ -8,10 +8,12 @@ import com.openai.models.ChatModel;
 import com.openai.models.chat.completions.ChatCompletion;
 import com.openai.models.chat.completions.ChatCompletionCreateParams;
 import twisk.exceptions.MondeException;
-
 import java.util.Optional;
 
 
+/**
+ * Classe utilitaire permettant de générer un scénario JSON conforme au simulateur Twisk.
+ */
 public class ChatGPT {
         private static String promptTwisk = """
 Tu es un générateur intelligent de scénarios JSON pour un simulateur appelé Twisk. Chaque scénario contient :
@@ -116,6 +118,13 @@ Chaque arc est de la forme :
             .build();
 
 
+    /**
+     * Envoie une requête à ChatGPT avec le prompt fourni pour générer un monde Twisk en JSON.
+     *
+     * @param prompt Le prompt personnalisé ajouté au prompt dévélopeur.
+     * @return Un objet JSON représentant un monde Twisk valide.
+     * @throws MondeException si une erreur survient lors de la requête ou du traitement de la réponse.
+     */
     public static JsonObject demanderMonde(String prompt) throws MondeException {
         try {
             ChatCompletionCreateParams params = ChatCompletionCreateParams.builder()

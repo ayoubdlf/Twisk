@@ -27,7 +27,11 @@ public class SimulationIG implements Observateur {
     private boolean estActive;
     private EcouteurBoutonSimulation boutonSimulation;
 
-
+    /**
+     * Constructeur principal de la simulation graphique.
+     *
+     * @param mondeIG Le monde graphique à simuler.
+     */
     public SimulationIG(MondeIG mondeIG) {
         assert (mondeIG != null)    : "Le monde ne doit pas etre null";
 
@@ -38,6 +42,12 @@ public class SimulationIG implements Observateur {
         this.estActive             = false;
     }
 
+    /**
+     * Constructeur de la simulation graphique avec gestion du bouton de simulation.
+     *
+     * @param mondeIG Le monde graphique à simuler.
+     * @param boutonSimulation Le bouton de simulation à mettre à jour.
+     */
     public SimulationIG(MondeIG mondeIG, EcouteurBoutonSimulation boutonSimulation) {
         this(mondeIG);
         assert (boutonSimulation != null) : "Le bouton de simulation ne doit pas etre null";
@@ -48,6 +58,11 @@ public class SimulationIG implements Observateur {
 
     // —————————— METHODES PUBLIQUES ——————————
 
+    /**
+     * Lance la simulation du monde graphique après validation et transformation.
+     *
+     * @throws MondeException si le monde est invalide ou en cas d'erreur lors de la simulation
+     */
     public void simuler() throws MondeException {
         // Verification du monde
         this.verifierMondeIG();
@@ -59,6 +74,9 @@ public class SimulationIG implements Observateur {
         this.startSimulation();
     }
 
+    /**
+     * Démarre l'exécution de la simulation dans un thread séparé.
+     */
     private void startSimulation() {
 
         Task<Void> task = new Task<>() {
@@ -103,6 +121,11 @@ public class SimulationIG implements Observateur {
         notifierTimeline.play();
     }
 
+    /**
+     * Arrête la simulation en cours, interrompt les threads nettoie les clients affichés et met à jour les observateurs.
+     *
+     * @throws MondeException si une erreur survient lors de l'arrêt
+     */
     public void stopSimulation() throws MondeException {
         try {
             if (this.simulation != null) {
@@ -128,16 +151,31 @@ public class SimulationIG implements Observateur {
         }
     }
 
+    /**
+     * Indique si une simulation est actuellement en cours.
+     *
+     * @return true si la simulation est active, false sinon
+     */
     public boolean estActive() {
         return estActive;
     }
 
+    /**
+     * Définit l'état actif de la simulation.
+     *
+     * @param estActive true pour indiquer que la simulation est active, false sinon
+     */
     public void setEstActive(boolean estActive) {
         this.estActive = estActive;
     }
 
     // —————————— METHODES PRIVES ——————————
 
+    /**
+     * Vérifie la validité du monde graphique
+     *
+     * @throws MondeException si une règle est violée
+     */
     void verifierMondeIG() throws MondeException {
         // 1. Il y'a au moins une entree
         if(!this.auMoinsUneEntree()) {
@@ -204,6 +242,11 @@ public class SimulationIG implements Observateur {
         }
     }
 
+    /**
+     * Transforme le monde graphique (MondeIG) en une instance de simulation (Monde)
+     *
+     * @return Le monde prêt à être simulé.
+     */
     private Monde creerMonde() {
         correspondancesEtapes = new CorrespondancesEtapes();
         Monde monde = new Monde();
@@ -234,6 +277,11 @@ public class SimulationIG implements Observateur {
         return monde;
     }
 
+    /**
+     * Vérifie s'il existe au moins une étape marquée comme entrée dans le monde graphique.
+     *
+     * @return true s'il y a au moins une entrée, false sinon
+     */
     private boolean auMoinsUneEntree() {
         for (EtapeIG etape : this.mondeIG) {
             if(etape.estUneEntree()) {
@@ -244,6 +292,11 @@ public class SimulationIG implements Observateur {
         return false;
     }
 
+    /**
+     * Vérifie s'il existe au moins une étape marquée comme sortie dans le monde graphique.
+     *
+     * @return true s'il y a au moins une sortie, false sinon
+     */
     private boolean auMoinsUneSortie() {
         for (EtapeIG etape : this.mondeIG) {
             if(etape.estUneSortie()) {
@@ -254,6 +307,12 @@ public class SimulationIG implements Observateur {
         return false;
     }
 
+    /**
+     * Détermine si une étape est accessible depuis une ou plusieurs entrées.
+     *
+     * @param etape l'étape à tester
+     * @return true si elle possède une entrée parmi ses prédécesseurs, false sinon
+     */
     private boolean possedeEntree(EtapeIG etape) {
         if(etape.estUneEntree()) { return true; }
 
@@ -266,6 +325,12 @@ public class SimulationIG implements Observateur {
         return false;
     }
 
+    /**
+     * Détermine si une étape mène à une ou plusieurs sorties.
+     *
+     * @param etape l'étape à tester
+     * @return true si elle mène à une sortie parmi ses successeurs, false sinon
+     */
     private boolean possedeSortie(EtapeIG etape) {
         if(etape.estUneSortie()) { return true; }
 
@@ -278,6 +343,12 @@ public class SimulationIG implements Observateur {
         return false;
     }
 
+    /**
+     * Convertit une étape graphique en son équivalent simulation.
+     *
+     * @param etapeIG L'étape graphique à convertir.
+     * @return L'étape correspondante.
+     */
     private Etape transformerEtapeIGEnEtape(EtapeIG etapeIG) {
 
         if (etapeIG.estUneEntree() || etapeIG.estUneSortie() || etapeIG.estUneActivite()) {

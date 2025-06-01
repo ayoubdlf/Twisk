@@ -13,6 +13,8 @@ public class PointDeControleIG {
     private String  identifiant;
     private String  posStr;
     private boolean estUtilise; // si le point de controle est utilise dans un arc
+    private boolean estEntrant; // champs utilte pour determiner la direction des guichets
+    private boolean estSortant; // champs utilte pour determiner la direction des guichets
     private boolean estUtiliseParArcTemporaire; // si le point de controle est utilise dans un arc temporaire
 
 
@@ -28,6 +30,8 @@ public class PointDeControleIG {
         this.x          = x;
         this.y          = y;
         this.estUtilise = false;
+        this.estEntrant = false;
+        this.estSortant = false;
         this.estUtiliseParArcTemporaire = false;
 
         // Ici on regarde si etape != null, parce que lorsqu'on selectionne un arc (quand on a p1 mais pas p2), on n'a pas d'etape
@@ -98,6 +102,24 @@ public class PointDeControleIG {
     }
 
     /**
+     * Retourne si le point de contrôle est entrant.
+     *
+     * @return Vrai si le point de contrôle est entrant, faux sinon.
+     */
+    public boolean estEntrant() {
+        return this.estEntrant;
+    }
+
+    /**
+     * Retourne si le point de contrôle est sortant.
+     *
+     * @return Vrai si le point de contrôle est sortant, faux sinon.
+     */
+    public boolean estSortant() {
+        return this.estSortant;
+    }
+
+    /**
      * Retourne si le point de contrôle est clique par l'arc temporaire.
      *
      * @return Vrai si le point de contrôle est utilise dans l'arc temporaire, faux sinon.
@@ -142,6 +164,11 @@ public class PointDeControleIG {
         return this.posStr.equals("BAS");
     }
 
+    /**
+     * Convertit ce point de contrôle en un objet JSON.
+     *
+     * @return l'objet JSON représentant ce point de contrôle
+     */
     public JsonObject toJson() {
         JsonObject json = new JsonObject();
 
@@ -171,8 +198,35 @@ public class PointDeControleIG {
      */
     public void setEstUtilise(boolean estUtilise) {
         this.estUtilise = estUtilise;
+        if(!this.estUtilise) {
+            this.setEstEntrant(false);
+            this.setEstSortant(false);
+        }
     }
 
+    /**
+     * Définit si le point de contrôle est entrant.
+     *
+     * @param estEntrant vrai si le point est entrant, faux sinon
+     */
+    public void setEstEntrant(boolean estEntrant) {
+        this.estEntrant = estEntrant;
+    }
+
+    /**
+     * Définit si le point de contrôle est sortant.
+     *
+     * @param estSortant vrai si le point est sortant, faux sinon
+     */
+    public void setEstSortant(boolean estSortant) {
+        this.estSortant = estSortant;
+    }
+
+    /**
+     * Définit si le point de contrôle est utilisé par un arc temporaire.
+     *
+     * @param estUtiliseParArcTemporaire vrai si utilisé dans un arc temporaire, faux sinon
+     */
     public void setEstUtiliseParArcTemporaire(boolean estUtiliseParArcTemporaire) {
         this.estUtiliseParArcTemporaire = estUtiliseParArcTemporaire;
     }
@@ -191,6 +245,9 @@ public class PointDeControleIG {
 
     // —————————— METHODES PUBLIQUES ——————————
 
+    /**
+     * Met à jour la position du point de contrôle.
+     */
     public void updatePosition() {
         int x      = this.etape.getLargeur() / 2; // centreX
         int y      = this.etape.getHauteur() / 2; // centreY

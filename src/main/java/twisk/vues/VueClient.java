@@ -12,6 +12,12 @@ public class VueClient extends Circle {
     private MondeIG monde;
     private Client client;
 
+    /**
+     * Constructeur de la vue représentant un client dans l'interface graphique.
+     *
+     * @param monde le monde graphique
+     * @param client le client à afficher
+     */
     public VueClient(MondeIG monde, Client client) {
         super(TailleComposants.CLIENT_RADIUS);
 
@@ -22,10 +28,11 @@ public class VueClient extends Circle {
     }
 
 
-    // —————————— METHODES PUBLIQUES ——————————
-
     // —————————— METHODES PRIVES ——————————
 
+    /**
+     * Initialise le style graphique du client.
+     */
     private void initialiser() {
         this.getStyleClass().add("client-circle");
 

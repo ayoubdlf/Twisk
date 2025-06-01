@@ -46,6 +46,10 @@ public class VueGuichetIG extends VueEtapeIG {
 
     // —————————— METHODES PRIVES ——————————
 
+
+    /**
+     * Initialise le style CSS de la vue guichet.
+     */
     private void initStyle() {
         this.getStyleClass().add("vue-guichet");
 
@@ -56,6 +60,10 @@ public class VueGuichetIG extends VueEtapeIG {
         }
     }
 
+    /**
+     * Construit l'en-tête du guichet graphique.
+     * Affiche les icônes associées (entrée, guichet), le nom de l'étape et le nombre de jetons.
+     */
     private void drawHeader() {
         HBox header = new HBox();
         header.getStyleClass().add("vue-guichet-header");
@@ -82,6 +90,11 @@ public class VueGuichetIG extends VueEtapeIG {
         this.getChildren().add(header);
     }
 
+    /**
+     * Crée un conteneur affichant le nombre de jetons pour ce guichet.
+     *
+     * @return une HBox contenant le nombre de jetons
+     */
     private HBox getJetons() {
         HBox jetons = new HBox();
         jetons.getStyleClass().add("vue-guichet-jetons");

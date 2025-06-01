@@ -8,10 +8,13 @@ public class GestionnaireEtapes implements Iterable<Etape> {
     private ArrayList<Etape> etapes;
 
 
+    /**
+     * Constructeur de la classe GestionnaireEtapes.
+     * Initialise la liste des étapes.
+     */
     public GestionnaireEtapes() {
         this.etapes = new ArrayList<>();
     }
-
 
     /* —————————— SETTERS —————————— */
 

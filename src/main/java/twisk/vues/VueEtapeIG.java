@@ -83,8 +83,10 @@ public abstract class VueEtapeIG extends VBox {
         ContextMenu contextMenu = new ContextMenu();
         MenuItem entree     = new MenuItem("Entree");
         MenuItem sortie     = new MenuItem("Sortie");
+        MenuItem renommer   = new MenuItem("Renommer");
+        MenuItem parametres = new MenuItem("Parametres");
         MenuItem supprimer  = new MenuItem("Supprimer");
-        contextMenu.getItems().addAll(entree, sortie, supprimer);
+        contextMenu.getItems().addAll(entree, sortie, renommer, parametres, supprimer);
 
         entree.setOnAction(e -> {
             this.etape.setEstUneEntree(!this.etape.estUneEntree());
@@ -97,6 +99,16 @@ public abstract class VueEtapeIG extends VBox {
         });
 
         supprimer.setOnAction(e -> this.monde.supprimerEtape(this.etape));
+
+        parametres.setOnAction(e -> {
+            if(this.etape.estUneActivite()) {
+                VueMenu.afficherFenetreParametresTemps(this.monde, this.etape);
+            } else {
+                VueMenu.afficherFenetreParametresJetons(this.monde, this.etape);
+            }
+        });
+
+        renommer.setOnAction(e -> VueMenu.afficherFenetreRenommer(this.monde, this.etape));
 
         this.setOnContextMenuRequested(event -> {
             contextMenu.show(this, event.getScreenX(), event.getScreenY());

@@ -112,7 +112,10 @@ public class VueMenu extends MenuBar implements Observateur {
 
         renommerSelection.setId("renommer");
         renommerSelection.setAccelerator(KeyCombination.keyCombination("Ctrl+R"));
-        renommerSelection.setOnAction(event -> this.afficherFenetreRenommer());
+        renommerSelection.setOnAction(event -> {
+            EtapeIG etape = this.mondeIG.iteratorEtapesSelectionnees().next();
+            afficherFenetreRenommer(this.mondeIG, etape);
+        });
 
         effacerSelection.setAccelerator(KeyCombination.keyCombination("Ctrl+C"));
         effacerSelection.setOnAction(event -> this.mondeIG.effacerSelection());
@@ -153,11 +156,19 @@ public class VueMenu extends MenuBar implements Observateur {
 
         // activite - temps et ecartTemps
         MenuItem delaiEtEcartTemps = new MenuItem("Modifier les temps");
-        delaiEtEcartTemps.setOnAction(event -> this.afficherFenetreParametresTemps());
+        delaiEtEcartTemps.setOnAction(event -> {
+            if(this.mondeIG.getNbEtapesSelectionnees() != 1) { return; }
+            EtapeIG etape = this.mondeIG.iteratorEtapesSelectionnees().next();
+            afficherFenetreParametresTemps(this.mondeIG, etape);
+        });
 
         // guichet - jetons
         MenuItem jetons = new MenuItem("Modifier le nombre de jetons");
-        jetons.setOnAction(event -> this.afficherFenetreParametresJetons());
+        jetons.setOnAction(event -> {
+            if(this.mondeIG.getNbEtapesSelectionnees() != 1) { return; }
+            EtapeIG etape = this.mondeIG.iteratorEtapesSelectionnees().next();
+            afficherFenetreParametresJetons(this.mondeIG, etape);
+        });
 
         this.parametres.getItems().addAll(delaiEtEcartTemps, jetons);
     }
@@ -192,11 +203,11 @@ public class VueMenu extends MenuBar implements Observateur {
     }
 
     /**
-     * Affiche une boîte de dialogue pour renommer l'étape actuellement sélectionnée.
+     * Affiche une boîte de dialogue permettant à l'utilisateur de renommer une étape spécifique.
+     *
+     * @param etape L'étape à renommer
      */
-    private void afficherFenetreRenommer() {
-        EtapeIG etape = this.mondeIG.iteratorEtapesSelectionnees().next();
-
+    public static void afficherFenetreRenommer(MondeIG mondeIG, EtapeIG etape) {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Twisk");
         dialog.setHeaderText("Renommer l'étape");
@@ -238,7 +249,7 @@ public class VueMenu extends MenuBar implements Observateur {
 
         DialogPane dialogPane = dialog.getDialogPane();
         dialogPane.setContent(content);
-        dialogPane.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/styles.css")).toExternalForm());
+        dialogPane.getStylesheets().add(Objects.requireNonNull(VueMenu.class.getResource("/css/styles.css")).toExternalForm());
         dialogPane.getStyleClass().add("dialog");
 
         dialog.showAndWait().ifPresent(response -> {
@@ -247,8 +258,8 @@ public class VueMenu extends MenuBar implements Observateur {
 
                 if (!nom.isEmpty()) {
                     etape.setNom(nom);
-                    this.mondeIG.deselectionnerSelection();
-                    this.mondeIG.notifierObservateurs();
+                    mondeIG.deselectionnerSelection();
+                    mondeIG.notifierObservateurs();
                 }
             }
         });
@@ -257,9 +268,7 @@ public class VueMenu extends MenuBar implements Observateur {
     /**
      * Affiche une boîte de dialogue permettant de modifier le temps et l'écart de temps d'une activité sélectionnée.
      */
-    private void afficherFenetreParametresTemps() {
-        if(this.mondeIG.getNbEtapesSelectionnees() != 1) { return; }
-        EtapeIG etape = this.mondeIG.iteratorEtapesSelectionnees().next();
+    public static void afficherFenetreParametresTemps(MondeIG mondeIG, EtapeIG etape) {
         if(!etape.estUneActivite()) { return; }
 
         ActiviteIG activite = (ActiviteIG) etape;
@@ -314,7 +323,7 @@ public class VueMenu extends MenuBar implements Observateur {
 
         DialogPane dialogPane = dialog.getDialogPane();
         dialogPane.setContent(content);
-        dialogPane.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/styles.css")).toExternalForm());
+        dialogPane.getStylesheets().add(Objects.requireNonNull(VueMenu.class.getResource("/css/styles.css")).toExternalForm());
         dialogPane.getStyleClass().add("dialog");
 
 
@@ -331,17 +340,15 @@ public class VueMenu extends MenuBar implements Observateur {
                 activite.setEcartTemps(ecartTemps);
             }
 
-            this.mondeIG.deselectionnerSelection();
-            this.mondeIG.notifierObservateurs();
+            mondeIG.deselectionnerSelection();
+            mondeIG.notifierObservateurs();
         });
     }
 
     /**
      * Affiche une boîte de dialogue permettant de modifier le nombre de jetons d'un guichet sélectionné.
      */
-    private void afficherFenetreParametresJetons() {
-        if(this.mondeIG.getNbEtapesSelectionnees() != 1) { return; }
-        EtapeIG etape = this.mondeIG.iteratorEtapesSelectionnees().next();
+    public static void afficherFenetreParametresJetons(MondeIG mondeIG, EtapeIG etape) {
         if(!etape.estUnGuichet()) { return; }
 
         GuichetIG guichet = (GuichetIG) etape;
@@ -388,7 +395,7 @@ public class VueMenu extends MenuBar implements Observateur {
 
         DialogPane dialogPane = dialog.getDialogPane();
         dialogPane.setContent(content);
-        dialogPane.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/styles.css")).toExternalForm());
+        dialogPane.getStylesheets().add(Objects.requireNonNull(VueMenu.class.getResource("/css/styles.css")).toExternalForm());
         dialogPane.getStyleClass().add("dialog");
 
         dialog.showAndWait().ifPresent(response -> {
@@ -398,8 +405,8 @@ public class VueMenu extends MenuBar implements Observateur {
                 if (!nbJetons.isEmpty()) {
                     guichet.setJetons(Integer.parseInt(nbJetons));
 
-                    this.mondeIG.deselectionnerSelection();
-                    this.mondeIG.notifierObservateurs();
+                    mondeIG.deselectionnerSelection();
+                    mondeIG.notifierObservateurs();
                 }
             }
         });

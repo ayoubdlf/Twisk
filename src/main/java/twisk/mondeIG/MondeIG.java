@@ -18,17 +18,18 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
     private PointDeControleIG[] arcTemporaire; // arc entre un point de controle et la souris
     private boolean animationArcs;
     private int nbClients;
-
+    private boolean estSimulationEnCours;
 
     /**
      * Constructeur de la classe MondeIG.
      */
     public MondeIG() {
-        this.etapes        = new HashMap<>();
-        this.arcs          = new ArrayList<>(5);
-        this.arcTemporaire = new PointDeControleIG[2];
-        this.animationArcs = false;
-        this.nbClients     = 5; // Par default il y'aura 5 clients
+        this.etapes               = new HashMap<>();
+        this.arcs                 = new ArrayList<>(5);
+        this.arcTemporaire        = new PointDeControleIG[2];
+        this.animationArcs        = false;
+        this.nbClients            = 5; // Par default il y'aura 5 clients
+        this.estSimulationEnCours = false;
     }
 
 
@@ -127,6 +128,15 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
      */
     public int getNbClients() {
         return this.nbClients;
+    }
+
+    /**
+     * Indique si une simulation est actuellement en cours dans le monde.
+     *
+     * @return true si une simulation est en cours, false sinon.
+     */
+    public boolean estSimulationEnCours() {
+        return this.estSimulationEnCours;
     }
 
     /**
@@ -482,6 +492,15 @@ public class MondeIG extends SujetObserve implements Iterable<EtapeIG> {
      */
     public void setNbClients(int nbClients) {
         this.nbClients = nbClients;
+    }
+
+    /**
+     * Définit si une simulation est actuellement en cours dans le monde.
+     *
+     * @param estSimulationEnCours true pour indiquer qu'une simulation est en cours, false sinon.
+     */
+    public void setEstSimulationEnCours(boolean estSimulationEnCours) {
+        this.estSimulationEnCours = estSimulationEnCours;
     }
 
     // —————————— METHODES DEDIE AU CHARGEMENT JSON ——————————

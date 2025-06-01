@@ -57,7 +57,7 @@ public class ActiviteIG extends EtapeIG {
      */
     public void setTemps(int temps) {
         assert (temps > 0)   : "Le temps doit être supérieur à 0";
-        assert (temps < 100) : "Le temps doit être inferieur à 100";
+        assert (temps <= 100) : "Le temps doit être inferieur ou égale à 100";
 
         this.temps = temps;
     }

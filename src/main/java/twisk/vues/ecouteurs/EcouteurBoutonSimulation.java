@@ -39,9 +39,9 @@ public class EcouteurBoutonSimulation implements EventHandler<ActionEvent> {
     public void handle(ActionEvent actionEvent) {
 
         // On stop la simulation
-        if(this.simulation.estActive()) {
+        if(this.monde.estSimulationEnCours()) {
             try {
-                this.simulation.setEstActive(false);
+                this.monde.setEstSimulationEnCours(false);
                 this.simulation.stopSimulation();
             } catch (Exception e) {
                 VueMondeException.alert("Arret de la simulation impossible", e.getMessage());
@@ -49,10 +49,10 @@ public class EcouteurBoutonSimulation implements EventHandler<ActionEvent> {
         } else {
             // On lance la simulation
             try {
-                this.simulation.setEstActive(true);
+                this.monde.setEstSimulationEnCours(true);
                 this.simulation.simuler();
             } catch (Exception e) {
-                this.simulation.setEstActive(false);
+                this.monde.setEstSimulationEnCours(false);
                 VueMondeException.alert("Simulation impossible", e.getMessage());
             }
         }
@@ -67,7 +67,7 @@ public class EcouteurBoutonSimulation implements EventHandler<ActionEvent> {
         this.button.setGraphic(((Supplier<SVGPath>) () -> {
             SVGPath svg = new SVGPath();
             svg.setContent(
-                    this.simulation.estActive() ?
+                    this.monde.estSimulationEnCours() ?
                             "M4.5 7.5a3 3 0 0 1 3-3h9a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3h-9a3 3 0 0 1-3-3v-9Z":
                             "M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z"
             );

@@ -1,5 +1,6 @@
 package twisk.vues;
 
+import javafx.application.Platform;
 import javafx.scene.control.*;
 import javafx.scene.layout.TilePane;
 import javafx.scene.shape.*;
@@ -11,7 +12,7 @@ import java.util.function.Supplier;
 public class VueOutils extends TilePane implements Observateur {
 
     private MondeIG monde;
-
+    private Button simulation, activite, guichet;
 
     /**
      * Constructeur de la classe VueOutils.
@@ -29,7 +30,18 @@ public class VueOutils extends TilePane implements Observateur {
     // —————————— METHODES PUBLIQUES ——————————
 
     @Override
-    public void reagir() {}
+    public void reagir() {
+        VueOutils vueOutils = this;
+        Runnable command = () -> {
+            vueOutils.updateBouttons();
+        };
+
+        if(Platform.isFxApplicationThread()) {
+            command.run();
+        } else {
+            Platform.runLater(command);
+        }
+    }
 
 
     // —————————— METHODES PRIVES ——————————
@@ -45,11 +57,16 @@ public class VueOutils extends TilePane implements Observateur {
         this.ajouterBoutonGuichet();
     }
 
+    private void updateBouttons() {
+        this.activite.setDisable(this.monde.estSimulationEnCours());
+        this.guichet.setDisable(this.monde.estSimulationEnCours());
+    }
+
     /**
      * Crée et ajoute le bouton de simulation à l'interface.
      */
     private void ajouterBoutonStartSimulation() {
-        Button simulation = new Button("Simulation");
+        this.simulation = new Button("Simulation");
         simulation.setId("Simulation");
         simulation.setGraphic(((Supplier<SVGPath>) () -> {
             SVGPath svg = new SVGPath();
@@ -76,7 +93,7 @@ public class VueOutils extends TilePane implements Observateur {
      * Crée et ajoute le bouton de activite à l'interface.
      */
     private void ajouterBoutonActivite() {
-        Button activite = new Button("Activite");
+        this.activite = new Button("Activite");
         activite.setId("Activite");
         activite.setGraphic(((Supplier<SVGPath>) () -> {
             SVGPath svg = new SVGPath();
@@ -103,7 +120,7 @@ public class VueOutils extends TilePane implements Observateur {
      * Crée et ajoute le bouton de guochet à l'interface.
      */
     private void ajouterBoutonGuichet() {
-        Button guichet = new Button("Guichet");
+        this.guichet = new Button("Guichet");
         guichet.setId("Guichet");
         guichet.setGraphic(((Supplier<SVGPath>) () -> {
             SVGPath svg = new SVGPath();

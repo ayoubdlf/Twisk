@@ -96,6 +96,7 @@ public class VueMondeIG extends Pane implements Observateur {
             }
 
             this.getChildren().add(vueArc);
+            vueArc.setDisable(this.monde.estSimulationEnCours());
         }
 
         // LIGNE TEMPORARAIRE = LIGNE DROITE
@@ -107,6 +108,7 @@ public class VueMondeIG extends Pane implements Observateur {
             VueArcIG vueArc      = new VueLigneDroiteIG(this.monde, new LigneDroiteIG(p1, p2));
 
             this.getChildren().add(vueArc);
+            vueArc.setDisable(this.monde.estSimulationEnCours());
         }
     }
 
@@ -123,6 +125,7 @@ public class VueMondeIG extends Pane implements Observateur {
             assert (vueEtape != null) : "L'etape ne doit pas etre nulle";
             this.getChildren().add(vueEtape);
             vueEtape.draw();
+            vueEtape.setDisable(this.monde.estSimulationEnCours());
 
             // Afficher les points de controle
             this.drawPointsDeControle(etape);
@@ -138,6 +141,7 @@ public class VueMondeIG extends Pane implements Observateur {
             VuePointDeControleIG vuePdc = new VuePointDeControleIG(this.monde, pdc);
             this.getChildren().add(vuePdc);
             vuePdc.draw();
+            vuePdc.setDisable(this.monde.estSimulationEnCours());
         }
     }
 

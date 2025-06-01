@@ -24,7 +24,6 @@ public class SimulationIG implements Observateur {
     private CorrespondancesEtapes correspondancesEtapes;
     Object simulation;
     Timeline notifierTimeline;
-    private boolean estActive;
     private EcouteurBoutonSimulation boutonSimulation;
 
     /**
@@ -39,7 +38,7 @@ public class SimulationIG implements Observateur {
         this.monde                 = null;
         this.correspondancesEtapes = null;
         this.simulation            = null;
-        this.estActive             = false;
+        this.mondeIG.setEstSimulationEnCours(false);
     }
 
     /**
@@ -138,8 +137,8 @@ public class SimulationIG implements Observateur {
                 etapeIG.supprimerClients();
             }
 
-            this.estActive = false;
-            this.setEstActive(false);
+
+            this.mondeIG.setEstSimulationEnCours(false);
             this.notifierTimeline.stop(); // Au lieu de `this.mondeIG.notifierObservateurs();`
             Platform.runLater(() -> {
                 this.boutonSimulation.updateBouton();
@@ -149,24 +148,6 @@ public class SimulationIG implements Observateur {
         } catch (Exception e) {
             throw new MondeException("Erreur lors de l'arret de la simulation");
         }
-    }
-
-    /**
-     * Indique si une simulation est actuellement en cours.
-     *
-     * @return true si la simulation est active, false sinon
-     */
-    public boolean estActive() {
-        return estActive;
-    }
-
-    /**
-     * Définit l'état actif de la simulation.
-     *
-     * @param estActive true pour indiquer que la simulation est active, false sinon
-     */
-    public void setEstActive(boolean estActive) {
-        this.estActive = estActive;
     }
 
     // —————————— METHODES PRIVES ——————————

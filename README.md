@@ -3,9 +3,9 @@
 A JavaFX-based simulation framework for modeling and visualizing concurrent systems with activities, queues, and resource management.
 
 <div align="center">
-  <img src="screenshots/screenshot1.png" alt="Othello Screenshot" height="300">
-  <img src="screenshots/screenshot2.png" alt="Othello Screenshot" height="300">
-  <img src="screenshots/screenshot3.png" alt="Othello Screenshot" height="300">
+  <img src="screenshots/screenshot1.png" alt="Twisk Screenshot" height="300">
+  <img src="screenshots/screenshot2.png" alt="Twisk Screenshot" height="300">
+  <img src="screenshots/screenshot3.png" alt="Twisk Screenshot" height="300">
 </div>
 
 ## Overview

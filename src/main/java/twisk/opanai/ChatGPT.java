@@ -66,8 +66,8 @@ Chaque arc est de la forme :
 📏 Contraintes métier
 
 1. Présence obligatoire :
-   - Au moins une entrée
-   - Au moins une sortie
+   - Au moins une seule et unique entrée
+   - Au moins une seule et unique sortie
 
 2. Accessibilité logique :
    - Toute activité doit être accessible depuis une entrée
@@ -115,7 +115,7 @@ Chaque arc est de la forme :
 
 
     // Normalement on devrais cacher la cle dans notre .env 😅
-    private static final String OPENAI_API_KEY = "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";
+    private static final String OPENAI_API_KEY = "TODO_OPENAI_API_KEY";
     private static final OpenAIClient client   = OpenAIOkHttpClient.builder()
             .apiKey(OPENAI_API_KEY)
             .build();
